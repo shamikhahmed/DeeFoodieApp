@@ -46,9 +46,9 @@ class _DeeFoodieAppState extends ConsumerState<DeeFoodieApp> {
   }
 
   Future<void> _init() async {
-    final done = await OnboardingPrefs.isCompleted();
+    onboardingDoneListenable.value = await OnboardingPrefs.isCompleted();
     setState(() {
-      _router = createRouter(onboardingDone: done);
+      _router = createRouter();
       _ready = true;
     });
   }

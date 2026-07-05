@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../api/providers.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/app_prefs_provider.dart';
+import '../router/app_router.dart';
 import '../theme/app_theme.dart';
 import '../widgets/tab_screen_scaffold.dart';
 import '../providers/active_user_provider.dart';
@@ -24,8 +25,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Future<void> _replayOnboarding() async {
     await OnboardingPrefs.reset();
     ref.invalidate(onboardingAnswersProvider);
+    onboardingDoneListenable.value = false;
     if (!mounted) return;
-    context.push('/onboarding');
+    context.go('/onboarding');
   }
 
   Future<void> _refreshApiStatus() async {

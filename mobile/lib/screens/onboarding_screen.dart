@@ -9,6 +9,7 @@ import '../providers/app_prefs_provider.dart';
 import '../providers/taste_profile_provider.dart';
 import '../providers/discount_cards_provider.dart';
 import '../constants/discount_programs.dart';
+import '../router/app_router.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_background.dart';
 import '../widgets/glass_surface.dart';
@@ -57,6 +58,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         ));
     await ref.read(discountCardsProvider.notifier).setAll(_cardPrograms);
     ref.invalidate(onboardingAnswersProvider);
+    onboardingDoneListenable.value = true;
     if (mounted) context.go('/');
   }
 

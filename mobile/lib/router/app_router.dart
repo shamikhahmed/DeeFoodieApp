@@ -30,6 +30,9 @@ import '../screens/taste_profile_screen.dart';
 import '../widgets/glass_nav_bar.dart';
 import '../l10n/app_localizations.dart';
 
+/// Live onboarding gate — redirect reads this, not a frozen bool at router create.
+final onboardingDoneListenable = ValueNotifier<bool>(false);
+
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorHome = GlobalKey<NavigatorState>(debugLabel: 'home');
 final _shellNavigatorExplore = GlobalKey<NavigatorState>(debugLabel: 'explore');
@@ -37,8 +40,8 @@ final _shellNavigatorMap = GlobalKey<NavigatorState>(debugLabel: 'map');
 final _shellNavigatorJournal = GlobalKey<NavigatorState>(debugLabel: 'journal');
 final _shellNavigatorProfile = GlobalKey<NavigatorState>(debugLabel: 'profile');
 
-String _bootLocation(bool onboardingDone) {
-  if (!onboardingDone) return '/onboarding';
+String _bootLocation() {
+  if (!onboardingDoneListenable.value) return '/onboarding';
   if (kIsWeb) {
     final path = Uri.base.path;
     if (path.isNotEmpty && path != '/') return path;
@@ -46,12 +49,13 @@ String _bootLocation(bool onboardingDone) {
   return '/';
 }
 
-GoRouter createRouter({required bool onboardingDone}) {
+GoRouter createRouter() {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: _bootLocation(onboardingDone),
+    refreshListenable: onboardingDoneListenable,
+    initialLocation: _bootLocation(),
     redirect: (context, state) {
-      if (!onboardingDone && state.uri.path != '/onboarding') {
+      if (!onboardingDoneListenable.value && state.uri.path != '/onboarding') {
         return '/onboarding';
       }
       return null;
