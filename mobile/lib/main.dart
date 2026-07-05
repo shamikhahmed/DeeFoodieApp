@@ -1,7 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'l10n/app_localizations.dart';
 import 'providers/app_prefs_provider.dart';
 import 'router/app_router.dart';
@@ -83,6 +84,10 @@ class _DeeFoodieAppState extends ConsumerState<DeeFoodieApp> {
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  usePathUrlStrategy();
+  if (kIsWeb) {
+    setUrlStrategy(const HashUrlStrategy());
+  } else {
+    setUrlStrategy(const PathUrlStrategy());
+  }
   runApp(const ProviderScope(child: DeeFoodieApp()));
 }

@@ -44,10 +44,6 @@ final _shellNavigatorProfile = GlobalKey<NavigatorState>(debugLabel: 'profile');
 
 String _bootLocation() {
   if (!onboardingDoneListenable.value) return '/onboarding';
-  if (kIsWeb) {
-    final path = currentWebPath();
-    if (path != '/' && path != '/onboarding') return path;
-  }
   return '/';
 }
 
@@ -84,14 +80,14 @@ GoRouter createRouter() {
               ),
               const SizedBox(height: 8),
               Text(
-                state.uri.path,
+                state.uri.toString(),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
               FilledButton(
-                onPressed: () => context.go('/'),
-                child: const Text('Go home'),
+                onPressed: () => context.go(onboardingDoneListenable.value ? '/' : '/onboarding'),
+                child: Text(onboardingDoneListenable.value ? 'Go home' : 'Onboarding'),
               ),
             ],
           ),
