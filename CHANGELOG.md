@@ -172,7 +172,12 @@ All notable changes to this project. Dates in YYYY-MM-DD.
 ### Removed
 - Dead `demo_data.dart`
 
-## 2026-07-05 — Free Wikimedia photos for all 10K eateries
+## 2026-07-05 — GitHub Pages + iOS CI fix + 67 neighborhoods
+
+- **web-deploy.yml** — Flutter web on GitHub Pages (`/DeeFoodieApp/`)
+- **patch-real-page-flip.sh** — fix `real_page_flip` iOS build (`createPlayer` → `makePlayer`)
+- Archive expanded to **67 Karachi areas** (Kharadar, Zamzama, Bahria Town, Port Grand, etc.)
+
 
 - **10,000/10,000** eateries now have `coverPhotoUrl` from free sources (no paid APIs)
 - **9,882** Wikimedia Commons Karachi photos (area-matched: Do Darya seafront, Burns Road, Port Grand, Hill Park, etc.)

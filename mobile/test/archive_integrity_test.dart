@@ -37,6 +37,9 @@ void main() {
 
     final wikimedia = eateries.where((e) => ((e as Map)['coverPhotoUrl'] as String? ?? '').contains('wikimedia.org')).length;
     expect(wikimedia, greaterThan(9000));
+
+    final areaNames = eateries.map((e) => (e as Map)['areaName'] as String?).whereType<String>().toSet();
+    expect(areaNames.length, greaterThan(60));
   });
 
   test('trail eatery names resolve in archive', () async {

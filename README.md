@@ -92,21 +92,29 @@ Visits, badges, `visitCount`, venue details, and closed status are rebuilt toget
 
 Stub middleware: send `X-User-Id` header; defaults to first seeded user. Clerk/Auth0 planned before real multi-user.
 
-## CI
+## CI & open via GitHub
 
-`.github/workflows/ios-build.yml` — `flutter test` + iOS build on push to `mobile/**` (no codesign; Simulator artifact). On-device: `mobile/scripts/run-on-iphone.sh`.
+| Workflow | What |
+|----------|------|
+| `web-deploy.yml` | Flutter web → **GitHub Pages** |
+| `ios-build.yml` | iOS Simulator `.app` artifact |
+
+**Web (phone browser):** Repo **Settings → Pages → Build: GitHub Actions**.  
+Then open: `https://shamikhahmed.github.io/DeeFoodieApp/`
+
+**iOS:** Actions → latest run → **ios-app** artifact (Simulator only until signing).
+
+`ios-build.yml` runs `patch-real-page-flip.sh` first — fixes `real_page_flip` `createPlayer` → `makePlayer` on Xcode 15+.
 
 ## Seed data
 
 - `api/prisma/karachi-eateries-100.ts` — iconic Karachi venues (base set)
-- `api/prisma/scripts/food-photo-pool.mjs` — cuisine/venue-aware cover photos
+- `api/prisma/scripts/karachi-areas.mjs` — **67 neighborhoods** (centroids + addresses)
+- `api/prisma/scripts/free-karachi-photos.mjs` — Wikimedia cover photos (free)
 - `api/prisma/scripts/build-mobile-archive.mjs` — offline bundle (eateries + visits + trails)
-- `api/prisma/scripts/build-mobile-archive.mjs` — writes `mobile/assets/demo/archive.json`
-- Re-run after DB/schema changes to refresh the offline bundle
 
 ## Still open (high level)
 
-- Real Karachi venue photos (Unsplash placeholders today)
 - Hosted API (ngrok stopgap or Railway/Render)
 - Clerk auth
 - Sync visit book memories (stickers/photos) to API

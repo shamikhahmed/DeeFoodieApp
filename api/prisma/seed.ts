@@ -19,10 +19,19 @@ const CUISINES = [
 ];
 
 const AREAS = [
-  'DHA', 'Clifton', 'PECHS', 'Bahadurabad', 'Gulshan-e-Iqbal', 'Gulistan-e-Jauhar',
-  'Saddar', 'Burns Road', 'Tariq Road', 'Shahrah-e-Faisal', 'North Nazimabad',
-  'Nazimabad', 'Federal B Area', 'Korangi', 'Malir', 'Lyari', 'Keamari',
-  'Scheme 33', 'Defence View', 'Boat Basin', 'Do Darya',
+  'DHA', 'DHA Phase 6', 'DHA Phase 8', 'DHA City', 'Defence View', 'Clifton', 'Clifton Block 2',
+  'Clifton Block 4', 'Zamzama', 'Boat Basin', 'Do Darya', 'Keamari', 'Kemari Town', 'Manora',
+  'Ibrahim Hyderi', 'Hawksbay', 'French Beach', 'Port Grand',
+  'Saddar', 'Burns Road', 'Kharadar', 'Mithadar', 'Ranchore Line', 'Civil Lines', 'PIDC',
+  'II Chundrigar', 'Soldier Bazaar', 'Garden East', 'Garden West', 'Lyari', 'Machar Colony',
+  'SITE Area', 'Mauripur', 'Golimar',
+  'PECHS', 'Tariq Road', 'Bahadurabad', 'Jamshed Town', 'Gulshan-e-Iqbal', 'Gulistan-e-Jauhar',
+  'Gulshan-e-Maymar', 'Gulzar-e-Hijri', 'Safoora', 'Shahrah-e-Faisal', 'Scheme 33', 'Model Colony',
+  'Shah Faisal Colony', 'Malir', 'Malir Cantonment', 'Landhi', 'Korangi', 'Korangi Creek',
+  'Korangi Industrial Area', 'Super Highway',
+  'North Nazimabad', 'Nazimabad', 'Federal B Area', 'Buffer Zone', 'Surjani Town', 'Orangi',
+  'New Karachi', 'Baldia Town', 'Liaquatabad', 'Ayesha Manzil', 'Water Pump', 'Metroville',
+  'Bahria Town Karachi',
 ];
 
 async function upsertEateryTaxonomy(eateryId: string, venueTypes: string[], cuisines: string[]) {

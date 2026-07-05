@@ -16,13 +16,7 @@ const osmCount = fs.existsSync(osmPath)
   : 5200;
 const TARGET_TOTAL = Math.max(1000, TARGET_ARCHIVE - BASE_COUNT - osmCount + 1500);
 
-const AREAS = [
-  'DHA', 'Clifton', 'PECHS', 'Bahadurabad', 'Gulshan-e-Iqbal', 'Gulistan-e-Jauhar',
-  'Saddar', 'Burns Road', 'Tariq Road', 'Shahrah-e-Faisal', 'North Nazimabad', 'Nazimabad',
-  'Federal B Area', 'Korangi', 'Malir', 'Lyari', 'Keamari', 'Scheme 33', 'Defence View',
-  'Boat Basin', 'Do Darya', 'Jamshed Town', 'Landhi', 'Orangi', 'SITE Area', 'Clifton Block 2',
-  'DHA Phase 6', 'DHA Phase 8', 'Buffer Zone', 'Surjani Town',
-];
+import { formatAddress, phoneFor, hoursFor, AREAS, coord } from './karachi-areas.mjs';
 
 const VENUE_TYPES = [
   ['Restaurant'], ['Cafe'], ['Dhaba'], ['Bakery'], ['Street Food'], ['Dessert Shop'],
@@ -35,8 +29,6 @@ const CUISINE_SETS = [
   ['Breakfast'], ['Desserts'], ['Seafood'], ['Pizza'], ['Nihari'], ['Bakery Items'],
   ['BBQ'], ['Chinese', 'Desi'], ['Continental', 'Breakfast'], ['Seafood', 'BBQ'],
 ];
-
-import { formatAddress, phoneFor, hoursFor } from './karachi-areas.mjs';
 
 const PREFIXES = [
   'Al', 'New', 'Old', 'Royal', 'Karachi', 'Student', 'Super', 'Golden', 'Lahori', 'Hyderabadi',
@@ -217,25 +209,6 @@ const NAMED_HOTEL_RESTAURANTS = [
   { name: 'Nishat Hotel — Nishat Kitchen', hotel: 'Nishat Hotel Clifton', area: 'Clifton', cuisines: ['Desi', 'Biryani'], venue: ['Hotel Restaurant'] },
   { name: 'Hotel Mehran — Mehran Restaurant', hotel: 'Hotel Mehran', area: 'Saddar', cuisines: ['Desi'], venue: ['Hotel Restaurant'] },
 ];
-
-function coord(area, i) {
-  const base = {
-    DHA: [24.8, 67.04], Clifton: [24.81, 67.03], 'Do Darya': [24.81, 67.01],
-    'Burns Road': [24.86, 67.01], Saddar: [24.86, 67.02], PECHS: [24.87, 67.06],
-    'Gulshan-e-Iqbal': [24.91, 67.08], 'Gulistan-e-Jauhar': [24.91, 67.12],
-    'North Nazimabad': [24.94, 67.04], Lyari: [24.87, 66.99], Malir: [24.9, 67.2],
-    Korangi: [24.82, 67.13], 'Boat Basin': [24.82, 67.02], 'Tariq Road': [24.87, 67.05],
-    Keamari: [24.82, 66.98], 'DHA Phase 6': [24.79, 67.06], 'DHA Phase 8': [24.77, 67.08],
-    'Clifton Block 2': [24.81, 67.025], Bahadurabad: [24.88, 67.07], Nazimabad: [24.92, 67.03],
-    'Federal B Area': [24.93, 67.07], 'Shahrah-e-Faisal': [24.88, 67.1], 'Scheme 33': [24.9, 67.11],
-    Landhi: [24.84, 67.18], Orangi: [24.94, 67.0], 'SITE Area': [24.88, 66.98],
-    'Jamshed Town': [24.88, 67.04], 'Buffer Zone': [24.95, 67.06], 'Surjani Town': [25.02, 67.08],
-    'Defence View': [24.83, 67.05],
-  };
-  const [lat, lng] = base[area] ?? [24.86, 67.05];
-  const jitter = ((i % 23) - 11) * 0.0018;
-  return { lat: +(lat + jitter).toFixed(4), lng: +(lng + jitter * 1.1).toFixed(4) };
-}
 
 function desc(name, area, hotel) {
   if (hotel) {
