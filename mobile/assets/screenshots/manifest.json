@@ -1,0 +1,350 @@
+{
+  "generatedAt": "2026-07-05T17:01:49.768Z",
+  "themes": [
+    "journal"
+  ],
+  "viewports": [
+    "mobile"
+  ],
+  "sections": [
+    {
+      "id": "onboarding",
+      "title": "Onboarding",
+      "label": "Onboarding",
+      "items": [
+        {
+          "id": "onboarding",
+          "label": "Onboarding",
+          "route": "/onboarding",
+          "files": {
+            "journal": {
+              "mobile": "mobile/onboarding.png"
+            }
+          },
+          "scroll": {}
+        }
+      ]
+    },
+    {
+      "id": "tabs",
+      "title": "Main tabs",
+      "label": "Main tabs",
+      "items": [
+        {
+          "id": "home",
+          "label": "Home",
+          "route": "/",
+          "files": {
+            "journal": {
+              "mobile": "mobile/home.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "explore",
+          "label": "Explore",
+          "route": "/explore",
+          "files": {
+            "journal": {
+              "mobile": "mobile/explore.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "map",
+          "label": "Map",
+          "route": "/map",
+          "files": {
+            "journal": {
+              "mobile": "mobile/map.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "journal-book",
+          "label": "Journal — book",
+          "route": "/journal",
+          "files": {
+            "journal": {
+              "mobile": "mobile/journal-book.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "journal-timeline",
+          "label": "Journal — timeline",
+          "route": "/journal",
+          "files": {
+            "journal": {
+              "mobile": "mobile/journal-timeline.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "profile",
+          "label": "Profile",
+          "route": "/profile",
+          "files": {
+            "journal": {
+              "mobile": "mobile/profile.png"
+            }
+          },
+          "scroll": {}
+        }
+      ]
+    },
+    {
+      "id": "journal",
+      "title": "Journal & visits",
+      "label": "Journal & visits",
+      "items": [
+        {
+          "id": "visit-detail",
+          "label": "Visit detail",
+          "route": "/visit/cmr7ug9mj0001lvaiv04413ux",
+          "files": {
+            "journal": {
+              "mobile": "mobile/visit-detail.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "add-visit",
+          "label": "Add visit",
+          "route": "/add-visit",
+          "files": {
+            "journal": {
+              "mobile": "mobile/add-visit.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "edit-visit",
+          "label": "Edit visit",
+          "route": "/edit-visit/cmr7ug9mj0001lvaiv04413ux",
+          "files": {
+            "journal": {
+              "mobile": "mobile/edit-visit.png"
+            }
+          },
+          "scroll": {}
+        }
+      ]
+    },
+    {
+      "id": "archive",
+      "title": "Archive tools",
+      "label": "Archive tools",
+      "items": [
+        {
+          "id": "eatery",
+          "label": "Eatery profile",
+          "route": "/eatery/seed-00000001",
+          "files": {
+            "journal": {
+              "mobile": "mobile/eatery.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "add-eatery",
+          "label": "Add eatery",
+          "route": "/add-eatery",
+          "files": {
+            "journal": {
+              "mobile": "mobile/add-eatery.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "areas",
+          "label": "Areas",
+          "route": "/areas",
+          "files": {
+            "journal": {
+              "mobile": "mobile/areas.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "area-clifton",
+          "label": "Area — Clifton",
+          "route": "/area/Clifton",
+          "files": {
+            "journal": {
+              "mobile": "mobile/area-clifton.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "favorites",
+          "label": "Favorites",
+          "route": "/favorites",
+          "files": {
+            "journal": {
+              "mobile": "mobile/favorites.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "wishlist",
+          "label": "Wishlist",
+          "route": "/wishlist",
+          "files": {
+            "journal": {
+              "mobile": "mobile/wishlist.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "dishes",
+          "label": "Dishes",
+          "route": "/dishes",
+          "files": {
+            "journal": {
+              "mobile": "mobile/dishes.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "collections",
+          "label": "Collections",
+          "route": "/collections",
+          "files": {
+            "journal": {
+              "mobile": "mobile/collections.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "miss-it",
+          "label": "Miss It?",
+          "route": "/miss-it",
+          "files": {
+            "journal": {
+              "mobile": "mobile/miss-it.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "dictionary",
+          "label": "Karachi Dictionary",
+          "route": "/dictionary",
+          "files": {
+            "journal": {
+              "mobile": "mobile/dictionary.png"
+            }
+          },
+          "scroll": {}
+        }
+      ]
+    },
+    {
+      "id": "karachi",
+      "title": "Karachi identity",
+      "label": "Karachi identity",
+      "items": [
+        {
+          "id": "passport",
+          "label": "Food Passport",
+          "route": "/passport",
+          "files": {
+            "journal": {
+              "mobile": "mobile/passport.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "trails",
+          "label": "Food Trails",
+          "route": "/trails",
+          "files": {
+            "journal": {
+              "mobile": "mobile/trails.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "wrapped",
+          "label": "Year in Food",
+          "route": "/wrapped",
+          "files": {
+            "journal": {
+              "mobile": "mobile/wrapped.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "seasonal",
+          "label": "Seasonal",
+          "route": "/seasonal/ramadan-iftar",
+          "files": {
+            "journal": {
+              "mobile": "mobile/seasonal.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "order",
+          "label": "The Order",
+          "route": "/order",
+          "files": {
+            "journal": {
+              "mobile": "mobile/order.png"
+            }
+          },
+          "scroll": {}
+        }
+      ]
+    },
+    {
+      "id": "profile-tools",
+      "title": "Profile tools",
+      "label": "Profile tools",
+      "items": [
+        {
+          "id": "my-cards",
+          "label": "My cards",
+          "route": "/my-cards",
+          "files": {
+            "journal": {
+              "mobile": "mobile/my-cards.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "taste-profile",
+          "label": "Taste profile",
+          "route": "/taste-profile",
+          "files": {
+            "journal": {
+              "mobile": "mobile/taste-profile.png"
+            }
+          },
+          "scroll": {}
+        }
+      ]
+    }
+  ]
+}

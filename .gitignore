@@ -1,0 +1,25 @@
+node_modules/
+.claude/
+dist/
+.env
+.env.*
+!.env.example
+*.log
+
+# Flutter
+mobile/.dart_tool/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.packages
+mobile/build/
+mobile/ios/Pods/
+mobile/ios/.symlinks/
+mobile/ios/Flutter/Flutter.framework
+mobile/ios/Flutter/Flutter.podspec
+mobile/android/.gradle/
+mobile/android/local.properties
+
+# Prisma
+api/prisma/migrations/dev.db
+
+.DS_Store

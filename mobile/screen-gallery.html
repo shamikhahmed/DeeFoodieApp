@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DeeFoodieApp — Screen Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@1,9..144,600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4ebe0;
+      --surface: #fffcf6;
+      --border: rgba(61, 44, 30, 0.14);
+      --text: #3d2c1e;
+      --muted: #7a6a58;
+      --accent: #6b4423;
+      --accent-dim: rgba(107, 68, 35, 0.14);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(246, 239, 227, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px;
+    }
+    h1 {
+      margin: 0 0 4px;
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 1.45rem;
+      font-weight: 600;
+    }
+    .sub {
+      color: var(--muted);
+      font-family: 'Caveat', cursive;
+      font-size: 1.05rem;
+      margin: 0 0 12px;
+    }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+    }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-family: 'Caveat', cursive;
+      font-size: 0.95rem;
+      cursor: pointer;
+      user-select: none;
+    }
+    .pill:hover { border-color: var(--accent); }
+    .pill.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); font-weight: 700; }
+    main { padding: 20px; max-width: 1400px; margin: 0 auto; }
+    .section { margin-bottom: 36px; scroll-margin-top: 140px; }
+    .section h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      margin: 0 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(61, 44, 30, 0.12);
+    }
+    .card img {
+      width: 100%;
+      aspect-ratio: 9 / 19.5;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      background: #efe4d4;
+    }
+    .card.missing { cursor: default; opacity: 0.72; }
+    .card.missing:hover { transform: none; border-color: var(--border); box-shadow: none; }
+    .card .missing-pill {
+      display: flex; align-items: center; justify-content: center;
+      aspect-ratio: 9 / 19.5; background: #efe4d4; color: var(--muted);
+      font-family: 'Caveat', cursive; font-size: 0.95rem; text-align: center; padding: 12px;
+    }
+    .card .meta { padding: 10px 12px 12px; }
+    .card .label { font-size: 0.82rem; font-weight: 600; font-family: 'Fraunces', Georgia, serif; }
+    .card .tag { font-family: 'Caveat', cursive; font-size: 0.85rem; color: var(--muted); margin-top: 2px; }
+    .empty { color: var(--muted); padding: 40px; text-align: center; font-family: 'Caveat', cursive; font-size: 1.1rem; }
+    .err { color: #b42318; padding: 20px; }
+    #lightbox {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(30, 20, 12, 0.9);
+      display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img {
+      max-width: min(420px, 90vw); max-height: 80vh; object-fit: contain;
+      border-radius: 12px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    }
+    #lb-caption { color: #fff; margin-top: 12px; font-family: 'Caveat', cursive; font-size: 1.1rem; text-align: center; }
+    .lb-btn {
+      position: absolute; background: rgba(255, 255, 255, 0.12); border: none; color: #fff;
+      font-size: 1.5rem; width: 48px; height: 48px; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lb-btn:hover { background: rgba(255, 255, 255, 0.22); }
+    #lb-close { top: 16px; right: 16px; font-size: 1.8rem; }
+    #lb-prev { left: 16px; top: 50%; transform: translateY(-50%); }
+    #lb-next { right: 16px; top: 50%; transform: translateY(-50%); }
+    footer {
+      text-align: center; padding: 24px 20px 48px;
+      font-family: 'Caveat', cursive; color: var(--muted); font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>DeeFoodieApp Screen Gallery</h1>
+    <p class="sub" id="stats">Loading manifest…</p>
+    <div class="toolbar">
+      <select id="sectionFilter" aria-label="Filter by section">
+        <option value="">All sections</option>
+      </select>
+      <span style="font-family:'Caveat',cursive;color:var(--muted)">Tap card → lightbox · not in app</span>
+    </div>
+    <div class="pills" id="categoryPills" role="toolbar" aria-label="Category filters"></div>
+  </header>
+  <main id="gallery"></main>
+  <footer>Dev-only screenshot index — VaultCap-style. Regen: <code>npm run gallery:capture</code></footer>
+
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot preview">
+    <button type="button" class="lb-btn" id="lb-close" aria-label="Close">×</button>
+    <button type="button" class="lb-btn" id="lb-prev" aria-label="Previous">‹</button>
+    <button type="button" class="lb-btn" id="lb-next" aria-label="Next">›</button>
+    <div id="lb-content"></div>
+    <p id="lb-caption"></p>
+  </div>
+
+  <script>
+    const state = {
+      manifest: null,
+      theme: 'journal',
+      viewport: 'mobile',
+      sectionFilter: '',
+      flatItems: [],
+      lightboxIndex: -1,
+      cacheBust: '',
+    };
+
+    const $ = (sel) => document.querySelector(sel);
+    const gallery = $('#gallery');
+    const stats = $('#stats');
+    const sectionFilter = $('#sectionFilter');
+    const categoryPills = $('#categoryPills');
+
+    function imgSrc(rel) {
+      if (!rel) return '';
+      const base = `assets/screenshots/${rel}`;
+      return state.cacheBust ? `${base}?v=${state.cacheBust}` : base;
+    }
+
+    function buildFlatItems() {
+      state.flatItems = [];
+      if (!state.manifest?.sections) return;
+      for (const sec of state.manifest.sections) {
+        for (const item of sec.items || []) {
+          state.flatItems.push({ ...item, sectionId: sec.id, sectionLabel: sec.label || sec.title });
+        }
+      }
+    }
+
+    function themes() {
+      return state.manifest?.themes?.length ? state.manifest.themes : ['journal'];
+    }
+
+    function pickThemePath(bucket, theme) {
+      if (!bucket) return '';
+      const val = bucket[theme];
+      if (!val) return '';
+      if (typeof val === 'string') return val;
+      return val[state.viewport] || '';
+    }
+
+    function hasShot(item) {
+      const t = themes();
+      return t.some((th) => !!pickThemePath(item.files, th));
+    }
+
+    function visibleItems() {
+      let items = state.flatItems;
+      if (state.sectionFilter) items = items.filter((i) => i.sectionId === state.sectionFilter);
+      return items.filter(hasShot);
+    }
+
+    function getItemImage(item) {
+      for (const th of themes()) {
+        const rel = pickThemePath(item.files, th);
+        if (rel) return rel;
+      }
+      return '';
+    }
+
+    function renderCard(item) {
+      const rel = getItemImage(item);
+      if (!rel) {
+        return `
+          <article class="card missing" data-item-id="${item.id}">
+            <div class="missing-pill">Missing — run gallery:capture</div>
+            <div class="meta"><div class="label">${item.label}</div><div class="tag">${item.sectionLabel}</div></div>
+          </article>`;
+      }
+      return `
+        <article class="card" tabindex="0" role="button" data-item-id="${item.id}">
+          <img src="${imgSrc(rel)}" alt="${item.label}" loading="lazy" />
+          <div class="meta">
+            <div class="label">${item.label}</div>
+            <div class="tag">${item.sectionLabel}${item.route ? ' · ' + item.route : ''}</div>
+          </div>
+        </article>`;
+    }
+
+    function render() {
+      const items = visibleItems();
+      if (!items.length) {
+        gallery.innerHTML = '<p class="empty">No screenshots yet — run npm run gallery:capture</p>';
+        return;
+      }
+      const bySection = new Map();
+      for (const item of items) {
+        if (!bySection.has(item.sectionId)) bySection.set(item.sectionId, { label: item.sectionLabel, items: [] });
+        bySection.get(item.sectionId).items.push(item);
+      }
+      let html = '';
+      for (const sec of state.manifest.sections) {
+        const group = bySection.get(sec.id);
+        if (!group) continue;
+        html += `<section class="section" id="section-${sec.id}"><h2>${group.label}</h2><div class="grid">`;
+        for (const item of group.items) html += renderCard(item);
+        html += '</div></section>';
+      }
+      gallery.innerHTML = html;
+
+      const cards = gallery.querySelectorAll('.card:not(.missing)');
+      cards.forEach((card, idx) => {
+        card.addEventListener('click', () => openLightbox(idx));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(idx); }
+        });
+      });
+    }
+
+    function getRenderableCards() {
+      return [...gallery.querySelectorAll('.card:not(.missing)')].map((card) => {
+        const id = card.dataset.itemId;
+        return state.flatItems.find((i) => i.id === id);
+      }).filter(Boolean);
+    }
+
+    function openLightbox(index) {
+      const cards = getRenderableCards();
+      if (index < 0 || index >= cards.length) return;
+      state.lightboxIndex = index;
+      updateLightbox(cards);
+      $('#lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function updateLightbox(cards) {
+      const item = cards[state.lightboxIndex];
+      const rel = getItemImage(item);
+      $('#lb-content').innerHTML = `<img src="${imgSrc(rel)}" alt="${item.label}" />`;
+      $('#lb-caption').textContent = `${item.label} — ${item.sectionLabel}`;
+    }
+
+    function closeLightbox() {
+      $('#lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+      state.lightboxIndex = -1;
+    }
+
+    function setSectionFilter(id) {
+      state.sectionFilter = id;
+      sectionFilter.value = id;
+      categoryPills.querySelectorAll('.pill').forEach((p) => {
+        p.classList.toggle('active', p.dataset.section === id);
+      });
+      render();
+      if (id) document.getElementById(`section-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function initPills() {
+      categoryPills.innerHTML = '';
+      const all = document.createElement('button');
+      all.type = 'button';
+      all.className = 'pill active';
+      all.dataset.section = '';
+      all.textContent = 'All';
+      all.addEventListener('click', () => setSectionFilter(''));
+      categoryPills.appendChild(all);
+
+      for (const sec of state.manifest.sections || []) {
+        const count = (sec.items || []).length;
+        const pill = document.createElement('button');
+        pill.type = 'button';
+        pill.className = 'pill';
+        pill.dataset.section = sec.id;
+        pill.textContent = `${sec.label || sec.title}: ${count}`;
+        pill.addEventListener('click', () => setSectionFilter(sec.id));
+        categoryPills.appendChild(pill);
+
+        const opt = document.createElement('option');
+        opt.value = sec.id;
+        opt.textContent = `${sec.label || sec.title} (${count})`;
+        sectionFilter.appendChild(opt);
+      }
+    }
+
+    function readEmbeddedManifest() {
+      const el = document.getElementById('gallery-manifest-embedded');
+      if (!el?.textContent?.trim()) return null;
+      try { return JSON.parse(el.textContent); } catch { return null; }
+    }
+
+    async function loadManifest() {
+      const embedded = readEmbeddedManifest();
+      if (location.protocol === 'file:') {
+        if (!embedded) throw new Error('No embedded manifest — run npm run gallery:embed');
+        return embedded;
+      }
+      if (embedded) return embedded;
+      const res = await fetch('assets/screenshots/manifest.json?v=' + Date.now());
+      if (!res.ok) throw new Error('manifest.json not found — run npm run gallery:capture');
+      return res.json();
+    }
+
+    async function init() {
+      try {
+        state.manifest = await loadManifest();
+        state.theme = state.manifest.themes?.[0] || 'journal';
+        state.cacheBust = (state.manifest.generatedAt || Date.now()).toString().replace(/\W/g, '');
+        const screenCount = (state.manifest.sections || []).reduce((n, s) => n + (s.items?.length || 0), 0);
+        stats.textContent = `${screenCount} screens · offline · ${state.manifest.generatedAt || 'unknown'}`;
+        buildFlatItems();
+        initPills();
+        render();
+      } catch (e) {
+        stats.textContent = 'Failed to load gallery';
+        gallery.innerHTML = `<p class="err">${e.message}</p>`;
+      }
+    }
+
+    sectionFilter.addEventListener('change', (e) => setSectionFilter(e.target.value));
+    $('#lb-close').addEventListener('click', closeLightbox);
+    $('#lightbox').addEventListener('click', (e) => { if (e.target.id === 'lightbox') closeLightbox(); });
+    $('#lb-prev').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const cards = getRenderableCards();
+      state.lightboxIndex = (state.lightboxIndex - 1 + cards.length) % cards.length;
+      updateLightbox(cards);
+    });
+    $('#lb-next').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const cards = getRenderableCards();
+      state.lightboxIndex = (state.lightboxIndex + 1) % cards.length;
+      updateLightbox(cards);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!$('#lightbox').classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') $('#lb-prev').click();
+      if (e.key === 'ArrowRight') $('#lb-next').click();
+    });
+
+    init();
+  </script>
+  <script type="application/json" id="gallery-manifest-embedded">{
+  "generatedAt": "2026-07-05T17:01:49.768Z",
+  "themes": [
+    "journal"
+  ],
+  "viewports": [
+    "mobile"
+  ],
+  "sections": [
+    {
+      "id": "onboarding",
+      "title": "Onboarding",
+      "label": "Onboarding",
+      "items": [
+        {
+          "id": "onboarding",
+          "label": "Onboarding",
+          "route": "/onboarding",
+          "files": {
+            "journal": {
+              "mobile": "mobile/onboarding.png"
+            }
+          },
+          "scroll": {}
+        }
+      ]
+    },
+    {
+      "id": "tabs",
+      "title": "Main tabs",
+      "label": "Main tabs",
+      "items": [
+        {
+          "id": "home",
+          "label": "Home",
+          "route": "/",
+          "files": {
+            "journal": {
+              "mobile": "mobile/home.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "explore",
+          "label": "Explore",
+          "route": "/explore",
+          "files": {
+            "journal": {
+              "mobile": "mobile/explore.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "map",
+          "label": "Map",
+          "route": "/map",
+          "files": {
+            "journal": {
+              "mobile": "mobile/map.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "journal-book",
+          "label": "Journal — book",
+          "route": "/journal",
+          "files": {
+            "journal": {
+              "mobile": "mobile/journal-book.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "journal-timeline",
+          "label": "Journal — timeline",
+          "route": "/journal",
+          "files": {
+            "journal": {
+              "mobile": "mobile/journal-timeline.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "profile",
+          "label": "Profile",
+          "route": "/profile",
+          "files": {
+            "journal": {
+              "mobile": "mobile/profile.png"
+            }
+          },
+          "scroll": {}
+        }
+      ]
+    },
+    {
+      "id": "journal",
+      "title": "Journal & visits",
+      "label": "Journal & visits",
+      "items": [
+        {
+          "id": "visit-detail",
+          "label": "Visit detail",
+          "route": "/visit/cmr7ug9mj0001lvaiv04413ux",
+          "files": {
+            "journal": {
+              "mobile": "mobile/visit-detail.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "add-visit",
+          "label": "Add visit",
+          "route": "/add-visit",
+          "files": {
+            "journal": {
+              "mobile": "mobile/add-visit.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "edit-visit",
+          "label": "Edit visit",
+          "route": "/edit-visit/cmr7ug9mj0001lvaiv04413ux",
+          "files": {
+            "journal": {
+              "mobile": "mobile/edit-visit.png"
+            }
+          },
+          "scroll": {}
+        }
+      ]
+    },
+    {
+      "id": "archive",
+      "title": "Archive tools",
+      "label": "Archive tools",
+      "items": [
+        {
+          "id": "eatery",
+          "label": "Eatery profile",
+          "route": "/eatery/seed-00000001",
+          "files": {
+            "journal": {
+              "mobile": "mobile/eatery.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "add-eatery",
+          "label": "Add eatery",
+          "route": "/add-eatery",
+          "files": {
+            "journal": {
+              "mobile": "mobile/add-eatery.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "areas",
+          "label": "Areas",
+          "route": "/areas",
+          "files": {
+            "journal": {
+              "mobile": "mobile/areas.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "area-clifton",
+          "label": "Area — Clifton",
+          "route": "/area/Clifton",
+          "files": {
+            "journal": {
+              "mobile": "mobile/area-clifton.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "favorites",
+          "label": "Favorites",
+          "route": "/favorites",
+          "files": {
+            "journal": {
+              "mobile": "mobile/favorites.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "wishlist",
+          "label": "Wishlist",
+          "route": "/wishlist",
+          "files": {
+            "journal": {
+              "mobile": "mobile/wishlist.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "dishes",
+          "label": "Dishes",
+          "route": "/dishes",
+          "files": {
+            "journal": {
+              "mobile": "mobile/dishes.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "collections",
+          "label": "Collections",
+          "route": "/collections",
+          "files": {
+            "journal": {
+              "mobile": "mobile/collections.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "miss-it",
+          "label": "Miss It?",
+          "route": "/miss-it",
+          "files": {
+            "journal": {
+              "mobile": "mobile/miss-it.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "dictionary",
+          "label": "Karachi Dictionary",
+          "route": "/dictionary",
+          "files": {
+            "journal": {
+              "mobile": "mobile/dictionary.png"
+            }
+          },
+          "scroll": {}
+        }
+      ]
+    },
+    {
+      "id": "karachi",
+      "title": "Karachi identity",
+      "label": "Karachi identity",
+      "items": [
+        {
+          "id": "passport",
+          "label": "Food Passport",
+          "route": "/passport",
+          "files": {
+            "journal": {
+              "mobile": "mobile/passport.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "trails",
+          "label": "Food Trails",
+          "route": "/trails",
+          "files": {
+            "journal": {
+              "mobile": "mobile/trails.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "wrapped",
+          "label": "Year in Food",
+          "route": "/wrapped",
+          "files": {
+            "journal": {
+              "mobile": "mobile/wrapped.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "seasonal",
+          "label": "Seasonal",
+          "route": "/seasonal/ramadan-iftar",
+          "files": {
+            "journal": {
+              "mobile": "mobile/seasonal.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "order",
+          "label": "The Order",
+          "route": "/order",
+          "files": {
+            "journal": {
+              "mobile": "mobile/order.png"
+            }
+          },
+          "scroll": {}
+        }
+      ]
+    },
+    {
+      "id": "profile-tools",
+      "title": "Profile tools",
+      "label": "Profile tools",
+      "items": [
+        {
+          "id": "my-cards",
+          "label": "My cards",
+          "route": "/my-cards",
+          "files": {
+            "journal": {
+              "mobile": "mobile/my-cards.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "taste-profile",
+          "label": "Taste profile",
+          "route": "/taste-profile",
+          "files": {
+            "journal": {
+              "mobile": "mobile/taste-profile.png"
+            }
+          },
+          "scroll": {}
+        }
+      ]
+    }
+  ]
+}</script><!-- gallery-manifest-embedded -->
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "deefoodie-gallery",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "gallery:embed": "node scripts/embed-gallery-manifest.mjs",
+    "gallery:capture": "node scripts/capture-gallery.mjs",
+    "gallery:serve": "python3 -m http.server 8766",
+    "gallery": "npm run gallery:capture"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0"
+  }
+}

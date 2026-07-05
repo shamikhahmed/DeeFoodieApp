@@ -1,0 +1,324 @@
+export const MENU_TEMPLATES: Record<string, { name: string; price: number }[]> = {
+  Biryani: [
+    { name: 'Chicken Biryani', price: 450 },
+    { name: 'Beef Biryani', price: 550 },
+    { name: 'Mutton Biryani', price: 750 },
+    { name: 'Raita', price: 80 },
+    { name: 'Salad', price: 60 },
+    { name: 'Kheer', price: 150 },
+  ],
+  Nihari: [
+    { name: 'Nihari', price: 400 },
+    { name: 'Paya', price: 450 },
+    { name: 'Maghaz', price: 500 },
+    { name: 'Naan', price: 50 },
+    { name: 'Lassi', price: 120 },
+  ],
+  BBQ: [
+    { name: 'Seekh Kabab', price: 380 },
+    { name: 'Chicken Tikka', price: 450 },
+    { name: 'Malai Boti', price: 520 },
+    { name: 'Beef Kabab', price: 480 },
+    { name: 'Mixed Grill (2 pax)', price: 2200 },
+    { name: 'Karahi Chicken', price: 1600 },
+  ],
+  Chinese: [
+    { name: 'Chicken Chow Mein', price: 650 },
+    { name: 'Beef Chilli Dry', price: 850 },
+    { name: 'Manchurian', price: 550 },
+    { name: 'Hot & Sour Soup', price: 350 },
+    { name: 'Egg Fried Rice', price: 450 },
+  ],
+  Seafood: [
+    { name: 'Grilled Pomfret', price: 1800 },
+    { name: 'Prawn Tempura', price: 1400 },
+    { name: 'Fish Karahi', price: 2200 },
+    { name: 'Crab Masala', price: 2500 },
+    { name: 'Lemon Soda', price: 150 },
+  ],
+  Continental: [
+    { name: 'Eggs Benedict', price: 950 },
+    { name: 'Avocado Toast', price: 850 },
+    { name: 'Chicken Alfredo', price: 1200 },
+    { name: 'Margherita Pizza', price: 1100 },
+    { name: 'Cappuccino', price: 450 },
+  ],
+  Desserts: [
+    { name: 'Ras Malai', price: 200 },
+    { name: 'Gulab Jamun', price: 150 },
+    { name: 'Rabri', price: 180 },
+    { name: 'Kulfi Falooda', price: 250 },
+    { name: 'Chocolate Brownie', price: 450 },
+  ],
+  'Fast Food': [
+    { name: 'Zinger Burger', price: 550 },
+    { name: 'Beef Burger', price: 650 },
+    { name: 'Chicken Broast', price: 480 },
+    { name: 'Fries', price: 200 },
+    { name: 'Soft Drink', price: 120 },
+  ],
+  Desi: [
+    { name: 'Chicken Karahi', price: 1500 },
+    { name: 'Daal Mash', price: 350 },
+    { name: 'Handi Mutton', price: 2200 },
+    { name: 'Tandoori Roti', price: 40 },
+    { name: 'Raita', price: 80 },
+  ],
+  Pizza: [
+    { name: 'Margherita', price: 900 },
+    { name: 'Pepperoni', price: 1100 },
+    { name: 'BBQ Chicken', price: 1200 },
+    { name: 'Garlic Bread', price: 350 },
+  ],
+  Breakfast: [
+    { name: 'Paratha', price: 80 },
+    { name: 'Omelette', price: 200 },
+    { name: 'Chai', price: 80 },
+    { name: 'Halwa Puri Plate', price: 350 },
+    { name: 'Cappuccino', price: 450 },
+  ],
+  'Bakery Items': [
+    { name: 'Chicken Patties', price: 120 },
+    { name: 'Chocolate Croissant', price: 250 },
+    { name: 'Sourdough Loaf', price: 400 },
+    { name: 'Cupcake', price: 180 },
+  ],
+};
+
+export function menuForCuisines(cuisines: string[]) {
+  for (const c of cuisines) {
+    if (MENU_TEMPLATES[c]) return MENU_TEMPLATES[c];
+  }
+  return MENU_TEMPLATES.Desi;
+}
+
+export type SeedVisit = {
+  eateryName: string;
+  userEmail: string;
+  date: string;
+  time?: string;
+  rating: number;
+  moodTags: string[];
+  reviewText: string;
+  memoryNote?: string;
+  favoriteItem?: string;
+  totalBill?: number;
+  companions?: string;
+  items: { name: string; type: 'food' | 'drink' | 'dessert' }[];
+};
+
+export const EXTRA_DEMO_VISITS: SeedVisit[] = [
+  {
+    eateryName: 'Sabri Nihari',
+    userEmail: 'you@deefoodie.app',
+    date: '2025-03-10',
+    time: '07:00',
+    rating: 4.5,
+    moodTags: ['Alone', 'Comfort Food'],
+    reviewText: 'Sabri at dawn hits different. Paya broth is thick, naan arrives hot off the tandoor.',
+    totalBill: 1100,
+    companions: 'alone',
+    items: [{ name: 'Nihari', type: 'food' }, { name: 'Naan', type: 'food' }],
+  },
+  {
+    eateryName: 'Lal Qila Restaurant',
+    userEmail: 'friend@deefoodie.app',
+    date: '2025-01-25',
+    time: '21:00',
+    rating: 4,
+    moodTags: ['Family', 'Late Night'],
+    reviewText: 'Family dinner at Lal Qila — buffet spread is massive, kids loved the live BBQ counter.',
+    totalBill: 12000,
+    companions: 'family',
+    items: [{ name: 'Mixed Grill', type: 'food' }],
+  },
+  {
+    eateryName: 'Ginsoy',
+    userEmail: 'you@deefoodie.app',
+    date: '2024-12-08',
+    time: '20:30',
+    rating: 4,
+    moodTags: ['Friends', 'Date'],
+    reviewText: 'Ginsoy never misses for Chinese in Clifton. Dynamite prawns and chilli dry beef — share everything.',
+    totalBill: 6500,
+    companions: 'friends',
+    items: [{ name: 'Dynamite Prawns', type: 'food' }, { name: 'Chilli Dry Beef', type: 'food' }],
+  },
+  {
+    eateryName: 'Burger Lab',
+    userEmail: 'friend@deefoodie.app',
+    date: '2024-11-22',
+    time: '23:00',
+    rating: 4.5,
+    moodTags: ['Friends', 'Late Night'],
+    reviewText: 'Post-movie burger run. Truffle fries and the classic lab burger — guilty perfection.',
+    totalBill: 2800,
+    companions: 'friends',
+    items: [{ name: 'Lab Burger', type: 'food' }, { name: 'Truffle Fries', type: 'food' }],
+  },
+  {
+    eateryName: 'Zameer Ansari Beef Biryani',
+    userEmail: 'you@deefoodie.app',
+    date: '2024-10-18',
+    time: '14:00',
+    rating: 5,
+    moodTags: ['Alone', 'Comfort Food'],
+    reviewText: 'Best beef biryani on Burns Road. No debate. Extra raita mandatory.',
+    favoriteItem: 'Beef Biryani',
+    totalBill: 600,
+    companions: 'alone',
+    items: [{ name: 'Beef Biryani', type: 'food' }],
+  },
+  {
+    eateryName: 'Pie in the Sky',
+    userEmail: 'friend@deefoodie.app',
+    date: '2024-09-05',
+    time: '11:00',
+    rating: 4,
+    moodTags: ['Family', 'Birthday'],
+    reviewText: 'Birthday cake pickup — red velvet still the move. Staff remembered our order from last year.',
+    memoryNote: 'Ami birthday cake run.',
+    totalBill: 4500,
+    companions: 'family',
+    items: [{ name: 'Red Velvet Cake', type: 'dessert' }],
+  },
+  {
+    eateryName: 'Savour Foods',
+    userEmail: 'you@deefoodie.app',
+    date: '2024-08-25',
+    time: '19:30',
+    rating: 4,
+    moodTags: ['Friends', 'Work'],
+    reviewText: 'Office team dinner at Savour — chicken tikka and naan combo never fails for a crowd.',
+    totalBill: 4800,
+    companions: 'work',
+    items: [{ name: 'Chicken Tikka', type: 'food' }, { name: 'Naan', type: 'food' }],
+  },
+  {
+    eateryName: 'Roasters Coffee',
+    userEmail: 'friend@deefoodie.app',
+    date: '2024-07-15',
+    time: '09:00',
+    rating: 4.5,
+    moodTags: ['Alone', 'Study'],
+    reviewText: 'Saturday morning flat white and a corner seat. Quiet, good wifi, Clifton breeze through the window.',
+    totalBill: 900,
+    companions: 'alone',
+    items: [{ name: 'Flat White', type: 'drink' }],
+  },
+  {
+    eateryName: 'Ocean Grill',
+    userEmail: 'you@deefoodie.app',
+    date: '2024-06-30',
+    time: '19:00',
+    rating: 4.5,
+    moodTags: ['Date', 'Late Night'],
+    reviewText: 'Do Darya sunset dinner. Grilled lobster was worth every rupee — book a sea-facing table.',
+    memoryNote: 'Anniversary dinner.',
+    totalBill: 15000,
+    companions: 'date',
+    items: [{ name: 'Grilled Lobster', type: 'food' }],
+  },
+  {
+    eateryName: 'Hanifia Mughal Biryani',
+    userEmail: 'friend@deefoodie.app',
+    date: '2024-05-20',
+    time: '13:00',
+    rating: 4.5,
+    moodTags: ['Family'],
+    reviewText: 'Sunday family lunch — Mughal biryani portion feeds four easily. Burns Road chaos outside, peace inside.',
+    totalBill: 2200,
+    companions: 'family',
+    items: [{ name: 'Chicken Biryani', type: 'food' }],
+  },
+  {
+    eateryName: 'Del Frio',
+    userEmail: 'you@deefoodie.app',
+    date: '2024-04-14',
+    time: '22:00',
+    rating: 4,
+    moodTags: ['Friends', 'Late Night'],
+    reviewText: 'Post-dinner ice cream at Del Frio. Praline cone on a humid Karachi night — essential.',
+    totalBill: 800,
+    companions: 'friends',
+    items: [{ name: 'Praline Cone', type: 'dessert' }],
+  },
+  {
+    eateryName: 'Pompeii Restaurant',
+    userEmail: 'friend@deefoodie.app',
+    date: '2024-03-08',
+    time: '20:00',
+    rating: 4,
+    moodTags: ['Date'],
+    reviewText: 'Clifton date night pasta. Ambience is old-school romantic, portions generous.',
+    totalBill: 7500,
+    companions: 'date',
+    items: [{ name: 'Penne Arrabiata', type: 'food' }],
+  },
+  {
+    eateryName: 'Port Grand Food Street',
+    userEmail: 'you@deefoodie.app',
+    date: '2024-02-02',
+    time: '18:00',
+    rating: 3.5,
+    moodTags: ['Family', 'Celebration'],
+    reviewText: 'Touristy but fun with family — live music, harbour views, and too many food stalls to choose from.',
+    totalBill: 5500,
+    companions: 'family',
+    items: [{ name: 'Fish Pakora', type: 'food' }],
+  },
+  {
+    eateryName: 'Chai Shai',
+    userEmail: 'friend@deefoodie.app',
+    date: '2024-01-12',
+    time: '08:30',
+    rating: 4.5,
+    moodTags: ['Alone', 'Study'],
+    reviewText: 'DHA morning chai and paratha. Doodh patti is strong, paratha flaky — perfect pre-work fuel.',
+    totalBill: 650,
+    companions: 'alone',
+    items: [{ name: 'Paratha', type: 'food' }, { name: 'Chai', type: 'drink' }],
+  },
+  {
+    eateryName: 'Burns Road Falooda',
+    userEmail: 'you@deefoodie.app',
+    date: '2023-12-31',
+    time: '23:30',
+    rating: 5,
+    moodTags: ['Friends', 'Celebration', 'Late Night'],
+    reviewText: "New Year's Eve falooda on Burns Road. Sweet, cold, chaotic — peak Karachi.",
+    memoryNote: 'NYE 2023 with the crew.',
+    totalBill: 400,
+    companions: 'friends',
+    items: [{ name: 'Falooda', type: 'dessert' }],
+  },
+];
+
+export const ICONIC_BADGES: Record<string, string[]> = {
+  'Waris Nihari': ['Karachi Classic', 'Since 1975'],
+  Kolachi: ['Local Legend'],
+  'Food Street Burns Road': ['Karachi Classic'],
+  'Hanifia Mughal Biryani': ['Family Favorite'],
+  'Delhi Sohail Karahi': ['Hidden Institution'],
+  'Cafe Flo': ['Hidden Gem'],
+  'Student Biryani': ['Karachi Classic'],
+  'Do Darya': ['Local Legend'],
+  'Bundu Khan': ['Family Favorite'],
+  'Burns Road Falooda': ['Hidden Gem'],
+  'Okra': ['Hidden Gem'],
+  'Xander\'s': ['Local Legend'],
+};
+
+export function pickMustTry(menu: { name: string; price: number }[], eateryName: string) {
+  if (!menu.length) return null;
+  const food = menu.filter((m) => !/chai|latte|coffee|juice|soda|lassi|tea|drink/i.test(m.name));
+  const pool = food.length ? food : menu;
+  const idx = eateryName.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % pool.length;
+  return { name: pool[idx].name, price: pool[idx].price };
+}
+
+export function estimatedRating(name: string, visitAvg: number | null): number {
+  if (visitAvg != null && visitAvg > 0) return Math.round(visitAvg * 10) / 10;
+  const hash = name.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  return Math.round((4.0 + (hash % 9) * 0.1) * 10) / 10;
+}

@@ -1,0 +1,68 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="roundedSquare">
+      <rect x="0" y="0" width="1024" height="1024" rx="220" ry="220"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#roundedSquare)">
+    <rect width="1024" height="1024" fill="#EFE0C4"/>
+
+    <!-- journal page, slightly rotated, dog-eared corner -->
+    <g transform="rotate(-3 512 512)">
+      <path d="M 170 150
+               L 790 150
+               L 790 800
+               L 700 890
+               L 170 890
+               Z"
+            fill="#FBF6EA" stroke="#3C2A1E" stroke-width="14" stroke-linejoin="round"/>
+      <path d="M 790 800 L 700 800 L 700 890 Z" fill="#E8DCC0" stroke="#3C2A1E" stroke-width="10" stroke-linejoin="round"/>
+
+      <!-- ruled lines, hand-drawn wobble -->
+      <path d="M 210 330 Q 400 322, 590 330 T 750 330" fill="none" stroke="#C9BBA0" stroke-width="8" stroke-linecap="round"/>
+      <path d="M 210 760 Q 350 752, 500 760 T 660 758" fill="none" stroke="#C9BBA0" stroke-width="8" stroke-linecap="round"/>
+    </g>
+
+    <!-- doodle coffee cup, cartoon outline style -->
+    <g transform="translate(400,470)">
+      <path d="M -110 10
+               C -110 95, -55 150, 0 150
+               C 55 150, 110 95, 110 10
+               L 110 -55
+               L -110 -55
+               Z"
+            fill="#6F4E37" stroke="#2A1B10" stroke-width="12" stroke-linejoin="round"/>
+      <rect x="-125" y="-80" width="250" height="30" rx="14" fill="#4A3324" stroke="#2A1B10" stroke-width="12"/>
+      <path d="M 108 -35
+               C 155 -35, 178 -8, 178 15
+               C 178 42, 155 60, 118 60
+               L 118 22
+               C 138 22, 145 15, 145 3
+               C 145 -8, 138 -15, 108 -15
+               Z"
+            fill="#6F4E37" stroke="#2A1B10" stroke-width="10" stroke-linejoin="round"/>
+
+      <path d="M -35 -100 C -50 -130, -20 -145, -28 -175 C -12 -158, 15 -150, 2 -120 C -6 -105, -22 -105, -35 -100 Z"
+            fill="#8FA898" stroke="#2A1B10" stroke-width="8" stroke-linejoin="round"/>
+      <path d="M 25 -95 C 10 -125, 40 -140, 32 -170 C 48 -153, 75 -145, 62 -115 C 54 -100, 38 -100, 25 -95 Z"
+            fill="#8FA898" stroke="#2A1B10" stroke-width="8" stroke-linejoin="round"/>
+    </g>
+
+    <!-- doodle cake slice, cartoon outline style -->
+    <g transform="translate(660,540) rotate(8)">
+      <path d="M -100 60 L 0 -90 L 100 60 Z"
+            fill="#F3C6D0" stroke="#2A1B10" stroke-width="12" stroke-linejoin="round"/>
+      <path d="M -100 60 L 100 60 L 100 90 L -100 90 Z"
+            fill="#B5432D" stroke="#2A1B10" stroke-width="12" stroke-linejoin="round"/>
+      <path d="M -60 15 L 60 15" stroke="#2A1B10" stroke-width="8" stroke-linecap="round" opacity="0.55"/>
+      <circle cx="0" cy="-95" r="16" fill="#B5432D" stroke="#2A1B10" stroke-width="8"/>
+    </g>
+
+    <!-- small hand-drawn heart accent -->
+    <g transform="translate(560,300) rotate(-6)">
+      <path d="M 0 18 C -30 -10, -55 5, -30 30 C -15 45, 0 55, 0 55 C 0 55, 15 45, 30 30 C 55 5, 30 -10, 0 18 Z"
+            fill="#B5432D" stroke="#2A1B10" stroke-width="8" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>

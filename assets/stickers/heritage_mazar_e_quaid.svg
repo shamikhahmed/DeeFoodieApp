@@ -1,0 +1,28 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="domeGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#A8C4B8"/>
+      <stop offset="100%" stop-color="#7C9A8B"/>
+    </linearGradient>
+    <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#E8DCC0"/>
+    </linearGradient>
+    <filter id="ds7" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <circle cx="100" cy="100" r="94" fill="#FFFFFF" filter="url(#ds7)"/>
+  <circle cx="100" cy="100" r="88" fill="#F3E7D3"/>
+
+  <g transform="translate(100,122)">
+    <path d="M -70 60 L 70 60 L 70 20 L -70 20 Z" fill="url(#wallGrad)" stroke="#2A1B10" stroke-width="6"/>
+    <path d="M -50 20 L -50 -20 L 50 -20 L 50 20 Z" fill="#F3E7D3" stroke="#2A1B10" stroke-width="6"/>
+    <path d="M -55 -20 Q 0 -95, 55 -20 Z" fill="url(#domeGrad)" stroke="#2A1B10" stroke-width="6" stroke-linejoin="round"/>
+    <ellipse cx="-15" cy="-45" rx="10" ry="18" fill="#FFFFFF" opacity="0.3"/>
+    <circle cx="0" cy="-92" r="7" fill="#D9A24A" stroke="#2A1B10" stroke-width="4"/>
+    <rect x="-8" y="0" width="16" height="20" fill="#2A1B10" opacity="0.55"/>
+    <rect x="-40" y="0" width="14" height="20" fill="#2A1B10" opacity="0.28"/>
+    <rect x="26" y="0" width="14" height="20" fill="#2A1B10" opacity="0.28"/>
+  </g>
+</svg>

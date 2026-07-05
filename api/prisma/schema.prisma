@@ -1,0 +1,334 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis]
+}
+
+// --- Users -----------------------------------------------------------------
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  avatarUrl String?
+  joinedAt  DateTime @default(now())
+
+  visits        Visit[]
+  collections   Collection[]
+  wishlist      WishlistEntry[]
+  trailProgress UserTrailProgress[]
+}
+
+// --- Taxonomy (admin-editable, not hardcoded enums) -------------------------
+
+model VenueType {
+  id   String @id @default(cuid())
+  name String @unique
+
+  eateries EateryVenueType[]
+}
+
+model Cuisine {
+  id   String @id @default(cuid())
+  name String @unique
+
+  eateries EateryCuisine[]
+}
+
+// --- Eatery ------------------------------------------------------------------
+
+enum EateryStatus {
+  active
+  closed
+}
+
+model Eatery {
+  id   String @id @default(cuid())
+  name String
+
+  venueTypes EateryVenueType[]
+  cuisines   EateryCuisine[]
+
+  areaId String
+  area   Area   @relation(fields: [areaId], references: [id])
+
+  address String?
+  // geo point stored via raw SQL migration (Unsupported type below)
+  geo     Unsupported("geography(Point, 4326)")?
+
+  description   String?
+  coverPhotoUrl String?
+
+  openingHours         String?
+  contact              String?
+  parking              Boolean?
+  indoorSeating        Boolean?
+  outdoorSeating       Boolean?
+  airConditioned       Boolean?
+  familyFriendly       Boolean?
+  wheelchairAccessible Boolean?
+
+  status              EateryStatus @default(active)
+  closedAt            DateTime?
+  closedRememberedFor String?
+
+  badges         EateryBadge[]
+  timelineEvents EateryTimelineEvent[]
+  menuVersions   MenuVersion[]
+  visits         Visit[]
+  photos         Photo[]
+  wishlistedBy   WishlistEntry[]
+
+  tags EateryTag[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([areaId])
+}
+
+model EateryVenueType {
+  eateryId    String
+  venueTypeId String
+  eatery      Eatery    @relation(fields: [eateryId], references: [id], onDelete: Cascade)
+  venueType   VenueType @relation(fields: [venueTypeId], references: [id], onDelete: Cascade)
+
+  @@id([eateryId, venueTypeId])
+}
+
+model EateryCuisine {
+  eateryId  String
+  cuisineId String
+  eatery    Eatery  @relation(fields: [eateryId], references: [id], onDelete: Cascade)
+  cuisine   Cuisine @relation(fields: [cuisineId], references: [id], onDelete: Cascade)
+
+  @@id([eateryId, cuisineId])
+}
+
+model Tag {
+  id   String @id @default(cuid())
+  name String @unique
+
+  eateries EateryTag[]
+}
+
+model EateryTag {
+  eateryId String
+  tagId    String
+  eatery   Eatery @relation(fields: [eateryId], references: [id], onDelete: Cascade)
+  tag      Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([eateryId, tagId])
+}
+
+model Badge {
+  id    String @id @default(cuid())
+  label String @unique
+
+  eateries EateryBadge[]
+}
+
+model EateryBadge {
+  eateryId String
+  badgeId  String
+  eatery   Eatery @relation(fields: [eateryId], references: [id], onDelete: Cascade)
+  badge    Badge  @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@id([eateryId, badgeId])
+}
+
+model EateryTimelineEvent {
+  id        String @id @default(cuid())
+  eateryId  String
+  eatery    Eatery @relation(fields: [eateryId], references: [id], onDelete: Cascade)
+  year      Int
+  eventText String
+
+  @@index([eateryId])
+}
+
+// --- Menu / Dish -------------------------------------------------------------
+
+model Dish {
+  id       String  @id @default(cuid())
+  name     String  @unique
+  category String?
+
+  menuItems  MenuItem[]
+  visitItems VisitItem[]
+}
+
+model MenuVersion {
+  id            String @id @default(cuid())
+  eateryId      String
+  eatery        Eatery @relation(fields: [eateryId], references: [id], onDelete: Cascade)
+  effectiveYear Int
+
+  items MenuItem[]
+
+  @@index([eateryId])
+}
+
+model MenuItem {
+  id            String      @id @default(cuid())
+  menuVersionId String
+  menuVersion   MenuVersion @relation(fields: [menuVersionId], references: [id], onDelete: Cascade)
+  dishId        String?
+  dish          Dish?       @relation(fields: [dishId], references: [id])
+  name          String
+  price         Decimal     @db.Decimal(10, 2)
+
+  @@index([menuVersionId])
+  @@index([dishId])
+}
+
+// --- Visit (core personal-archive unit) --------------------------------------
+
+model Visit {
+  id       String @id @default(cuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eateryId String
+  eatery   Eatery @relation(fields: [eateryId], references: [id], onDelete: Cascade)
+
+  date DateTime
+  time String?
+
+  // overall rating, half-star increments -> stored *2 as int, or Decimal(2,1)
+  rating Decimal @db.Decimal(2, 1)
+
+  ratingFood           Decimal? @db.Decimal(2, 1)
+  ratingService        Decimal? @db.Decimal(2, 1)
+  ratingAtmosphere     Decimal? @db.Decimal(2, 1)
+  ratingCleanliness    Decimal? @db.Decimal(2, 1)
+  ratingValue          Decimal? @db.Decimal(2, 1)
+  ratingWaitTime       Decimal? @db.Decimal(2, 1)
+  ratingComfort        Decimal? @db.Decimal(2, 1)
+  ratingParking        Decimal? @db.Decimal(2, 1)
+  ratingWifi           Decimal? @db.Decimal(2, 1)
+  ratingStudyFriendly  Decimal? @db.Decimal(2, 1)
+  ratingDateFriendly   Decimal? @db.Decimal(2, 1)
+  ratingFamilyFriendly Decimal? @db.Decimal(2, 1)
+
+  reviewText String?
+
+  totalBill       Decimal? @db.Decimal(10, 2)
+  favoriteItem    String?
+  wouldVisitAgain Boolean?
+  companions      String?
+  moodTags        String[]
+  memoryNote      String?
+  bookMemory      Json?
+
+  items  VisitItem[]
+  photos Photo[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([eateryId])
+}
+
+model VisitItem {
+  id      String  @id @default(cuid())
+  visitId String
+  visit   Visit   @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  dishId  String?
+  dish    Dish?   @relation(fields: [dishId], references: [id])
+  name    String
+  type    String // food | drink | dessert
+
+  @@index([visitId])
+  @@index([dishId])
+}
+
+// --- Photos --------------------------------------------------------------------
+
+enum GalleryCategory {
+  food
+  drinks
+  desserts
+  interior
+  exterior
+  menu
+  ambience
+}
+
+model Photo {
+  id              String          @id @default(cuid())
+  url             String
+  eateryId        String?
+  eatery          Eatery?         @relation(fields: [eateryId], references: [id], onDelete: Cascade)
+  visitId         String?
+  visit           Visit?          @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  galleryCategory GalleryCategory
+  createdAt       DateTime        @default(now())
+
+  @@index([eateryId])
+  @@index([visitId])
+}
+
+// --- Collections / Wishlist / Trails --------------------------------------------
+
+model Collection {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  eateryIds String[]
+  pinned    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model WishlistEntry {
+  id            String  @id @default(cuid())
+  userId        String
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eateryId      String
+  eatery        Eatery  @relation(fields: [eateryId], references: [id], onDelete: Cascade)
+  reason        String?
+  recommendedBy String?
+  priority      Int?    @default(0)
+
+  @@index([userId])
+  @@index([eateryId])
+}
+
+model Trail {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  eateryIds   String[]
+
+  userProgress UserTrailProgress[]
+}
+
+model UserTrailProgress {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trailId          String
+  trail            Trail    @relation(fields: [trailId], references: [id], onDelete: Cascade)
+  visitedEateryIds String[]
+
+  @@unique([userId, trailId])
+}
+
+// --- Area (Karachi neighborhood) ------------------------------------------------
+
+model Area {
+  id            String                                   @id @default(cuid())
+  name          String                                   @unique
+  description   String?
+  popularDishes String[]
+  // real polygon boundary, imported from OSM/Overpass
+  boundary      Unsupported("geography(Polygon, 4326)")?
+
+  eateries Eatery[]
+}
