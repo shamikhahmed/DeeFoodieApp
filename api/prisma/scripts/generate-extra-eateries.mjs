@@ -8,7 +8,13 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const TARGET_TOTAL = 7500;
+const TARGET_ARCHIVE = 10000;
+const BASE_COUNT = 117;
+const osmPath = path.join(__dirname, '../data/osm-karachi.json');
+const osmCount = fs.existsSync(osmPath)
+  ? (JSON.parse(fs.readFileSync(osmPath, 'utf8')).count ?? 0)
+  : 5200;
+const TARGET_TOTAL = Math.max(1000, TARGET_ARCHIVE - BASE_COUNT - osmCount + 1500);
 
 const AREAS = [
   'DHA', 'Clifton', 'PECHS', 'Bahadurabad', 'Gulshan-e-Iqbal', 'Gulistan-e-Jauhar',
@@ -30,7 +36,7 @@ const CUISINE_SETS = [
   ['BBQ'], ['Chinese', 'Desi'], ['Continental', 'Breakfast'], ['Seafood', 'BBQ'],
 ];
 
-import { pickCoverPhoto } from './food-photo-pool.mjs';
+import { formatAddress, phoneFor, hoursFor } from './karachi-areas.mjs';
 
 const PREFIXES = [
   'Al', 'New', 'Old', 'Royal', 'Karachi', 'Student', 'Super', 'Golden', 'Lahori', 'Hyderabadi',
@@ -261,7 +267,10 @@ for (const r of NAMED_HOTEL_RESTAURANTS) {
     lng,
     lat,
     description: desc(r.name, r.area, r.hotel),
-    coverPhotoUrl: pickCoverPhoto({ name: r.name, area: r.area, venueTypes: r.venue, cuisines: r.cuisines }),
+    address: formatAddress(r.area, r.name, idx),
+    phone: phoneFor(r.area, idx),
+    openingHours: hoursFor(r.venue),
+    famousFor: `${r.cuisines[0]} at ${r.hotel}`,
   });
 }
 
@@ -279,7 +288,10 @@ for (const hotel of HOTELS) {
       lng,
       lat,
       description: desc(name, hotel.area, hotel.name),
-      coverPhotoUrl: pickCoverPhoto({ name, area: hotel.area, venueTypes: o.venue, cuisines: o.cuisines }),
+      address: formatAddress(hotel.area, name, idx),
+      phone: phoneFor(hotel.area, idx),
+      openingHours: hoursFor(o.venue),
+      famousFor: `${o.cuisines[0]} at ${hotel.name}`,
     });
     if (existingNames.size >= TARGET_TOTAL) break;
   }
@@ -300,7 +312,10 @@ for (let c = 0; c < CHAINS.length && existingNames.size < TARGET_TOTAL; c++) {
       lng,
       lat,
       description: desc(name, area, null),
-      coverPhotoUrl: pickCoverPhoto({ name, area, venueTypes: ['Fast Food', 'Restaurant'], cuisines: ['Fast Food', 'Desi'] }),
+      address: formatAddress(area, name, idx),
+      phone: phoneFor(area, idx),
+      openingHours: hoursFor(['Fast Food', 'Restaurant']),
+      famousFor: `Fast food branch in ${area}`,
     });
   }
 }
@@ -317,7 +332,10 @@ for (let c = 0; c < CAFE_NAMES.length && existingNames.size < TARGET_TOTAL; c++)
       lng,
       lat,
       description: desc(name, area, null),
-      coverPhotoUrl: pickCoverPhoto({ name, area, venueTypes: ['Cafe', 'Tea Spot'], cuisines: ['Breakfast', 'Continental'] }),
+      address: formatAddress(area, name, idx),
+      phone: phoneFor(area, idx),
+      openingHours: hoursFor(['Cafe', 'Tea Spot']),
+      famousFor: `Coffee and brunch in ${area}`,
     });
   }
 }
@@ -343,7 +361,10 @@ while (existingNames.size < TARGET_TOTAL && n < 80000) {
     lng,
     lat,
     description: desc(name, area, null),
-    coverPhotoUrl: pickCoverPhoto({ name, area, venueTypes: vt, cuisines }),
+    address: formatAddress(area, name, n),
+    phone: phoneFor(area, n),
+    openingHours: hoursFor(vt),
+    famousFor: `${cuisines[0]} spot in ${area}`,
   });
 }
 

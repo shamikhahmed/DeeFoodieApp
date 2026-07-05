@@ -13,7 +13,7 @@ void main() {
     final eateryIds = eateries.map((e) => (e as Map)['id'] as String).toSet();
     final names = eateries.map((e) => (e as Map)['name'] as String).toSet();
 
-    expect(eateries.length, greaterThanOrEqualTo(7500));
+    expect(eateries.length, greaterThanOrEqualTo(10000));
     expect(visits.length, greaterThanOrEqualTo(25));
 
     for (final v in visits) {
@@ -28,6 +28,12 @@ void main() {
 
     final closed = eateries.where((e) => (e as Map)['status'] == 'closed').length;
     expect(closed, greaterThanOrEqualTo(2));
+
+    final withAddr = eateries.where((e) => (e as Map)['address'] != null).length;
+    expect(withAddr, greaterThan(9000));
+
+    final kolachiAddr = kolachi['address'] as String?;
+    expect(kolachiAddr, contains('DHA'));
   });
 
   test('trail eatery names resolve in archive', () async {

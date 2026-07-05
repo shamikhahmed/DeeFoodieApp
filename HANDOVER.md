@@ -38,7 +38,7 @@ For mobile:
 cd mobile && flutter pub get && flutter gen-l10n && flutter run -d chrome
 ```
 
-Offline demo: `assets/demo/archive.json` (**7500 eateries**, trails, visits). Rebuild:
+Offline demo: `assets/demo/archive.json` (**10,000 eateries**, OSM + enriched details, trails, visits). Rebuild:
 
 ```bash
 cd api/prisma && node scripts/generate-extra-eateries.mjs && node scripts/build-mobile-archive.mjs

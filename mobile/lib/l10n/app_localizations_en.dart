@@ -325,6 +325,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get eateryMustTry => 'Must try';
 
   @override
+  String get eateryDetails => 'Details';
+
+  @override
+  String get eateryPhone => 'Phone';
+
+  @override
+  String get eateryHours => 'Hours';
+
+  @override
+  String get eateryFamousFor => 'Famous for';
+
+  @override
+  String get eateryBranches => 'Branches';
+
+  @override
+  String get eateryExternalReviews => 'Reviews';
+
+  @override
+  String get eateryPromotions => 'Offers & promotions';
+
+  @override
+  String get eateryViewReview => 'View review';
+
+  @override
+  String get eateryWebsite => 'Website';
+
+  @override
+  String get eateryInstagram => 'Instagram';
+
+  @override
+  String eateryGoogleRating(double rating, int count) {
+    return '$rating ★ on Google ($count reviews)';
+  }
+
+  @override
   String get visitReview => 'Your review';
 
   @override

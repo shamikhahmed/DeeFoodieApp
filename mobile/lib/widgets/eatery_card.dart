@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/eatery.dart';
 import '../theme/app_theme.dart';
+import '../utils/eatery_cover.dart';
 import '../utils/eatery_display.dart';
 import 'glass_surface.dart';
 import 'shimmer_box.dart';
@@ -61,7 +62,7 @@ class EateryCard extends StatelessWidget {
         padding: const EdgeInsets.all(AppSpacing.sm + 4),
         child: Row(
           children: [
-            _EateryThumbnail(url: eatery.coverPhotoUrl, size: 56),
+            _EateryThumbnail(eatery: eatery, size: 56),
             const SizedBox(width: AppSpacing.sm + 4),
             Expanded(child: _EateryMeta(eatery: eatery, compact: false)),
           ],
@@ -83,7 +84,7 @@ class EateryCard extends StatelessWidget {
               aspectRatio: 4 / 3,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: _EateryThumbnail(url: eatery.coverPhotoUrl, fill: true),
+                child: _EateryThumbnail(eatery: eatery, fill: true),
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
@@ -99,25 +100,25 @@ class EateryCard extends StatelessWidget {
 
 class _EateryThumbnail extends StatelessWidget {
   const _EateryThumbnail({
-    this.url,
+    required this.eatery,
     this.size = 56,
     this.fill = false,
   });
 
-  final String? url;
+  final Eatery eatery;
   final double size;
   final bool fill;
 
   @override
   Widget build(BuildContext context) {
-    final image = url != null && url!.isNotEmpty
+    final image = eateryHasNetworkCover(eatery)
         ? CachedNetworkImage(
-            imageUrl: url!,
+            imageUrl: eatery.coverPhotoUrl!,
             fit: BoxFit.cover,
-            placeholder: (_, __) => const _PlaceholderThumb(),
-            errorWidget: (_, __, ___) => const _PlaceholderThumb(),
+            placeholder: (_, __) => _PlaceholderThumb(asset: eateryCoverAsset(eatery)),
+            errorWidget: (_, __, ___) => _PlaceholderThumb(asset: eateryCoverAsset(eatery)),
           )
-        : const _PlaceholderThumb();
+        : _PlaceholderThumb(asset: eateryCoverAsset(eatery));
 
     if (fill) return SizedBox.expand(child: image);
 
@@ -129,10 +130,15 @@ class _EateryThumbnail extends StatelessWidget {
 }
 
 class _PlaceholderThumb extends StatelessWidget {
-  const _PlaceholderThumb();
+  const _PlaceholderThumb({this.asset});
+
+  final String? asset;
 
   @override
   Widget build(BuildContext context) {
+    if (asset != null) {
+      return Image.asset(asset!, fit: BoxFit.cover);
+    }
     return DecoratedBox(
       decoration: BoxDecoration(
         gradient: LinearGradient(

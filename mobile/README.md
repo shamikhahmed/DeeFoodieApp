@@ -37,7 +37,12 @@ npm run gallery:serve                      # http://localhost:8766/screen-galler
 
 Or open `mobile/screen-gallery.html` directly (`file://`) after `gallery:capture`.
 
-## Demo archive (7500 eateries)
+## Demo archive (10,000 eateries)
+
+- **117** curated iconic Karachi venues (enriched: phone, hours, branches, Google/social reviews)
+- **~4,600** OpenStreetMap POIs (real addresses where tagged)
+- **Generated** fill to 10,000 with Karachi street addresses + phones
+- Cover photos: official/venue URLs for iconic spots; bundled Karachi area JPG fallback (no Unsplash)
 
 Offline bundle: `assets/demo/archive.json`
 

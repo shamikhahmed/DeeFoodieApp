@@ -239,7 +239,7 @@ Navigation: bottom tab bar — Home, Explore, Map, Journal, Profile. Everything 
 Already built — do not re-scaffold, extend instead:
 - `/api`: NestJS app, PrismaService, stub auth middleware, `GET /health`, Dockerfile, **storage service** (`STORAGE_DRIVER=local|s3`).
 - Prisma schema at `api/prisma/schema.prisma` matches Section 3, migrated to local Docker Postgres+PostGIS. `geo`/`boundary` set via raw SQL.
-- Seed + **7500-eatery demo archive** (`pnpm run seed`; regen: `generate-extra-eateries.mjs` + `build-mobile-archive.mjs` → `mobile/assets/demo/archive.json`).
+- Seed + **10,000-eatery demo archive** (`fetch-osm-karachi.mjs` + `generate-extra-eateries.mjs` + `build-mobile-archive.mjs` → `mobile/assets/demo/archive.json`).
 - `docker-compose.yml`: Postgres+PostGIS **5435**, Redis **6380**.
 - App icon/logo at `assets/logo/logo.svg`; stickers at `assets/stickers/`.
 - `.github/workflows/ios-build.yml`: Flutter test + iOS build on `mobile/**` pushes.

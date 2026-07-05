@@ -7,7 +7,19 @@ export type SeedEatery = {
   lng: number;
   lat: number;
   description: string;
-  coverPhotoUrl: string;
+  address?: string;
+  phone?: string;
+  openingHours?: string;
+  famousFor?: string;
+  coverPhotoUrl?: string | null;
+  website?: string;
+  instagramUrl?: string;
+  googleRating?: number;
+  googleReviewCount?: number;
+  branches?: { name: string; area: string; address: string; phone?: string }[];
+  externalReviews?: { source: string; rating?: number; reviewCount?: number; snippet?: string; url?: string }[];
+  promotions?: { title: string; description: string; source?: string; validUntil?: string }[];
+  dataSource?: string;
 };
 
 export const KARACHI_EATERIES: SeedEatery[] = [

@@ -51,6 +51,27 @@ class ArchiveLoader {
         visitCount: m['visitCount'] as int? ?? 0,
         createdAt: m['createdAt'] == null ? null : DateTime.tryParse(m['createdAt'] as String),
         status: m['status'] as String? ?? 'active',
+        phone: m['phone'] as String?,
+        openingHours: m['openingHours'] as String?,
+        famousFor: m['famousFor'] as String?,
+        website: m['website'] as String?,
+        instagramUrl: m['instagramUrl'] as String?,
+        googleRating: m['googleRating'] == null ? null : (m['googleRating'] as num).toDouble(),
+        googleReviewCount: m['googleReviewCount'] as int?,
+        areaPhotoAsset: m['areaPhotoAsset'] as String?,
+        branches: (m['branches'] as List<dynamic>?)
+                ?.map((b) => EateryBranch.fromJson(b as Map<String, dynamic>))
+                .toList() ??
+            const [],
+        externalReviews: (m['externalReviews'] as List<dynamic>?)
+                ?.map((r) => ExternalReview.fromJson(r as Map<String, dynamic>))
+                .toList() ??
+            const [],
+        promotions: (m['promotions'] as List<dynamic>?)
+                ?.map((p) => EateryPromotion.fromJson(p as Map<String, dynamic>))
+                .toList() ??
+            const [],
+        dataSource: m['dataSource'] as String?,
       );
     }).toList();
 

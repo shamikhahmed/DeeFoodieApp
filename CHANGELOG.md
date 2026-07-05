@@ -172,7 +172,15 @@ All notable changes to this project. Dates in YYYY-MM-DD.
 ### Removed
 - Dead `demo_data.dart`
 
-## 2026-07-05 — Initial GitHub push prep (7500 eateries)
+## 2026-07-05 — 10,000-eatery archive with OSM + venue details
+
+- Demo archive expanded to **10,000 eateries** (117 curated + ~4,600 OSM + generated fill)
+- **OpenStreetMap** import: real Karachi addresses, phones, hours where tagged (`fetch-osm-karachi.mjs`)
+- **Iconic venue enrichment**: branches, Google/Facebook review snippets, promotions, famous-for, contact (`iconic-venues-enriched.mjs`)
+- Removed Unsplash cover photos — real venue URLs for iconic spots; bundled Karachi area JPG fallback for rest
+- Eatery profile: Details, Branches, External reviews, Promotions sections
+- iOS/Android app icon regenerated from logo SVG via `flutter_launcher_icons`
+
 
 ### Changed
 - Demo archive **7500 eateries** (117 base + 7383 generated)

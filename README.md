@@ -57,13 +57,16 @@ cd mobile/build/web && python3 ../scripts/serve-web.py 8765
 # open http://localhost:8765 — hard refresh after rebuilds (Cmd+Shift+R)
 ```
 
-Offline demo: **`mobile/assets/demo/archive.json`** (~7500 eateries, 27 linked visits, trails). Regenerated via:
+Offline demo: **`mobile/assets/demo/archive.json`** (**10,000 eateries**, OSM addresses, 27 linked visits, trails). Regenerated via:
 
 ```bash
-cd api/prisma && node scripts/build-mobile-archive.mjs
+cd api/prisma/scripts
+node fetch-osm-karachi.mjs      # OpenStreetMap Karachi POIs
+node generate-extra-eateries.mjs
+node build-mobile-archive.mjs
 ```
 
-Visits, badges, `visitCount`, cuisine-mapped cover photos, and closed status are rebuilt together — do not hand-edit `archive.json`.
+Visits, badges, `visitCount`, venue details, and closed status are rebuilt together — do not hand-edit `archive.json`.
 
 **Screen gallery (dev-only):** `mobile/screen-gallery.html` — VaultCap-style PNG index. `npm run gallery:capture` then `npm run gallery:serve` on :8766.
 

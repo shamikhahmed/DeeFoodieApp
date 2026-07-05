@@ -17,8 +17,10 @@ import '../widgets/glass_surface.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/nearby_eateries_section.dart';
 import '../widgets/pioneer_badge.dart';
+import '../widgets/eatery_details_section.dart';
 import '../widgets/discount_deals_section.dart';
 import '../widgets/section_header.dart';
+import '../utils/eatery_cover.dart';
 
 class EateryProfileScreen extends ConsumerWidget {
   const EateryProfileScreen({super.key, required this.eateryId});
@@ -96,14 +98,14 @@ class EateryProfileScreen extends ConsumerWidget {
                   background: Stack(
                     fit: StackFit.expand,
                     children: [
-                      if (eatery.coverPhotoUrl != null)
+                      if (eateryHasNetworkCover(eatery))
                         CachedNetworkImage(
                           imageUrl: eatery.coverPhotoUrl!,
                           fit: BoxFit.cover,
-                          errorWidget: (_, _, _) => Image.asset('assets/backgrounds/karachi_food_street.jpg', fit: BoxFit.cover),
+                          errorWidget: (_, _, _) => Image.asset(eateryCoverAsset(eatery), fit: BoxFit.cover),
                         )
                       else
-                        Image.asset('assets/backgrounds/karachi_food_street.jpg', fit: BoxFit.cover),
+                        Image.asset(eateryCoverAsset(eatery), fit: BoxFit.cover),
                       DecoratedBox(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
@@ -141,6 +143,7 @@ class EateryProfileScreen extends ConsumerWidget {
                       PioneerBadge(eateryId: eateryId),
                       const SizedBox(height: AppSpacing.md),
                       DiscountDealsSection(eateryName: eatery.name),
+                      EateryDetailsSection(eatery: eatery),
                       if (eatery.areaName != null)
                         Text(eatery.areaName!, style: Theme.of(context).textTheme.bodyMedium),
                       if (hasDisplayRating(eatery)) ...[

@@ -644,6 +644,72 @@ abstract class AppLocalizations {
   /// **'Must try'**
   String get eateryMustTry;
 
+  /// No description provided for @eateryDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get eateryDetails;
+
+  /// No description provided for @eateryPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get eateryPhone;
+
+  /// No description provided for @eateryHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours'**
+  String get eateryHours;
+
+  /// No description provided for @eateryFamousFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Famous for'**
+  String get eateryFamousFor;
+
+  /// No description provided for @eateryBranches.
+  ///
+  /// In en, this message translates to:
+  /// **'Branches'**
+  String get eateryBranches;
+
+  /// No description provided for @eateryExternalReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get eateryExternalReviews;
+
+  /// No description provided for @eateryPromotions.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers & promotions'**
+  String get eateryPromotions;
+
+  /// No description provided for @eateryViewReview.
+  ///
+  /// In en, this message translates to:
+  /// **'View review'**
+  String get eateryViewReview;
+
+  /// No description provided for @eateryWebsite.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get eateryWebsite;
+
+  /// No description provided for @eateryInstagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Instagram'**
+  String get eateryInstagram;
+
+  /// No description provided for @eateryGoogleRating.
+  ///
+  /// In en, this message translates to:
+  /// **'{rating} ★ on Google ({count} reviews)'**
+  String eateryGoogleRating(double rating, int count);
+
   /// No description provided for @visitReview.
   ///
   /// In en, this message translates to:

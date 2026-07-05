@@ -12,7 +12,7 @@ Phase order is priority order — don't skip ahead. Full feature detail in `CLAU
 - [x] Docker Compose (Postgres+PostGIS, Redis)
 - [x] Prisma schema + initial migration
 - [x] NestJS API skeleton (stub auth, health check, Dockerfile, S3 storage interface)
-- [x] Seed script + 7500-eatery demo archive
+- [x] Seed script + **10,000-eatery** demo archive (OSM + enriched)
 - [x] GitHub Actions iOS CI build
 - [x] Flutter app — journal notebook UI, book view, screen gallery
 - [ ] ngrok/tunnel so the API is reachable outside home wifi
