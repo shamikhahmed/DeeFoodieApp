@@ -9,16 +9,14 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
+  group: web-deploy
   cancel-in-progress: true
 
 jobs:
-  build-web:
+  build-and-deploy:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -35,16 +33,13 @@ jobs:
       - run: flutter test
       - run: flutter build web --release --base-href "/DeeFoodieApp/"
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: mobile/build/web
-
-  deploy:
-    needs: build-web
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
-    steps:
-      - id: deploy
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: mobile/build/web
+          publish_branch: gh-pages
+          force_orphan: true
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: 'Deploy Flutter web from ${{ github.sha }}'
