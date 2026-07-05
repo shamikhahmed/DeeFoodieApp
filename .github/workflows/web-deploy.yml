@@ -31,7 +31,6 @@ jobs:
 
       - run: flutter pub get
       - run: flutter test
-      - run: bash scripts/generate-web-icons.sh
       - run: flutter build web --release --base-href "/DeeFoodieApp/"
 
       - name: GitHub Pages SPA fallback
