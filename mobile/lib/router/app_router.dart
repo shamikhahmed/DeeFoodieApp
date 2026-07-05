@@ -58,11 +58,15 @@ GoRouter createRouter() {
     initialLocation: _bootLocation(),
     redirect: (context, state) {
       final path = normalizeAppPath(state.uri.path);
+
       if (!onboardingDoneListenable.value && path != '/onboarding') {
         return '/onboarding';
       }
       if (onboardingDoneListenable.value && path == '/onboarding') {
         return '/';
+      }
+      if (state.uri.path != path) {
+        return path;
       }
       return null;
     },
