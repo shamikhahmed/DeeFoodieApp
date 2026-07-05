@@ -3,7 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
-import { pickCoverPhoto, pickAreaPhotoAsset, pickVisitPhoto } from './venue-photo-sources.mjs';
+import { pickCoverPhoto, pickAreaPhotoAsset, pickVisitPhoto, photoStats } from './venue-photo-sources.mjs';
 import { enrichEatery } from './iconic-venues-enriched.mjs';
 import { formatAddress, phoneFor, hoursFor, areaPhotoAsset } from './karachi-areas.mjs';
 
@@ -193,10 +193,11 @@ const closed = eateries.filter((e) => e.status === 'closed').length;
 const withAddr = eateries.filter((e) => e.address).length;
 const withPhone = eateries.filter((e) => e.phone).length;
 const withReviews = eateries.filter((e) => e.externalReviews?.length).length;
-const withPhoto = eateries.filter((e) => e.coverPhotoUrl).length;
+const withPhoto = photoStats(eateries).remote;
+const wikimediaPhotos = photoStats(eateries).wikimedia;
 const osmUsed = eateries.filter((e) => e.dataSource === 'osm').length;
 const trailHits = archiveTrails.reduce((n, t) => n + t.eateryNames.filter((name) => nameToEatery.has(name)).length, 0);
 const trailTotal = archiveTrails.reduce((n, t) => n + t.eateryNames.length, 0);
 console.log(`Wrote ${eateries.length} eateries, ${visits.length} visits, ${closed} closed → ${out}`);
-console.log(`Sources: curated+osm(${osmUsed} osm) | addr ${withAddr} | phone ${withPhone} | reviews ${withReviews} | remote photo ${withPhoto}`);
+console.log(`Sources: curated+osm(${osmUsed} osm) | addr ${withAddr} | phone ${withPhone} | reviews ${withReviews} | remote photo ${withPhoto} (${wikimediaPhotos} wikimedia)`);
 console.log(`Trail name match: ${trailHits}/${trailTotal}`);

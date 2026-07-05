@@ -34,6 +34,9 @@ void main() {
 
     final kolachiAddr = kolachi['address'] as String?;
     expect(kolachiAddr, contains('DHA'));
+
+    final wikimedia = eateries.where((e) => ((e as Map)['coverPhotoUrl'] as String? ?? '').contains('wikimedia.org')).length;
+    expect(wikimedia, greaterThan(9000));
   });
 
   test('trail eatery names resolve in archive', () async {

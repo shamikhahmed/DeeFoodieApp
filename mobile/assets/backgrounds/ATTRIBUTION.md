@@ -1,23 +1,31 @@
 # Background Photo Attribution
 
-Bundled background images for DeeFoodieApp UI chrome. Karachi photos from Wikimedia Commons (CC BY-SA).
+Bundled + remote photos for DeeFoodieApp. **All free — Wikimedia Commons (CC), no paid APIs.**
 
-| File | Subject | Source | License |
-|------|---------|--------|---------|
-| `karachi_clifton_sunset.jpg` | Sunset near Manghopir Hills, Karachi | [Sunset at Karachi, Pakistan 01](https://commons.wikimedia.org/wiki/File:Sunset_at_Karachi,Pakistan_01.jpg) | CC BY-SA 4.0 |
-| `karachi_coast_aerial.jpg` | Clifton area fallback | Same sunset asset until dedicated Clifton Beach file restored | CC BY-SA |
-| `karachi_seafront_evening.jpg` | Do Darya / seafront fallback | Same sunset asset until dedicated Do Darya file restored | CC BY-SA |
-| `karachi_food_street.jpg` | Burns Road / food street fallback | Same sunset asset until dedicated Burns Road file restored | CC BY-SA |
-| `paper_texture.jpg` | Generated warm paper grain (app asset) | App-owned | — |
+## Bundled (offline fallback)
 
-`karachi_skyline.svg` is deprecated — illustrated placeholder, no longer used in UI.
+| File | Subject | License |
+|------|---------|---------|
+| `karachi_clifton_sunset.jpg` | Karachi sunset | CC BY-SA (Wikimedia) |
+| `karachi_coast_aerial.jpg` | Clifton/sea area fallback | Same |
+| `karachi_seafront_evening.jpg` | Do Darya area fallback | Same |
+| `karachi_food_street.jpg` | Burns Road area fallback | Same |
 
-## Eatery cover photos (archive)
+## Archive `coverPhotoUrl` (10K eateries)
 
-| Source | When used |
-|--------|-----------|
-| Official venue URL | ~22 iconic venues (e.g. Kolachi website photo) |
-| OpenStreetMap `image` tag | Rare OSM-tagged venue photos |
-| Bundled area asset | All other venues — real Karachi geography by neighborhood (`areaPhotoAsset`) |
+| Source | Coverage | Cost |
+|--------|----------|------|
+| [Wikimedia Commons](https://commons.wikimedia.org/wiki/Category:Restaurants_in_Karachi) area photos | ~9,900 venues | Free |
+| Curated official URL | ~22 iconic | Free |
+| OSM `image` tag | Rare | Free |
+| Wikipedia API (optional enrich) | 117 base names | Free |
 
-**No Unsplash / stock food photography** in the 10K archive.
+Area matching (real Karachi geography):
+- **Do Darya / Clifton / DHA** → Seaview Clifton Beach
+- **Burns Road / Saddar / Lyari** → Fresco Chowk Burns Road
+- **Boat Basin / Keamari** → Port Grand Food Street
+- **East Karachi areas** → Hill Park restaurant
+
+**No Unsplash. No Google Places API.**
+
+Regenerate: `node build-static-photo-map.mjs && node build-mobile-archive.mjs`

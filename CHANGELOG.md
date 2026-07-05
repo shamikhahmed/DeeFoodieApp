@@ -172,7 +172,13 @@ All notable changes to this project. Dates in YYYY-MM-DD.
 ### Removed
 - Dead `demo_data.dart`
 
-## 2026-07-05 — 10,000-eatery archive with OSM + venue details
+## 2026-07-05 — Free Wikimedia photos for all 10K eateries
+
+- **10,000/10,000** eateries now have `coverPhotoUrl` from free sources (no paid APIs)
+- **9,882** Wikimedia Commons Karachi photos (area-matched: Do Darya seafront, Burns Road, Port Grand, Hill Park, etc.)
+- Scripts: `free-karachi-photos.mjs`, `build-static-photo-map.mjs`, optional `fetch-free-venue-photos.mjs` (Wikipedia API)
+- Zero Unsplash, zero Google Places paid tier
+
 
 - Demo archive expanded to **10,000 eateries** (117 curated + ~4,600 OSM + generated fill)
 - **OpenStreetMap** import: real Karachi addresses, phones, hours where tagged (`fetch-osm-karachi.mjs`)

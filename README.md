@@ -61,9 +61,11 @@ Offline demo: **`mobile/assets/demo/archive.json`** (**10,000 eateries**, OSM ad
 
 ```bash
 cd api/prisma/scripts
-node fetch-osm-karachi.mjs      # OpenStreetMap Karachi POIs
+node fetch-osm-karachi.mjs           # OpenStreetMap (free)
+node build-static-photo-map.mjs      # Wikimedia area/chain photos (free)
 node generate-extra-eateries.mjs
 node build-mobile-archive.mjs
+# optional: node fetch-free-venue-photos.mjs  # Wikipedia og:image enrich (slow, free)
 ```
 
 Visits, badges, `visitCount`, venue details, and closed status are rebuilt together — do not hand-edit `archive.json`.
