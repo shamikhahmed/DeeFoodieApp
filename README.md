@@ -99,8 +99,10 @@ Stub middleware: send `X-User-Id` header; defaults to first seeded user. Clerk/A
 | `web-deploy.yml` | Flutter web → **GitHub Pages** |
 | `ios-build.yml` | iOS Simulator `.app` artifact |
 
-**Web (phone browser):** Repo **Settings → Pages → Build: GitHub Actions**.  
-Then open: `https://shamikhahmed.github.io/DeeFoodieApp/`
+**Web (phone browser):** Pages enabled on `gh-pages` branch — auto-deploys every push.  
+Open: **https://shamikhahmed.github.io/DeeFoodieApp/** (wait 1–2 min after first deploy)
+
+No manual Settings step needed — workflow pushes `gh-pages` and Pages serves it.
 
 **iOS:** Actions → latest run → **ios-app** artifact (Simulator only until signing).
 
