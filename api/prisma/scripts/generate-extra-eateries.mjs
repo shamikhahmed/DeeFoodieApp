@@ -30,20 +30,7 @@ const CUISINE_SETS = [
   ['BBQ'], ['Chinese', 'Desi'], ['Continental', 'Breakfast'], ['Seafood', 'BBQ'],
 ];
 
-const PHOTOS = [
-  'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&q=80',
-  'https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=800&q=80',
-  'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&q=80',
-  'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=800&q=80',
-  'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80',
-  'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80',
-  'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80',
-  'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&q=80',
-  'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&q=80',
-  'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800&q=80',
-  'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&q=80',
-  'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=800&q=80',
-];
+import { pickCoverPhoto } from './food-photo-pool.mjs';
 
 const PREFIXES = [
   'Al', 'New', 'Old', 'Royal', 'Karachi', 'Student', 'Super', 'Golden', 'Lahori', 'Hyderabadi',
@@ -274,7 +261,7 @@ for (const r of NAMED_HOTEL_RESTAURANTS) {
     lng,
     lat,
     description: desc(r.name, r.area, r.hotel),
-    coverPhotoUrl: PHOTOS[idx % PHOTOS.length],
+    coverPhotoUrl: pickCoverPhoto({ name: r.name, area: r.area, venueTypes: r.venue, cuisines: r.cuisines }),
   });
 }
 
@@ -292,7 +279,7 @@ for (const hotel of HOTELS) {
       lng,
       lat,
       description: desc(name, hotel.area, hotel.name),
-      coverPhotoUrl: PHOTOS[idx % PHOTOS.length],
+      coverPhotoUrl: pickCoverPhoto({ name, area: hotel.area, venueTypes: o.venue, cuisines: o.cuisines }),
     });
     if (existingNames.size >= TARGET_TOTAL) break;
   }
@@ -313,7 +300,7 @@ for (let c = 0; c < CHAINS.length && existingNames.size < TARGET_TOTAL; c++) {
       lng,
       lat,
       description: desc(name, area, null),
-      coverPhotoUrl: PHOTOS[idx % PHOTOS.length],
+      coverPhotoUrl: pickCoverPhoto({ name, area, venueTypes: ['Fast Food', 'Restaurant'], cuisines: ['Fast Food', 'Desi'] }),
     });
   }
 }
@@ -330,7 +317,7 @@ for (let c = 0; c < CAFE_NAMES.length && existingNames.size < TARGET_TOTAL; c++)
       lng,
       lat,
       description: desc(name, area, null),
-      coverPhotoUrl: PHOTOS[idx % PHOTOS.length],
+      coverPhotoUrl: pickCoverPhoto({ name, area, venueTypes: ['Cafe', 'Tea Spot'], cuisines: ['Breakfast', 'Continental'] }),
     });
   }
 }
@@ -356,7 +343,7 @@ while (existingNames.size < TARGET_TOTAL && n < 80000) {
     lng,
     lat,
     description: desc(name, area, null),
-    coverPhotoUrl: PHOTOS[n % PHOTOS.length],
+    coverPhotoUrl: pickCoverPhoto({ name, area, venueTypes: vt, cuisines }),
   });
 }
 

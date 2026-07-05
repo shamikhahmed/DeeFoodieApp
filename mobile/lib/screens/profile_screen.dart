@@ -7,6 +7,7 @@ import '../l10n/app_localizations.dart';
 import '../providers/app_prefs_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/tab_screen_scaffold.dart';
+import '../providers/active_user_provider.dart';
 import '../providers/profile_prefs_provider.dart';
 import '../utils/haptics.dart';
 import '../widgets/glass_surface.dart';
@@ -106,6 +107,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final visitsAsync = ref.watch(visitsProvider);
     final areasAsync = ref.watch(areasProvider);
     final apiOnline = ref.watch(apiOnlineProvider).asData?.value ?? false;
+    final activeUser = ref.watch(activeUserProvider);
     final locale = ref.watch(localeProvider);
     final profile = ref.watch(userProfileProvider);
 
@@ -291,6 +293,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               padding: EdgeInsets.zero,
               child: Column(
                 children: [
+                  _SettingsRow(
+                    icon: CupertinoIcons.person_2,
+                    title: 'Archive user',
+                    value: activeUser == ActiveArchiveUser.you ? 'You' : 'Friend',
+                    onTap: () {
+                      ref.read(activeUserProvider.notifier).toggle();
+                      AppHaptics.selection();
+                    },
+                  ),
+                  Divider(height: 1, indent: 52, color: AppColors.inkBrown.withValues(alpha: 0.08)),
                   _SettingsRow(
                     icon: CupertinoIcons.globe,
                     title: l10n.profileLanguage,

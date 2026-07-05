@@ -79,7 +79,7 @@ cd mobile && flutter build web --no-tree-shake-icons && cd build/web && python3 
 | Trails in archive.json | `build-mobile-archive.mjs` exports trails |
 | Dev screen gallery | `screen-gallery.html` — PNG index via `npm run gallery:capture` |
 
-Still open: real Karachi venue photos, API photo upload to S3 (layer exists; wire all flows), sync book memories to API, device haptics polish on iPhone, ngrok/hosting, Clerk auth.
+Still open: hosted API / ngrok for off-WiFi use, Clerk auth (Profile has You/Friend archive toggle for 2-user demo), Apple Developer signing for TestFlight, real per-venue Karachi photography (cuisine-mapped Unsplash pool today).
 
 ## Auth (current state)
 

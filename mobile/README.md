@@ -49,6 +49,12 @@ node scripts/build-mobile-archive.mjs
 
 **Full app restart** after regen (`ArchiveLoader` caches bundle).
 
+Archive integrity test:
+
+```bash
+cd mobile && flutter test test/archive_integrity_test.dart
+```
+
 Full DB seed:
 
 ```bash

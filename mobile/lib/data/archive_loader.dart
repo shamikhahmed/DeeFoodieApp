@@ -68,12 +68,14 @@ class ArchiveLoader {
         memoryNote: m['memoryNote'] as String?,
         favoriteItem: m['favoriteItem'] as String?,
         totalBill: m['totalBill'] == null ? null : (m['totalBill'] as num).toDouble(),
+        companions: m['companions'] as String?,
         items: (m['items'] as List<dynamic>?)
                 ?.map((i) => VisitItem.fromJson(i as Map<String, dynamic>))
                 .toList() ??
             const [],
         photoUrl: m['photoUrl'] as String?,
         areaName: m['areaName'] as String?,
+        photoUrls: m['photoUrl'] != null ? [m['photoUrl'] as String] : const [],
       );
     }).toList();
 

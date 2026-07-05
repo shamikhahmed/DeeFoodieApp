@@ -156,6 +156,22 @@ All notable changes to this project. Dates in YYYY-MM-DD.
 - Real venue photos.
 - Clerk auth.
 
+## 2026-07-05 — Archive integration + cuisine photos
+
+### Fixed
+- **Visit ↔ eatery ID mismatch** — `build-mobile-archive.mjs` now generates visits with matching `seed-*` IDs (was orphan `cuid` visits)
+- **visitCount / avgRating** computed from demo visits per eatery
+- **Trail names** — 31/31 resolve to real archive eateries
+- **Miss It?** — `Lal Qila Restaurant`, `Pie in the Sky`, `Ginsoy` marked `closed`
+- **Badges** — iconic eateries get `ICONIC_BADGES` in offline bundle
+- **Photos** — cuisine-aware `food-photo-pool.mjs` (40+ URLs) replaces 12-URL rotation; visit `photoUrl` by dish type
+- **Archive loader** — `companions`, `photoUrls` from bundle
+- **2-user stub** — Profile → Archive user toggle (You / Friend)
+- **Tests** — `mobile/test/archive_integrity_test.dart` (visit links + trails)
+
+### Removed
+- Dead `demo_data.dart`
+
 ## 2026-07-05 — Initial GitHub push prep (7500 eateries)
 
 ### Changed
