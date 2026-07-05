@@ -72,7 +72,7 @@ class _DeeFoodieAppState extends ConsumerState<DeeFoodieApp> {
         debugShowCheckedModeBanner: false,
         theme: buildAppTheme(),
         darkTheme: buildDarkAppTheme(),
-        themeMode: ThemeMode.system,
+        themeMode: ThemeMode.light,
         locale: locale,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,

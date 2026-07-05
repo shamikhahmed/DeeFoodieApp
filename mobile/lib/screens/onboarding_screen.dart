@@ -107,7 +107,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
                 child: Row(
                   children: [
-                    Text(l10n.appName, style: Theme.of(context).textTheme.titleLarge),
+                    Text(
+                      l10n.appName,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: AppColors.inkBrown,
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
                     const Spacer(),
                     if (_page == 0) TextButton(onPressed: _finish, child: Text(l10n.onboardingSkip)),
                   ],
@@ -328,16 +334,39 @@ class _WelcomePage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text(title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.displayMedium),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                  color: AppColors.inkBrown,
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
           const SizedBox(height: AppSpacing.sm),
-          Text(subtitle, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyLarge?.copyWith(height: 1.5)),
+          Text(
+            subtitle,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: AppColors.inkBrown.withValues(alpha: 0.88),
+                  height: 1.5,
+                  fontWeight: FontWeight.w500,
+                ),
+          ),
           const SizedBox(height: AppSpacing.lg),
           GlassSurface(
             child: Row(
               children: [
                 const Icon(CupertinoIcons.globe, color: AppColors.coffeeBrown),
                 const SizedBox(width: AppSpacing.sm),
-                Expanded(child: Text(languageLabel, style: Theme.of(context).textTheme.bodyLarge)),
+                Expanded(
+                  child: Text(
+                    languageLabel,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: AppColors.inkBrown,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ),
                 _LanguagePill(label: isUrdu ? 'Roman Urdu' : 'English', onTap: onLanguageTap),
               ],
             ),
@@ -364,7 +393,13 @@ class _LanguagePill extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: Text(label, style: Theme.of(context).textTheme.labelLarge),
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: AppColors.coffeeBrown,
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
         ),
       ),
     );

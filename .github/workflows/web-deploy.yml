@@ -31,7 +31,13 @@ jobs:
 
       - run: flutter pub get
       - run: flutter test
+      - run: bash scripts/generate-web-icons.sh
       - run: flutter build web --release --base-href "/DeeFoodieApp/"
+
+      - name: GitHub Pages SPA fallback
+        run: |
+          cp build/web/index.html build/web/404.html
+          touch build/web/.nojekyll
 
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
