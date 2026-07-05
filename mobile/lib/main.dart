@@ -67,7 +67,6 @@ class _DeeFoodieAppState extends ConsumerState<DeeFoodieApp> {
 
     return SyncBootstrap(
       child: MaterialApp.router(
-        key: ValueKey(locale?.languageCode ?? 'system'),
         onGenerateTitle: (context) => AppLocalizations.of(context)!.appName,
         debugShowCheckedModeBanner: false,
         theme: buildAppTheme(),

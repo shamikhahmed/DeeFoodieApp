@@ -63,25 +63,39 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     'jazzcash',
   ];
 
+  bool _finishing = false;
+
   Future<void> _finish() async {
-    HapticFeedback.mediumImpact();
-    await OnboardingPrefs.save(
-      intent: _intent,
-      favoriteArea: _area,
-      mood: _mood,
-      craving: _craving,
-    );
-    await ref.read(tasteProfileProvider.notifier).save(TasteProfile(
-          gender: _gender,
-          spiceLevel: _spice,
-          sweetsPreference: _sweets,
-          favoriteCuisines: _cuisinesSelected.toList(),
-          budgetRange: _budget,
-        ));
-    await ref.read(discountCardsProvider.notifier).setAll(_cardPrograms);
-    ref.invalidate(onboardingAnswersProvider);
-    onboardingDoneListenable.value = true;
-    if (mounted) context.go('/');
+    if (_finishing) return;
+    setState(() => _finishing = true);
+    try {
+      HapticFeedback.mediumImpact();
+      await OnboardingPrefs.save(
+        intent: _intent,
+        favoriteArea: _area,
+        mood: _mood,
+        craving: _craving,
+      );
+      await ref.read(tasteProfileProvider.notifier).save(TasteProfile(
+            gender: _gender,
+            spiceLevel: _spice,
+            sweetsPreference: _sweets,
+            favoriteCuisines: _cuisinesSelected.toList(),
+            budgetRange: _budget,
+          ));
+      await ref.read(discountCardsProvider.notifier).setAll(_cardPrograms);
+      ref.invalidate(onboardingAnswersProvider);
+      onboardingDoneListenable.value = true;
+      if (mounted) context.go('/');
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not save — check storage and try again')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _finishing = false);
+    }
   }
 
   @override
@@ -120,7 +134,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     };
   }
 
-  void _next() {
+  Future<void> _next() async {
     if (!_canContinue) return;
     if (_page < _pageCount - 1) {
       _pageController.nextPage(
@@ -128,7 +142,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         curve: Curves.easeOutCubic,
       );
     } else {
-      _finish();
+      await _finish();
     }
   }
 
@@ -284,8 +298,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               Padding(
                 padding: const EdgeInsets.all(AppSpacing.md),
                 child: PrimaryButton(
-                  label: _page == _pageCount - 1 ? l10n.onboardingStart : l10n.onboardingNext,
-                  onPressed: _canContinue ? _next : null,
+                  label: _finishing
+                      ? '...'
+                      : (_page == _pageCount - 1 ? l10n.onboardingStart : l10n.onboardingNext),
+                  onPressed: (_canContinue && !_finishing) ? _next : null,
                 ),
               ),
             ],

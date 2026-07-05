@@ -29,6 +29,8 @@ import '../screens/my_cards_screen.dart';
 import '../screens/taste_profile_screen.dart';
 import '../widgets/glass_nav_bar.dart';
 import '../l10n/app_localizations.dart';
+import '../utils/web_path.dart';
+import '../theme/app_theme.dart';
 
 /// Live onboarding gate — redirect reads this, not a frozen bool at router create.
 final onboardingDoneListenable = ValueNotifier<bool>(false);
@@ -43,8 +45,8 @@ final _shellNavigatorProfile = GlobalKey<NavigatorState>(debugLabel: 'profile');
 String _bootLocation() {
   if (!onboardingDoneListenable.value) return '/onboarding';
   if (kIsWeb) {
-    final path = Uri.base.path;
-    if (path.isNotEmpty && path != '/') return path;
+    final path = currentWebPath();
+    if (path != '/' && path != '/onboarding') return path;
   }
   return '/';
 }
@@ -55,11 +57,43 @@ GoRouter createRouter() {
     refreshListenable: onboardingDoneListenable,
     initialLocation: _bootLocation(),
     redirect: (context, state) {
-      if (!onboardingDoneListenable.value && state.uri.path != '/onboarding') {
+      final path = normalizeAppPath(state.uri.path);
+      if (!onboardingDoneListenable.value && path != '/onboarding') {
         return '/onboarding';
+      }
+      if (onboardingDoneListenable.value && path == '/onboarding') {
+        return '/';
       }
       return null;
     },
+    errorBuilder: (context, state) => Scaffold(
+      backgroundColor: AppColors.cream,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Page not found',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppColors.inkBrown),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                state.uri.path,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              FilledButton(
+                onPressed: () => context.go('/'),
+                child: const Text('Go home'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
     routes: [
       GoRoute(
         path: '/onboarding',

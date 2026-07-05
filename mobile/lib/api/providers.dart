@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/eatery.dart';
 import '../models/taxonomy.dart';
@@ -15,6 +16,7 @@ import 'api_client.dart';
 final apiClientProvider = Provider<ApiClient>((ref) => ApiClient());
 
 final apiOnlineProvider = FutureProvider<bool>((ref) async {
+  if (kIsWeb) return false;
   return ref.watch(apiClientProvider).checkHealth();
 });
 
@@ -101,6 +103,25 @@ final localVisitsProvider = NotifierProvider<LocalVisitsNotifier, List<Visit>>(L
 
 final eateriesProvider = FutureProvider<List<Eatery>>((ref) async {
   final filters = ref.watch(eateryFilterProvider);
+  if (kIsWeb) {
+    ref.read(demoModeActiveProvider.notifier).setActive(true);
+    final archive = await ArchiveLoader.load();
+    var demo = archive.eateries;
+    if (filters.q.isNotEmpty) {
+      demo = demo.where((e) => eateryMatchesQuery(e, filters.q)).toList();
+    }
+    if (filters.venueType != null) {
+      demo = demo.where((e) => e.venueTypes.contains(filters.venueType)).toList();
+    }
+    if (filters.cuisine != null) {
+      demo = demo.where((e) => e.cuisines.contains(filters.cuisine)).toList();
+    }
+    if (filters.area != null) {
+      demo = demo.where((e) => e.areaName == filters.area).toList();
+    }
+    return demo;
+  }
+
   final api = ref.watch(apiClientProvider);
   try {
     final list = await api.fetchEateries(
@@ -138,6 +159,11 @@ final allEateriesProvider = FutureProvider<List<Eatery>>((ref) async {
     archive = (await ArchiveLoader.load()).eateries;
   } catch (_) {}
 
+  if (kIsWeb) {
+    ref.read(demoModeActiveProvider.notifier).setActive(true);
+    return [...local, ...archive];
+  }
+
   final api = ref.watch(apiClientProvider);
   try {
     final list = await api.fetchEateries();
@@ -153,6 +179,15 @@ final allEateriesProvider = FutureProvider<List<Eatery>>((ref) async {
 
 final visitsProvider = FutureProvider<List<Visit>>((ref) async {
   final local = ref.watch(localVisitsProvider);
+  if (kIsWeb) {
+    ref.read(demoModeActiveProvider.notifier).setActive(true);
+    try {
+      return [...local, ...(await ArchiveLoader.load()).visits];
+    } catch (_) {
+      return local;
+    }
+  }
+
   final api = ref.watch(apiClientProvider);
   try {
     final list = await api.fetchVisits();
@@ -200,6 +235,11 @@ final visitDetailProvider = FutureProvider.family<Visit?, String>((ref, id) asyn
 });
 
 final venueTypesProvider = FutureProvider<List<NamedEntry>>((ref) async {
+  if (kIsWeb) {
+    final archive = await ArchiveLoader.load();
+    final names = archive.eateries.expand((e) => e.venueTypes).toSet().toList()..sort();
+    return names.asMap().entries.map((e) => NamedEntry(id: '${e.key}', name: e.value)).toList();
+  }
   try {
     return await ref.watch(apiClientProvider).fetchVenueTypes();
   } catch (_) {
@@ -210,6 +250,11 @@ final venueTypesProvider = FutureProvider<List<NamedEntry>>((ref) async {
 });
 
 final cuisinesProvider = FutureProvider<List<NamedEntry>>((ref) async {
+  if (kIsWeb) {
+    final archive = await ArchiveLoader.load();
+    final names = archive.eateries.expand((e) => e.cuisines).toSet().toList()..sort();
+    return names.asMap().entries.map((e) => NamedEntry(id: '${e.key}', name: e.value)).toList();
+  }
   try {
     return await ref.watch(apiClientProvider).fetchCuisines();
   } catch (_) {
@@ -220,6 +265,11 @@ final cuisinesProvider = FutureProvider<List<NamedEntry>>((ref) async {
 });
 
 final areasProvider = FutureProvider<List<NamedEntry>>((ref) async {
+  if (kIsWeb) {
+    final archive = await ArchiveLoader.load();
+    final names = archive.eateries.map((e) => e.areaName).whereType<String>().toSet().toList()..sort();
+    return names.asMap().entries.map((e) => NamedEntry(id: '${e.key}', name: e.value)).toList();
+  }
   try {
     return await ref.watch(apiClientProvider).fetchAreas();
   } catch (_) {
