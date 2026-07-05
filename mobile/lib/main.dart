@@ -85,9 +85,9 @@ class _DeeFoodieAppState extends ConsumerState<DeeFoodieApp> {
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
-    setUrlStrategy(const HashUrlStrategy());
+    setUrlStrategy(HashUrlStrategy());
   } else {
-    setUrlStrategy(const PathUrlStrategy());
+    setUrlStrategy(PathUrlStrategy());
   }
   runApp(const ProviderScope(child: DeeFoodieApp()));
 }
