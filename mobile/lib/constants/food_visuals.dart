@@ -6,6 +6,10 @@ const cravingPhotoUrls = <String, String>{
   'Chai & Paratha': 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800&q=80',
   'Dessert': 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=800&q=80',
   'Street Food': 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&q=80',
+  'Fast Food': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Food_street%2C_Burns_Road%2C_Karachi.jpg/800px-Food_street%2C_Burns_Road%2C_Karachi.jpg',
+  'Seafood': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Seaview_%28Clifton_Beach%29_Karachi.jpg/800px-Seaview_%28Clifton_Beach%29_Karachi.jpg',
+  'Pizza': 'https://upload.wikimedia.org/wikipedia/commons/5/55/A_Pizza_Hut_Restaurant_in_Karachi_Pakistan.jpg',
+  'Burgers': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Food_street%2C_Burns_Road%2C_Karachi.jpg/800px-Food_street%2C_Burns_Road%2C_Karachi.jpg',
 };
 
 const areaPhotoUrls = <String, String>{

@@ -261,7 +261,7 @@ class AppShell extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      extendBody: true,
+      extendBody: false,
       backgroundColor: Colors.transparent,
       body: navigationShell,
       bottomNavigationBar: GlassNavBar(

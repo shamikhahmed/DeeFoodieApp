@@ -14,6 +14,7 @@ import '../theme/app_theme.dart';
 import '../widgets/app_background.dart';
 import '../widgets/glass_surface.dart';
 import '../widgets/primary_button.dart';
+import '../widgets/karachi_background_image.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -35,23 +36,14 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   String _sweets = '';
   String _budget = '';
   final _cuisinesSelected = <String>{};
+  final _chainsSelected = <String>{};
   final _cardPrograms = <String>{};
 
-  static const _pageCount = 6;
+  static const _pageCount = 7;
   static const _genders = ['Male', 'Female', 'Non-binary', 'Prefer not to say'];
   static const _spiceLevels = ['Mild', 'Medium', 'Spicy', 'Extra spicy'];
   static const _sweetsPrefs = ['Love sweets', 'Sometimes', 'Rarely', 'Never'];
   static const _budgets = ['Budget', 'Mid-range', 'Splurge', 'No limit'];
-  static const _cuisineOptions = [
-    'Desi',
-    'Chinese',
-    'BBQ',
-    'Biryani',
-    'Continental',
-    'Dessert',
-    'Street Food',
-    'Seafood',
-  ];
   static const _popularCards = [
     'golootlo',
     'peekaboo',
@@ -82,6 +74,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             sweetsPreference: _sweets,
             favoriteCuisines: _cuisinesSelected.toList(),
             budgetRange: _budget,
+            favoriteChains: _chainsSelected.toList(),
           ));
       await ref.read(discountCardsProvider.notifier).setAll(_cardPrograms);
       ref.invalidate(onboardingAnswersProvider);
@@ -117,6 +110,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       case 4:
         return _cuisinesSelected.isNotEmpty;
       case 5:
+        return true;
+      case 6:
         return true;
       default:
         return false;
@@ -245,12 +240,19 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       sections: [
                         _MultiChipSection(
                           l10n.tasteCuisines,
-                          _cuisineOptions,
+                          onboardingCuisineOptions,
                           _cuisinesSelected,
                           (v) => setState(() => _cuisinesSelected.contains(v) ? _cuisinesSelected.remove(v) : _cuisinesSelected.add(v)),
                         ),
                         _ChipSection('${l10n.tasteGender} (optional)', _genders, _gender, (v) => setState(() => _gender = v)),
                       ],
+                    ),
+                    _MultiChipOnboardPage(
+                      title: 'Favorite chains & spots',
+                      subtitle: 'Optional — helps surface deals and familiar names.',
+                      options: onboardingChainOptions,
+                      selected: _chainsSelected,
+                      onToggle: (v) => setState(() => _chainsSelected.contains(v) ? _chainsSelected.remove(v) : _chainsSelected.add(v)),
                     ),
                     _MultiChipOnboardPage(
                       title: l10n.onboardingCardsTitle,
@@ -489,11 +491,10 @@ class _WelcomePage extends StatelessWidget {
             alignment: Alignment.center,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(18),
-              child: Image.asset(
-                onboardingHeroAsset,
+              child: KarachiBackgroundImage(
+                assetPath: onboardingHeroAsset,
                 width: 260,
                 height: 108,
-                fit: BoxFit.cover,
               ),
             ),
           ),

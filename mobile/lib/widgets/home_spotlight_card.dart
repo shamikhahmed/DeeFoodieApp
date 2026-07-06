@@ -5,6 +5,7 @@ import '../models/eatery.dart';
 import '../theme/app_theme.dart';
 import '../utils/eatery_display.dart';
 import 'glass_surface.dart';
+import 'karachi_background_image.dart';
 
 class HomeSpotlightCard extends StatelessWidget {
   const HomeSpotlightCard({
@@ -38,7 +39,7 @@ class HomeSpotlightCard extends StatelessWidget {
                 if (eatery.coverPhotoUrl != null)
                   CachedNetworkImage(imageUrl: eatery.coverPhotoUrl!, fit: BoxFit.cover)
                 else
-                  Image.asset('assets/backgrounds/karachi_food_street.jpg', fit: BoxFit.cover),
+                  const KarachiBackgroundImage(assetPath: 'assets/backgrounds/karachi_food_street.jpg'),
                 DecoratedBox(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(

@@ -4,27 +4,45 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../api/providers.dart';
 
 class VisitBookMemory {
-  const VisitBookMemory({this.stickerIds = const [], this.photoDataUrls = const []});
+  const VisitBookMemory({
+    this.stickerIds = const [],
+    this.photoDataUrls = const [],
+    this.photoLabels = const [],
+  });
 
   final List<String> stickerIds;
   final List<String> photoDataUrls;
+  final List<String> photoLabels;
 
-  VisitBookMemory copyWith({List<String>? stickerIds, List<String>? photoDataUrls}) {
+  VisitBookMemory copyWith({
+    List<String>? stickerIds,
+    List<String>? photoDataUrls,
+    List<String>? photoLabels,
+  }) {
     return VisitBookMemory(
       stickerIds: stickerIds ?? this.stickerIds,
       photoDataUrls: photoDataUrls ?? this.photoDataUrls,
+      photoLabels: photoLabels ?? this.photoLabels,
     );
   }
 
   Map<String, dynamic> toJson() => {
         'stickerIds': stickerIds,
         'photoDataUrls': photoDataUrls,
+        'photoLabels': photoLabels,
       };
 
-  factory VisitBookMemory.fromJson(Map<String, dynamic> json) => VisitBookMemory(
-        stickerIds: (json['stickerIds'] as List<dynamic>? ?? []).cast<String>(),
-        photoDataUrls: (json['photoDataUrls'] as List<dynamic>? ?? []).cast<String>(),
-      );
+  factory VisitBookMemory.fromJson(Map<String, dynamic> json) {
+    final photos = (json['photoDataUrls'] as List<dynamic>? ?? []).cast<String>();
+    final labels = (json['photoLabels'] as List<dynamic>? ?? []).cast<String>();
+    return VisitBookMemory(
+      stickerIds: (json['stickerIds'] as List<dynamic>? ?? []).cast<String>(),
+      photoDataUrls: photos,
+      photoLabels: labels.length == photos.length
+          ? labels
+          : List.filled(photos.length, 'memory'),
+    );
+  }
 }
 
 class VisitBookMemoryStore extends Notifier<Map<String, VisitBookMemory>> {
@@ -81,9 +99,15 @@ class VisitBookMemoryStore extends Notifier<Map<String, VisitBookMemory>> {
     await _syncApi(visitId);
   }
 
-  Future<void> addPhoto(String visitId, String dataUrl) async {
+  Future<void> addPhoto(String visitId, String dataUrl, {String label = 'memory'}) async {
     final current = forVisit(visitId);
-    state = {...state, visitId: current.copyWith(photoDataUrls: [...current.photoDataUrls, dataUrl])};
+    state = {
+      ...state,
+      visitId: current.copyWith(
+        photoDataUrls: [...current.photoDataUrls, dataUrl],
+        photoLabels: [...current.photoLabels, label],
+      ),
+    };
     await _persist();
     await _syncApi(visitId);
   }
@@ -91,7 +115,9 @@ class VisitBookMemoryStore extends Notifier<Map<String, VisitBookMemory>> {
   Future<void> removePhoto(String visitId, int index) async {
     final current = forVisit(visitId);
     final photos = [...current.photoDataUrls]..removeAt(index);
-    state = {...state, visitId: current.copyWith(photoDataUrls: photos)};
+    final labels = [...current.photoLabels];
+    if (index < labels.length) labels.removeAt(index);
+    state = {...state, visitId: current.copyWith(photoDataUrls: photos, photoLabels: labels)};
     await _persist();
     await _syncApi(visitId);
   }

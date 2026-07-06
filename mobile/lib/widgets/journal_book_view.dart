@@ -1,16 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../providers/visit_book_memory_provider.dart';
-import '../constants/journal_stickers.dart';
+import '../utils/visit_date_format.dart';
+import '../widgets/journal_sticker_tile.dart';
 import '../widgets/book_memory_picker_sheet.dart';
 import '../widgets/journal_view_toggle.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:real_page_flip/real_page_flip.dart';
 import '../constants/food_visuals.dart';
 import '../models/visit.dart';
@@ -78,7 +77,7 @@ class _JournalBookViewState extends ConsumerState<JournalBookView> {
                   hapticTexturePreset: PaperTexturePreset.standard,
                 ),
                 onPageChanged: (index) {
-                  _pageIndex = index;
+                  setState(() => _pageIndex = index);
                   _hintNotifier.value = index;
                 },
                 itemBuilder: _buildSpread,
@@ -101,7 +100,7 @@ class _JournalBookViewState extends ConsumerState<JournalBookView> {
         ValueListenableBuilder<int>(
           valueListenable: _hintNotifier,
           builder: (context, index, _) => Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 24 + MediaQuery.paddingOf(context).bottom),
             child: Text(
               _pageHint(index),
               textAlign: TextAlign.center,
@@ -116,7 +115,7 @@ class _JournalBookViewState extends ConsumerState<JournalBookView> {
   String _pageHint(int index) {
     if (index == 0) return 'Tap or swipe right edge to turn cover';
     final visit = widget.visits[index - 1];
-    return '${visit.eateryName} · page $index of ${widget.visits.length} · tap name for full entry';
+    return '${visit.eateryName} · spread ${index} of ${widget.visits.length} · tap name for full entry';
   }
 
   Widget _buildSpread(BuildContext context, int index) {
@@ -128,14 +127,14 @@ class _JournalBookViewState extends ConsumerState<JournalBookView> {
     return _BookSpread(
       visit: visit,
       memory: memory,
-      page: index,
-      total: widget.visits.length,
+      page: index + 1,
+      total: _itemCount,
       onShare: () => widget.onShare(visit),
       onAddMemory: () => BookMemoryPickerSheet.show(
         context,
         visitId: visit.id,
         onSticker: (id) => ref.read(visitBookMemoryProvider.notifier).addSticker(visit.id, id),
-        onPhoto: (url) => ref.read(visitBookMemoryProvider.notifier).addPhoto(visit.id, url),
+        onPhoto: (url, label) => ref.read(visitBookMemoryProvider.notifier).addPhoto(visit.id, url, label: label),
       ),
       onRemoveSticker: (id) => ref.read(visitBookMemoryProvider.notifier).removeSticker(visit.id, id),
       onRemovePhoto: (i) => ref.read(visitBookMemoryProvider.notifier).removePhoto(visit.id, i),
@@ -268,7 +267,7 @@ class _BookSpread extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date = _formatDate(visit.date);
+    final date = visit.date;
     final photos = visit.allPhotoUrls;
     final photo = photos.isNotEmpty ? photos.first : null;
 
@@ -287,9 +286,7 @@ class _BookSpread extends StatelessWidget {
       children: [
         Row(
           children: [
-            Expanded(
-              child: Text(date, style: GoogleFonts.fraunces(fontSize: 20, fontWeight: FontWeight.w600, color: AppColors.inkBrown, fontStyle: FontStyle.italic)),
-            ),
+            Expanded(child: visitDateHeader(date)),
             IconButton(
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
@@ -316,7 +313,11 @@ class _BookSpread extends StatelessWidget {
         ),
         if (visit.areaName != null) ...[
           const SizedBox(height: 6),
-          Text(visit.areaName!, style: GoogleFonts.caveat(fontSize: 17, color: AppColors.textSecondary)),
+          Text(visit.areaName!, style: GoogleFonts.caveat(fontSize: 17, color: AppColors.inkBrown.withValues(alpha: 0.78))),
+        ],
+        if (visit.userName != null && visit.userName!.isNotEmpty) ...[
+          const SizedBox(height: 4),
+          Text(visit.userName!, style: GoogleFonts.caveat(fontSize: 15, color: AppColors.coffeeBrown, fontWeight: FontWeight.w600)),
         ],
         const Spacer(),
         RatingStars(rating: visit.rating, size: 18),
@@ -344,12 +345,10 @@ class _BookSpread extends StatelessWidget {
           Wrap(
             spacing: 4,
             runSpacing: 4,
-            children: memory.stickerIds.take(4).map((id) {
-              final asset = journalStickerAssets[id];
-              if (asset == null) return const SizedBox.shrink();
+            children: memory.stickerIds.take(6).map((id) {
               return GestureDetector(
                 onLongPress: () => onRemoveSticker(id),
-                child: SizedBox(width: 32, height: 32, child: SvgPicture.asset(asset)),
+                child: JournalStickerTile(id: id, size: 32),
               );
             }).toList(),
           ),
@@ -359,10 +358,27 @@ class _BookSpread extends StatelessWidget {
   }
 
   Widget _rightPage(BuildContext context, Visit visit, String? photo, VisitBookMemory memory, void Function(int) onRemovePhoto) {
+    final photos = visit.allPhotoUrls;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (photo != null)
+        if (photos.isNotEmpty)
+          SizedBox(
+            height: 88,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: photos.length.clamp(0, 4),
+              separatorBuilder: (_, _) => const SizedBox(width: 6),
+              itemBuilder: (_, i) => SizedBox(
+                width: 110,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: VisitPhotoImage(url: photos[i], height: 88),
+                ),
+              ),
+            ),
+          )
+        else if (photo != null)
           ClipRRect(
             borderRadius: BorderRadius.circular(4),
             child: VisitPhotoImage(url: photo, height: 100),
@@ -391,13 +407,14 @@ class _BookSpread extends StatelessWidget {
         if (memory.photoDataUrls.isNotEmpty) ...[
           const SizedBox(height: 8),
           SizedBox(
-            height: 52,
+            height: 64,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: memory.photoDataUrls.length,
               separatorBuilder: (_, _) => const SizedBox(width: 6),
               itemBuilder: (_, i) {
                 final url = memory.photoDataUrls[i];
+                final label = i < memory.photoLabels.length ? memory.photoLabels[i] : 'memory';
                 Widget img;
                 if (url.startsWith('data:')) {
                   img = Image.memory(base64Decode(url.split(',').last), width: 52, height: 52, fit: BoxFit.cover);
@@ -406,7 +423,16 @@ class _BookSpread extends StatelessWidget {
                 }
                 return GestureDetector(
                   onLongPress: () => onRemovePhoto(i),
-                  child: ClipRRect(borderRadius: BorderRadius.circular(4), child: img),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ClipRRect(borderRadius: BorderRadius.circular(4), child: img),
+                      Text(
+                        memoryPhotoLabel(label),
+                        style: GoogleFonts.caveat(fontSize: 11, color: AppColors.coffeeBrown),
+                      ),
+                    ],
+                  ),
                 );
               },
             ),
@@ -416,13 +442,6 @@ class _BookSpread extends StatelessWidget {
     );
   }
 
-  String _formatDate(String iso) {
-    try {
-      return DateFormat('EEEE, d MMMM yyyy').format(DateTime.parse(iso));
-    } catch (_) {
-      return iso;
-    }
-  }
 }
 
 enum _BookSide { left, right }
@@ -462,7 +481,7 @@ class _BookPage extends StatelessWidget {
           child: Text(
             '$page / $total',
             textAlign: TextAlign.center,
-            style: GoogleFonts.caveat(fontSize: 13, color: AppColors.textSubtle),
+            style: GoogleFonts.caveat(fontSize: 13, color: AppColors.inkBrown.withValues(alpha: 0.55)),
           ),
         ),
       ],

@@ -11,6 +11,7 @@ class TasteProfile {
     this.dietaryNotes = '',
     this.budgetRange = '',
     this.avoids = const [],
+    this.favoriteChains = const [],
   });
 
   final String gender;
@@ -20,6 +21,7 @@ class TasteProfile {
   final String dietaryNotes;
   final String budgetRange;
   final List<String> avoids;
+  final List<String> favoriteChains;
 
   Map<String, dynamic> toJson() => {
         'gender': gender,
@@ -29,6 +31,7 @@ class TasteProfile {
         'dietaryNotes': dietaryNotes,
         'budgetRange': budgetRange,
         'avoids': avoids,
+        'favoriteChains': favoriteChains,
       };
 
   factory TasteProfile.fromJson(Map<String, dynamic> json) => TasteProfile(
@@ -39,6 +42,7 @@ class TasteProfile {
         dietaryNotes: json['dietaryNotes'] as String? ?? '',
         budgetRange: json['budgetRange'] as String? ?? '',
         avoids: List<String>.from(json['avoids'] ?? []),
+        favoriteChains: List<String>.from(json['favoriteChains'] ?? []),
       );
 
   TasteProfile copyWith({
@@ -49,6 +53,7 @@ class TasteProfile {
     String? dietaryNotes,
     String? budgetRange,
     List<String>? avoids,
+    List<String>? favoriteChains,
   }) {
     return TasteProfile(
       gender: gender ?? this.gender,
@@ -58,6 +63,7 @@ class TasteProfile {
       dietaryNotes: dietaryNotes ?? this.dietaryNotes,
       budgetRange: budgetRange ?? this.budgetRange,
       avoids: avoids ?? this.avoids,
+      favoriteChains: favoriteChains ?? this.favoriteChains,
     );
   }
 }
