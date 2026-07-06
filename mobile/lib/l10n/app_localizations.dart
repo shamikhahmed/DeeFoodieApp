@@ -1184,6 +1184,12 @@ abstract class AppLocalizations {
   /// **'Green zones = neighborhoods you\'ve visited. Boundaries from OpenStreetMap where available.'**
   String get mapAreaOverlayHint;
 
+  /// No description provided for @mapOfflineDownloadLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving Karachi map to your phone…'**
+  String get mapOfflineDownloadLabel;
+
   /// No description provided for @mapHeatSummary.
   ///
   /// In en, this message translates to:

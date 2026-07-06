@@ -264,6 +264,7 @@
   "mapHeatHint": "Lit pins = places you've visited. Grey = still to explore.",
   "mapAreaOverlayLabel": "Area boundaries",
   "mapAreaOverlayHint": "Green zones = neighborhoods you've visited. Boundaries from OpenStreetMap where available.",
+  "mapOfflineDownloadLabel": "Saving Karachi map to your phone…",
   "mapHeatSummary": "{visited} visited of {total} on map",
   "@mapHeatSummary": {
     "placeholders": {

@@ -186,6 +186,7 @@
   "mapHeatHint": "Lit pin = visit ho chuki. Grey = abhi explore karna hai.",
   "mapAreaOverlayLabel": "Area boundaries",
   "mapAreaOverlayHint": "Green zone = visit ki hui ilaqay. Boundaries OpenStreetMap se.",
+  "mapOfflineDownloadLabel": "Karachi map phone par save ho rahi hai…",
   "mapHeatSummary": "{visited} visited / {total} map par",
   "friendActivityTitle": "Friend ki latest visit",
   "homeLinkWrapped": "Year in Food",

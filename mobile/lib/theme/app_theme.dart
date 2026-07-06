@@ -15,6 +15,13 @@ ThemeData buildAppTheme({Brightness brightness = Brightness.light}) {
   return ThemeData(
     useMaterial3: true,
     brightness: brightness,
+    pageTransitionsTheme: const PageTransitionsTheme(
+      builders: {
+        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+        TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+      },
+    ),
     scaffoldBackgroundColor: isDark ? const Color(0xFF1A1410) : AppColors.cream,
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.coffeeBrown,

@@ -645,6 +645,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Green zones = neighborhoods you\'ve visited. Boundaries from OpenStreetMap where available.';
 
   @override
+  String get mapOfflineDownloadLabel => 'Saving Karachi map to your phone…';
+
+  @override
   String mapHeatSummary(int visited, int total) {
     return '$visited visited of $total on map';
   }

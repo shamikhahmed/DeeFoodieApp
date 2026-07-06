@@ -627,6 +627,10 @@ class AppLocalizationsUr extends AppLocalizations {
       'Green zone = visit ki hui ilaqay. Boundaries OpenStreetMap se.';
 
   @override
+  String get mapOfflineDownloadLabel =>
+      'Karachi map phone par save ho rahi hai…';
+
+  @override
   String mapHeatSummary(int visited, int total) {
     return '$visited visited / $total map par';
   }
