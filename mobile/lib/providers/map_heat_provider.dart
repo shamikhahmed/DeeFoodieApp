@@ -6,6 +6,7 @@ class MapHeatNotifier extends Notifier<bool> {
   bool build() => false;
 
   void toggle() => state = !state;
+  void enable() => state = true;
 }
 
 final mapHeatModeProvider = NotifierProvider<MapHeatNotifier, bool>(MapHeatNotifier.new);

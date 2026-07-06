@@ -29,6 +29,7 @@ class Visit {
     this.areaName,
     this.photoUrls = const [],
     this.voiceNoteDataUrl,
+    this.time,
   });
 
   final String id;
@@ -48,6 +49,7 @@ class Visit {
   final String? areaName;
   final List<String> photoUrls;
   final String? voiceNoteDataUrl;
+  final String? time;
 
   List<String> get allPhotoUrls {
     if (photoUrls.isNotEmpty) return photoUrls;
@@ -73,6 +75,7 @@ class Visit {
     String? areaName,
     List<String>? photoUrls,
     String? voiceNoteDataUrl,
+    String? time,
   }) {
     return Visit(
       id: id ?? this.id,
@@ -92,6 +95,7 @@ class Visit {
       areaName: areaName ?? this.areaName,
       photoUrls: photoUrls ?? this.photoUrls,
       voiceNoteDataUrl: voiceNoteDataUrl ?? this.voiceNoteDataUrl,
+      time: time ?? this.time,
     );
   }
 
@@ -113,6 +117,7 @@ class Visit {
         'areaName': areaName,
         'photoUrls': photoUrls,
         'voiceNoteDataUrl': voiceNoteDataUrl,
+        'time': time,
       };
 
   factory Visit.fromJson(Map<String, dynamic> json) {
@@ -139,6 +144,7 @@ class Visit {
           const [],
       photoUrls: _photoUrlsFromJson(json),
       voiceNoteDataUrl: json['voiceNoteDataUrl'] as String?,
+      time: json['time'] as String?,
     );
   }
 

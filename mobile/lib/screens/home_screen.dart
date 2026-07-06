@@ -24,7 +24,17 @@ import '../widgets/home_personal_dashboard.dart';
 import '../widgets/home_review_card.dart';
 import '../constants/food_visuals.dart';
 import '../utils/craving_match.dart';
+import '../utils/chain_match.dart';
+import '../providers/taste_profile_provider.dart';
+import '../providers/map_heat_provider.dart';
+import '../utils/dictionary_lookup.dart';
 import '../widgets/home_craving_banner.dart';
+import '../widgets/friend_activity_card.dart';
+import '../widgets/home_seasonal_strip.dart';
+import '../widgets/home_near_me_banner.dart';
+import '../widgets/home_mood_strip.dart';
+import '../widgets/sync_queue_banner.dart';
+import '../widgets/quick_log_sheet.dart';
 import '../widgets/stagger_entrance.dart';
 import '../widgets/visit_preview_card.dart';
 
@@ -62,9 +72,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final visitsAsync = ref.watch(visitsProvider);
     final areasAsync = ref.watch(areasProvider);
     final onboarding = ref.watch(onboardingAnswersProvider).asData?.value;
+    final taste = ref.watch(tasteProfileProvider);
 
     final craving = onboarding?.craving ?? '';
     final favoriteArea = onboarding?.favoriteArea ?? '';
+    final chains = taste.favoriteChains;
 
     final greeting = onboarding != null && onboarding.craving.isNotEmpty
         ? '${l10n.homeGreeting} · ${onboarding.craving}'
@@ -88,13 +100,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             children: [
               // offline pill only when needed — no giant banner
               const DemoModeBanner(),
+              const SyncQueueBanner(),
+              const FriendActivityCard(),
               StaggerEntrance(
                 index: 0,
                 child: HomeHero(
                   greeting: greeting,
                   appName: l10n.appName,
                   scoreLabel: l10n.homeKarachiScore,
-                  onScoreTap: () => context.push('/passport'),
+                  onScoreTap: () {
+                    ref.read(mapHeatModeProvider.notifier).enable();
+                    context.go('/map');
+                  },
                   accentPhotoUrl: craving.isNotEmpty ? cravingPhoto(craving) : accentPhoto('hero'),
                   subtitle: eateriesAsync.maybeWhen(
                     data: (e) => '${e.length} Karachi eateries in the city archive',
@@ -113,6 +130,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
+              const StaggerEntrance(index: 1, child: HomeSeasonalStrip()),
+              const SizedBox(height: AppSpacing.md),
+              const StaggerEntrance(index: 2, child: HomeNearMeBanner()),
               if (craving.isNotEmpty)
                 eateriesAsync.maybeWhen(
                   data: (all) {
@@ -135,7 +155,63 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   },
                   orElse: () => const SizedBox.shrink(),
                 ),
+              if (craving.isNotEmpty && dictionaryEntryForCraving(craving) != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: AppSpacing.sm),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton.icon(
+                      onPressed: () => context.push('/dictionary'),
+                      icon: const Icon(Icons.menu_book_outlined, size: 18),
+                      label: Text(l10n.dictionaryFromCraving(dictionaryEntryForCraving(craving)!.term)),
+                    ),
+                  ),
+                ),
               if (craving.isNotEmpty) const SizedBox(height: AppSpacing.md),
+              if (chains.isNotEmpty)
+                eateriesAsync.maybeWhen(
+                  data: (all) {
+                    final matches = filterByChains(all, chains).take(12).toList();
+                    if (matches.isEmpty) return const SizedBox.shrink();
+                    return StaggerEntrance(
+                      index: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(l10n.homeChainsTitle, style: Theme.of(context).textTheme.titleMedium),
+                                Text(
+                                  l10n.homeChainsSubtitle,
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 168,
+                            child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              padding: const EdgeInsets.symmetric(horizontal: 4),
+                              itemCount: matches.length,
+                              separatorBuilder: (_, __) => const SizedBox(width: 12),
+                              itemBuilder: (context, i) => HomeMustTryCard(
+                                eatery: matches[i],
+                                highlight: true,
+                                onTap: () => openEatery(context, matches[i].id),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  orElse: () => const SizedBox.shrink(),
+                ),
+              if (chains.isNotEmpty) const SizedBox(height: AppSpacing.md),
               eateriesAsync.maybeWhen(
                 data: (all) {
                   final pick = pickSpotlight(all, craving: craving, favoriteArea: favoriteArea);
@@ -144,7 +220,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ? l10n.homeSpotlightCraving(craving)
                       : l10n.homeSpotlight;
                   return StaggerEntrance(
-                    index: 2,
+                    index: 3,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -170,7 +246,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   final mustTry = sortCravingFirst(withMustTry, craving).take(12).toList();
                   if (mustTry.isEmpty) return const SizedBox.shrink();
                   return StaggerEntrance(
-                    index: 3,
+                    index: 4,
                     child: HorizontalSection(
                       title: l10n.homeMustTry,
                       itemCount: mustTry.length,
@@ -187,7 +263,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               const SizedBox(height: AppSpacing.sectionGap),
               StaggerEntrance(
-                index: 4,
+                index: 5,
                 child: HomePersonalDashboard(
                   stats: stats,
                   onJournalTap: () => context.go('/journal'),
@@ -195,11 +271,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
+              StaggerEntrance(index: 6, child: HomeMoodStrip(title: l10n.homeMoodStrip)),
+              const SizedBox(height: AppSpacing.md),
               eateriesAsync.maybeWhen(
                 data: (all) => areasAsync.maybeWhen(
                   data: (areas) => visitsAsync.maybeWhen(
                     data: (visits) => StaggerEntrance(
-                      index: 5,
+                      index: 7,
                       child: HomeStatsStrip(
                         eateryCount: all.length,
                         visitCount: visits.length,
@@ -226,6 +304,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: _QuickActions(
                   onExplore: () => context.go('/explore'),
                   onAddVisit: () => context.push('/add-visit'),
+                  onQuickLog: () => QuickLogSheet.show(context),
                 ),
               ),
               const SizedBox(height: AppSpacing.sectionGap),
@@ -566,10 +645,11 @@ class _HomeWishlistPreview extends ConsumerWidget {
 }
 
 class _QuickActions extends StatelessWidget {
-  const _QuickActions({required this.onExplore, required this.onAddVisit});
+  const _QuickActions({required this.onExplore, required this.onAddVisit, required this.onQuickLog});
 
   final VoidCallback onExplore;
   final VoidCallback onAddVisit;
+  final VoidCallback onQuickLog;
 
   @override
   Widget build(BuildContext context) {
@@ -581,6 +661,14 @@ class _QuickActions extends StatelessWidget {
             icon: CupertinoIcons.compass,
             label: l10n.navExplore,
             onTap: onExplore,
+          ),
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(
+          child: _ActionPill(
+            icon: CupertinoIcons.bolt,
+            label: l10n.quickLogTitle,
+            onTap: onQuickLog,
           ),
         ),
         const SizedBox(width: AppSpacing.sm),

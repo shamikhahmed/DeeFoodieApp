@@ -262,6 +262,8 @@
   "seasonalPicks": "Curated picks",
   "seasonalEmpty": "No matches yet — add more eateries to the archive.",
   "mapHeatHint": "Lit pins = places you've visited. Grey = still to explore.",
+  "mapAreaOverlayLabel": "Area boundaries",
+  "mapAreaOverlayHint": "Green zones = neighborhoods you've visited. Boundaries from OpenStreetMap where available.",
   "mapHeatSummary": "{visited} visited of {total} on map",
   "@mapHeatSummary": {
     "placeholders": {
@@ -361,5 +363,42 @@
   "@trailCertificateAwarded": {"placeholders": {"userName": {"type": "String"}}},
   "trailCertificateFooter": "DeeFoodieApp — Karachi food archive",
   "trailCertificateShare": "Share certificate",
-  "trailCertificateCopied": "Certificate copied — paste to share"
+  "trailCertificateCopied": "Certificate copied — paste to share",
+  "mapPinClusterSummary": "{shown} pins shown · {total} in archive",
+  "@mapPinClusterSummary": {
+    "placeholders": {
+      "shown": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "homeChainsTitle": "Your chains & spots",
+  "homeChainsSubtitle": "Matches from your onboarding picks",
+  "onboardingPickOne": "Pick one",
+  "onboardingChainsTitle": "Favorite chains & spots",
+  "onboardingChainsSubtitle": "Optional — helps surface deals and familiar names.",
+  "addVisitTime": "Visit time",
+  "addVisitTimeOptional": "Optional — when you ate",
+  "nearMeTitle": "Near you now",
+  "nearMeSubtitle": "Spots within a few km",
+  "planTonightTitle": "Plan tonight",
+  "planTonightHint": "Long-press map pins to add (max 3)",
+  "planTonightEmpty": "No stops picked yet",
+  "planTonightOpenMaps": "Open in Maps",
+  "quickLogTitle": "Quick log",
+  "quickLogContinue": "Continue to full form",
+  "syncQueuePending": "{count, plural, =1{1 visit waiting to sync} other{{count} visits waiting to sync}}",
+  "@syncQueuePending": {"placeholders": {"count": {"type": "int"}}},
+  "dishRankingTitle": "City archive rating",
+  "dishOnMenuAt": "On the menu at",
+  "dishNoMenuHits": "No menu matches yet — log visits with this dish.",
+  "exploreUnvisited": "Haven't been",
+  "explorePriceBudget": "Budget",
+  "explorePriceMid": "Mid-range",
+  "explorePriceSplurge": "Splurge",
+  "dictionaryFromCraving": "What is {term}?",
+  "@dictionaryFromCraving": {"placeholders": {"term": {"type": "String"}}},
+  "shareVisitImage": "Share as image",
+  "voiceOnSpread": "Voice memory",
+  "visitTemplateApply": "Use usual order",
+  "visitTemplateSaved": "Usual order saved for next time"
 }

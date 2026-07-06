@@ -638,6 +638,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Lit pins = places you\'ve visited. Grey = still to explore.';
 
   @override
+  String get mapAreaOverlayLabel => 'Area boundaries';
+
+  @override
+  String get mapAreaOverlayHint =>
+      'Green zones = neighborhoods you\'ve visited. Boundaries from OpenStreetMap where available.';
+
+  @override
   String mapHeatSummary(int visited, int total) {
     return '$visited visited of $total on map';
   }
@@ -924,4 +931,105 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trailCertificateCopied => 'Certificate copied — paste to share';
+
+  @override
+  String mapPinClusterSummary(int shown, int total) {
+    return '$shown pins shown · $total in archive';
+  }
+
+  @override
+  String get homeChainsTitle => 'Your chains & spots';
+
+  @override
+  String get homeChainsSubtitle => 'Matches from your onboarding picks';
+
+  @override
+  String get onboardingPickOne => 'Pick one';
+
+  @override
+  String get onboardingChainsTitle => 'Favorite chains & spots';
+
+  @override
+  String get onboardingChainsSubtitle =>
+      'Optional — helps surface deals and familiar names.';
+
+  @override
+  String get addVisitTime => 'Visit time';
+
+  @override
+  String get addVisitTimeOptional => 'Optional — when you ate';
+
+  @override
+  String get nearMeTitle => 'Near you now';
+
+  @override
+  String get nearMeSubtitle => 'Spots within a few km';
+
+  @override
+  String get planTonightTitle => 'Plan tonight';
+
+  @override
+  String get planTonightHint => 'Long-press map pins to add (max 3)';
+
+  @override
+  String get planTonightEmpty => 'No stops picked yet';
+
+  @override
+  String get planTonightOpenMaps => 'Open in Maps';
+
+  @override
+  String get quickLogTitle => 'Quick log';
+
+  @override
+  String get quickLogContinue => 'Continue to full form';
+
+  @override
+  String syncQueuePending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count visits waiting to sync',
+      one: '1 visit waiting to sync',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get dishRankingTitle => 'City archive rating';
+
+  @override
+  String get dishOnMenuAt => 'On the menu at';
+
+  @override
+  String get dishNoMenuHits =>
+      'No menu matches yet — log visits with this dish.';
+
+  @override
+  String get exploreUnvisited => 'Haven\'t been';
+
+  @override
+  String get explorePriceBudget => 'Budget';
+
+  @override
+  String get explorePriceMid => 'Mid-range';
+
+  @override
+  String get explorePriceSplurge => 'Splurge';
+
+  @override
+  String dictionaryFromCraving(String term) {
+    return 'What is $term?';
+  }
+
+  @override
+  String get shareVisitImage => 'Share as image';
+
+  @override
+  String get voiceOnSpread => 'Voice memory';
+
+  @override
+  String get visitTemplateApply => 'Use usual order';
+
+  @override
+  String get visitTemplateSaved => 'Usual order saved for next time';
 }

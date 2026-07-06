@@ -97,6 +97,7 @@ class ArchiveLoader {
         photoUrl: m['photoUrl'] as String?,
         areaName: m['areaName'] as String?,
         photoUrls: m['photoUrl'] != null ? [m['photoUrl'] as String] : const [],
+        time: m['time'] as String?,
       );
     }).toList();
 

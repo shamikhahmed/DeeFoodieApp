@@ -87,7 +87,7 @@ class _DishesScreenState extends ConsumerState<DishesScreen> {
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap: () => openEatery(context, d.eateryId),
+                            onTap: () => context.push('/dish/${Uri.encodeComponent(d.dish)}'),
                             borderRadius: BorderRadius.circular(14),
                             child: GlassSurface(
                               child: Row(

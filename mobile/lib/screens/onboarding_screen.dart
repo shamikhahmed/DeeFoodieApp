@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../constants/onboarding_options.dart';
+import '../utils/onboarding_labels.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/app_prefs_provider.dart';
 import '../providers/taste_profile_provider.dart';
@@ -221,7 +222,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       title: l10n.onboardingCravingTitle,
                       subtitle: l10n.onboardingCravingSubtitle,
                       sections: [
-                        _ChipSection('Pick one', onboardingCravingOptions, _craving, (v) => setState(() => _craving = v)),
+                        _ChipSection(l10n.onboardingPickOne, onboardingCravingOptions, _craving, (v) => setState(() => _craving = v)),
                         _ChipSection('${l10n.onboardingQ3} (optional)', onboardingMoodOptions, _mood, (v) => setState(() => _mood = v)),
                       ],
                     ),
@@ -248,8 +249,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       ],
                     ),
                     _MultiChipOnboardPage(
-                      title: 'Favorite chains & spots',
-                      subtitle: 'Optional — helps surface deals and familiar names.',
+                      title: l10n.onboardingChainsTitle,
+                      subtitle: l10n.onboardingChainsSubtitle,
                       options: onboardingChainOptions,
                       selected: _chainsSelected,
                       onToggle: (v) => setState(() => _chainsSelected.contains(v) ? _chainsSelected.remove(v) : _chainsSelected.add(v)),
@@ -375,7 +376,7 @@ class _ChipOnboardPage extends StatelessWidget {
                         spacing: 8,
                         runSpacing: 8,
                         children: s.options.map((o) => ChoiceChip(
-                              label: Text(o),
+                              label: Text(onboardingChipLabel(context, o)),
                               selected: s.selected == o,
                               onSelected: (_) {
                                 HapticFeedback.selectionClick();
@@ -401,7 +402,7 @@ class _ChipOnboardPage extends StatelessWidget {
                       spacing: 8,
                       runSpacing: 8,
                       children: m.options.map((o) => FilterChip(
-                            label: Text(o),
+                            label: Text(onboardingChipLabel(context, o)),
                             selected: m.selected.contains(o),
                             onSelected: (_) {
                               HapticFeedback.selectionClick();
@@ -451,7 +452,7 @@ class _MultiChipOnboardPage extends StatelessWidget {
               spacing: 8,
               runSpacing: 8,
               children: options.map((o) => FilterChip(
-                    label: Text(o),
+                    label: Text(onboardingChipLabel(context, o)),
                     selected: selected.contains(o),
                     onSelected: (_) {
                       HapticFeedback.selectionClick();

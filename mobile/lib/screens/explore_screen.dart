@@ -12,7 +12,9 @@ import '../constants/food_visuals.dart';
 import '../widgets/eatery_card.dart';
 import '../widgets/glass_surface.dart';
 import '../providers/discount_cards_provider.dart';
+import '../utils/discount_match.dart';
 import '../widgets/explore_filter_chip.dart';
+import '../widgets/explore_extra_chips_row.dart';
 import '../widgets/sticker_empty_state.dart';
 
 class ExploreScreen extends ConsumerStatefulWidget {
@@ -36,6 +38,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final eateries = ref.watch(sortedEateriesProvider);
+    final cards = ref.watch(discountCardsProvider);
 
     return TabScreenScaffold(
       child: SafeArea(
@@ -72,6 +75,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
             const _SortChipsRow(),
             const SizedBox(height: AppSpacing.sm),
             const _MyDealsChipRow(),
+            const ExploreExtraChipsRow(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding),
               child: GlassSurface(
@@ -127,6 +131,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                           itemBuilder: (context, i) => EateryCard(
                             eatery: list[i],
                             index: i,
+                            showDealBadge: cards.isNotEmpty && dealsForUserAtEatery(cards, list[i].name).isNotEmpty,
                             onTap: () => openEatery(context, list[i].id),
                           ),
                         ),

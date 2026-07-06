@@ -17,6 +17,7 @@ import '../widgets/journal_paper.dart';
 import '../widgets/menu_item_picker.dart';
 import '../widgets/journal_paper.dart';
 import '../widgets/visit_photo_image.dart';
+import '../widgets/voice_note_player.dart';
 
 class EditVisitScreen extends ConsumerStatefulWidget {
   const EditVisitScreen({super.key, required this.visitId});
@@ -31,6 +32,7 @@ class _EditVisitScreenState extends ConsumerState<EditVisitScreen> {
   Visit? _visit;
   double _rating = 4;
   DateTime _date = DateTime.now();
+  TimeOfDay? _visitTime;
   final _review = TextEditingController();
   final _memory = TextEditingController();
   final _customMood = TextEditingController();
@@ -61,15 +63,29 @@ class _EditVisitScreenState extends ConsumerState<EditVisitScreen> {
     _photos.addAll(v.allPhotoUrls);
     _companion = v.companions;
     _voiceNoteDataUrl = v.voiceNoteDataUrl;
+    if (v.time != null && v.time!.contains(':')) {
+      final parts = v.time!.split(':');
+      _visitTime = TimeOfDay(hour: int.tryParse(parts[0]) ?? 12, minute: int.tryParse(parts[1]) ?? 0);
+    }
     _items.addAll(v.items.map((i) => SelectedMenuItem(name: i.name, price: 0, type: i.type)));
   }
 
   Future<void> _pickVoiceNote() async {
     final result = await FilePicker.platform.pickFiles(type: FileType.audio, withData: true);
     if (result == null || result.files.isEmpty) return;
-    final bytes = result.files.first.bytes;
+    final file = result.files.first;
+    final bytes = file.bytes;
     if (bytes == null) return;
-    setState(() => _voiceNoteDataUrl = 'data:audio/m4a;base64,${base64Encode(bytes)}');
+    final ext = (file.extension ?? 'm4a').toLowerCase();
+    final mime = switch (ext) {
+      'mp3' => 'audio/mpeg',
+      'wav' => 'audio/wav',
+      'webm' => 'audio/webm',
+      'ogg' => 'audio/ogg',
+      'aac' => 'audio/aac',
+      _ => 'audio/mp4',
+    };
+    setState(() => _voiceNoteDataUrl = 'data:$mime;base64,${base64Encode(bytes)}');
     AppHaptics.light();
   }
 
@@ -84,6 +100,18 @@ class _EditVisitScreenState extends ConsumerState<EditVisitScreen> {
   Future<void> _pickDate() async {
     final picked = await showDatePicker(context: context, initialDate: _date, firstDate: DateTime(1990), lastDate: DateTime.now());
     if (picked != null) setState(() => _date = picked);
+  }
+
+  Future<void> _pickTime() async {
+    final picked = await showTimePicker(context: context, initialTime: _visitTime ?? TimeOfDay.now());
+    if (picked != null) setState(() => _visitTime = picked);
+  }
+
+  String? _visitTimeString() {
+    if (_visitTime == null) return null;
+    final h = _visitTime!.hour.toString().padLeft(2, '0');
+    final m = _visitTime!.minute.toString().padLeft(2, '0');
+    return '$h:$m';
   }
 
   Future<void> _save() async {
@@ -126,6 +154,7 @@ class _EditVisitScreenState extends ConsumerState<EditVisitScreen> {
       voiceNoteDataUrl: _voiceNoteDataUrl,
       favoriteItem: _items.isEmpty ? v.favoriteItem : _items.first.name,
       totalBill: _items.fold<double>(0, (s, i) => s + i.price),
+      time: _visitTimeString(),
     );
 
     if (v.id.startsWith('local-')) {
@@ -207,7 +236,21 @@ class _EditVisitScreenState extends ConsumerState<EditVisitScreen> {
                   children: [
                     Text(v.eateryName, style: journalHandStyle(context, size: 20, weight: FontWeight.w700)),
                     const SizedBox(height: 8),
-                    OutlinedButton.icon(onPressed: _pickDate, icon: const Icon(CupertinoIcons.calendar), label: Text(_date.toIso8601String().split('T').first)),
+                    Row(
+                      children: [
+                        OutlinedButton.icon(
+                          onPressed: _pickDate,
+                          icon: const Icon(CupertinoIcons.calendar),
+                          label: Text(_date.toIso8601String().split('T').first),
+                        ),
+                        const SizedBox(width: 8),
+                        OutlinedButton.icon(
+                          onPressed: _pickTime,
+                          icon: const Icon(CupertinoIcons.time),
+                          label: Text(_visitTime?.format(context) ?? l10n.addVisitTime),
+                        ),
+                      ],
+                    ),
                     Slider(value: _rating, min: 1, max: 5, divisions: 8, label: _rating.toStringAsFixed(1), onChanged: (x) => setState(() => _rating = x), activeColor: AppColors.coffeeBrown),
                   ],
                 ),
@@ -290,8 +333,10 @@ class _EditVisitScreenState extends ConsumerState<EditVisitScreen> {
                       icon: const Icon(CupertinoIcons.mic),
                       label: Text(_voiceNoteDataUrl == null ? l10n.visitVoiceAdd : l10n.visitVoiceAttached),
                     ),
-                    if (_voiceNoteDataUrl != null)
+                    if (_voiceNoteDataUrl != null) ...[
+                      VoiceNotePlayer(dataUrl: _voiceNoteDataUrl!),
                       TextButton(onPressed: () => setState(() => _voiceNoteDataUrl = null), child: Text(l10n.visitVoiceRemove)),
+                    ],
                   ],
                 ),
               ),

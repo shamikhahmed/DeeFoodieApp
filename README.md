@@ -70,17 +70,20 @@ node build-mobile-archive.mjs
 
 Visits, badges, `visitCount`, venue details, and closed status are rebuilt together — do not hand-edit `archive.json`.
 
-**Screen gallery (dev-only):** `mobile/screen-gallery.html` — VaultCap-style PNG index. `npm run gallery:capture` then `npm run gallery:serve` on :8766.
+**Screen gallery (dev-only):** `mobile/screen-gallery.html` — VaultCap-style PNG index (onboarding welcome + chains, map clusters, journal book). `bash scripts/fetch-backgrounds.sh` once for bundled JPGs. `npm run gallery:capture` then `npm run gallery:serve` on :8766.
 
 ## Mobile features (current)
 
 | Area | What’s built |
 |------|----------------|
 | **Design** | App-wide **journal notebook** — ruled paper, Fraunces + Caveat + Inter, paper cards (no glass blur) |
-| **Home** | Karachi Score, personal dashboard, area photo chips, must-try, recent visits, wishlist preview |
-| **Explore** | Search + venue/cuisine/area filters, high-contrast filter chips, sort |
-| **Map** | OSM pins + **heat map** toggle (visited lit, rest grey) |
-| **Journal** | **Book view default** — Apple Books page curl (`real_page_flip`), prev/next controls, Book/Timeline toggle, stickers + memory photos on spreads, timeline + mood filter, PDF export (⋮ menu) |
+| **Home** | Score → map heat, seasonal strip, near-me GPS, friend visit, mood strip, quick log, chains row |
+| **Explore** | Filters persist; haven't-been + price bands; deal badges on cards |
+| **Map** | Clustering, heat toggle, plan tonight, trail highlights, visit-sized pins |
+| **Journal** | Year dividers, mood themes, voice chip, share card image |
+| **Dishes** | Dish detail page with archive ratings |
+| **Eatery** | Compare visits, nearby section |
+| **Areas** | Neighborhood stories |
 | **Profile** | Stats, areas · favorites · wishlist · dishes, language toggle, screen gallery |
 | **Add / Edit visit** | Journal paper forms, moods, menu items, bill, multi-photo |
 | **Eatery profile** | Hero photo, menu, visits, favorite ♥, wishlist, nearby |

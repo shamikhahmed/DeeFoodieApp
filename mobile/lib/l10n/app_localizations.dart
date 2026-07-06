@@ -1172,6 +1172,18 @@ abstract class AppLocalizations {
   /// **'Lit pins = places you\'ve visited. Grey = still to explore.'**
   String get mapHeatHint;
 
+  /// No description provided for @mapAreaOverlayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Area boundaries'**
+  String get mapAreaOverlayLabel;
+
+  /// No description provided for @mapAreaOverlayHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Green zones = neighborhoods you\'ve visited. Boundaries from OpenStreetMap where available.'**
+  String get mapAreaOverlayHint;
+
   /// No description provided for @mapHeatSummary.
   ///
   /// In en, this message translates to:
@@ -1717,6 +1729,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Certificate copied — paste to share'**
   String get trailCertificateCopied;
+
+  /// No description provided for @mapPinClusterSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{shown} pins shown · {total} in archive'**
+  String mapPinClusterSummary(int shown, int total);
+
+  /// No description provided for @homeChainsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your chains & spots'**
+  String get homeChainsTitle;
+
+  /// No description provided for @homeChainsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches from your onboarding picks'**
+  String get homeChainsSubtitle;
+
+  /// No description provided for @onboardingPickOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick one'**
+  String get onboardingPickOne;
+
+  /// No description provided for @onboardingChainsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite chains & spots'**
+  String get onboardingChainsTitle;
+
+  /// No description provided for @onboardingChainsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional — helps surface deals and familiar names.'**
+  String get onboardingChainsSubtitle;
+
+  /// No description provided for @addVisitTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit time'**
+  String get addVisitTime;
+
+  /// No description provided for @addVisitTimeOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional — when you ate'**
+  String get addVisitTimeOptional;
+
+  /// No description provided for @nearMeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Near you now'**
+  String get nearMeTitle;
+
+  /// No description provided for @nearMeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Spots within a few km'**
+  String get nearMeSubtitle;
+
+  /// No description provided for @planTonightTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan tonight'**
+  String get planTonightTitle;
+
+  /// No description provided for @planTonightHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Long-press map pins to add (max 3)'**
+  String get planTonightHint;
+
+  /// No description provided for @planTonightEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No stops picked yet'**
+  String get planTonightEmpty;
+
+  /// No description provided for @planTonightOpenMaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Maps'**
+  String get planTonightOpenMaps;
+
+  /// No description provided for @quickLogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick log'**
+  String get quickLogTitle;
+
+  /// No description provided for @quickLogContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to full form'**
+  String get quickLogContinue;
+
+  /// No description provided for @syncQueuePending.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 visit waiting to sync} other{{count} visits waiting to sync}}'**
+  String syncQueuePending(int count);
+
+  /// No description provided for @dishRankingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'City archive rating'**
+  String get dishRankingTitle;
+
+  /// No description provided for @dishOnMenuAt.
+  ///
+  /// In en, this message translates to:
+  /// **'On the menu at'**
+  String get dishOnMenuAt;
+
+  /// No description provided for @dishNoMenuHits.
+  ///
+  /// In en, this message translates to:
+  /// **'No menu matches yet — log visits with this dish.'**
+  String get dishNoMenuHits;
+
+  /// No description provided for @exploreUnvisited.
+  ///
+  /// In en, this message translates to:
+  /// **'Haven\'t been'**
+  String get exploreUnvisited;
+
+  /// No description provided for @explorePriceBudget.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget'**
+  String get explorePriceBudget;
+
+  /// No description provided for @explorePriceMid.
+  ///
+  /// In en, this message translates to:
+  /// **'Mid-range'**
+  String get explorePriceMid;
+
+  /// No description provided for @explorePriceSplurge.
+  ///
+  /// In en, this message translates to:
+  /// **'Splurge'**
+  String get explorePriceSplurge;
+
+  /// No description provided for @dictionaryFromCraving.
+  ///
+  /// In en, this message translates to:
+  /// **'What is {term}?'**
+  String dictionaryFromCraving(String term);
+
+  /// No description provided for @shareVisitImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Share as image'**
+  String get shareVisitImage;
+
+  /// No description provided for @voiceOnSpread.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice memory'**
+  String get voiceOnSpread;
+
+  /// No description provided for @visitTemplateApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Use usual order'**
+  String get visitTemplateApply;
+
+  /// No description provided for @visitTemplateSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Usual order saved for next time'**
+  String get visitTemplateSaved;
 }
 
 class _AppLocalizationsDelegate

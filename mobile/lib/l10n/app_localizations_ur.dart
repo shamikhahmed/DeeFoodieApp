@@ -620,6 +620,13 @@ class AppLocalizationsUr extends AppLocalizations {
       'Lit pin = visit ho chuki. Grey = abhi explore karna hai.';
 
   @override
+  String get mapAreaOverlayLabel => 'Area boundaries';
+
+  @override
+  String get mapAreaOverlayHint =>
+      'Green zone = visit ki hui ilaqay. Boundaries OpenStreetMap se.';
+
+  @override
   String mapHeatSummary(int visited, int total) {
     return '$visited visited / $total map par';
   }
@@ -902,4 +909,98 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get trailCertificateCopied => 'Copied';
+
+  @override
+  String mapPinClusterSummary(int shown, int total) {
+    return '$shown pins · $total archive mein';
+  }
+
+  @override
+  String get homeChainsTitle => 'Aap ke chains';
+
+  @override
+  String get homeChainsSubtitle => 'Onboarding picks se match';
+
+  @override
+  String get onboardingPickOne => 'Ek chunein';
+
+  @override
+  String get onboardingChainsTitle => 'Favorite chains';
+
+  @override
+  String get onboardingChainsSubtitle =>
+      'Optional — deals aur jaani spots ke liye.';
+
+  @override
+  String get addVisitTime => 'Visit ka waqt';
+
+  @override
+  String get addVisitTimeOptional => 'Optional — kab khaya';
+
+  @override
+  String get nearMeTitle => 'Ab paas';
+
+  @override
+  String get nearMeSubtitle => 'Kuch km ke andar';
+
+  @override
+  String get planTonightTitle => 'Aaj raat ka plan';
+
+  @override
+  String get planTonightHint => 'Map pin long-press se add (max 3)';
+
+  @override
+  String get planTonightEmpty => 'Abhi koi stop nahi';
+
+  @override
+  String get planTonightOpenMaps => 'Maps mein kholo';
+
+  @override
+  String get quickLogTitle => 'Quick log';
+
+  @override
+  String get quickLogContinue => 'Full form par jao';
+
+  @override
+  String syncQueuePending(int count) {
+    return '$count visits sync pending';
+  }
+
+  @override
+  String get dishRankingTitle => 'Shehar ki rating';
+
+  @override
+  String get dishOnMenuAt => 'Menu par';
+
+  @override
+  String get dishNoMenuHits => 'Abhi menu match nahi';
+
+  @override
+  String get exploreUnvisited => 'Nahi gaye';
+
+  @override
+  String get explorePriceBudget => 'Budget';
+
+  @override
+  String get explorePriceMid => 'Mid-range';
+
+  @override
+  String get explorePriceSplurge => 'Splurge';
+
+  @override
+  String dictionaryFromCraving(String term) {
+    return '$term kya hai?';
+  }
+
+  @override
+  String get shareVisitImage => 'Image share';
+
+  @override
+  String get voiceOnSpread => 'Voice memory';
+
+  @override
+  String get visitTemplateApply => 'Usual order';
+
+  @override
+  String get visitTemplateSaved => 'Agli dafa ke liye save';
 }

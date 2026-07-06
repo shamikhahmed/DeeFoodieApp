@@ -13,7 +13,7 @@ class SyncQueueNotifier extends Notifier<int> {
       payload: payload,
       createdAt: DateTime.now(),
     ));
-    state++;
+    state = (await SyncQueueStore.load()).length;
   }
 
   Future<int> processQueue() async {
@@ -42,6 +42,7 @@ class SyncQueueNotifier extends Notifier<int> {
               favoriteItem: op.payload['favoriteItem'] as String?,
               companions: op.payload['companions'] as String?,
               photoUrls: List<String>.from(op.payload['photoUrls'] ?? []),
+              time: op.payload['time'] as String?,
             );
           case SyncOpType.createEatery:
             await api.createEatery(
@@ -72,7 +73,7 @@ class SyncQueueNotifier extends Notifier<int> {
       ref.invalidate(visitsProvider);
       ref.invalidate(allEateriesProvider);
     }
-    state = done;
+    state = (await SyncQueueStore.load()).length;
     return done;
   }
 }

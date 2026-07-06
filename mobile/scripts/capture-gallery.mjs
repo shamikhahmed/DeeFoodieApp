@@ -25,7 +25,10 @@ const SECTIONS = [
   {
     id: 'onboarding',
     label: 'Onboarding',
-    items: [{ id: 'onboarding', label: 'Onboarding', route: '/onboarding', setup: 'onboarding' }],
+    items: [
+      { id: 'onboarding-welcome', label: 'Onboarding — welcome', route: '/onboarding', setup: 'onboarding' },
+      { id: 'onboarding-chains', label: 'Onboarding — chains', route: '/onboarding', setup: 'onboardingChains' },
+    ],
   },
   {
     id: 'tabs',
@@ -113,7 +116,7 @@ function buildManifest(captured) {
 
 async function prepPage(page, setup) {
   await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 60000 });
-  if (setup === 'onboarding') {
+  if (setup === 'onboarding' || setup === 'onboardingChains') {
     await page.evaluate(() => localStorage.removeItem('flutter.onboarding_completed'));
     return;
   }
@@ -121,6 +124,14 @@ async function prepPage(page, setup) {
 }
 
 async function afterNavigate(page, setup) {
+  if (setup === 'onboardingChains') {
+    for (let i = 0; i < 5; i++) {
+      await page.getByRole('button', { name: /Next|Aagay|Continue/i }).click({ timeout: 8000 }).catch(() => {});
+      await page.waitForTimeout(400);
+    }
+    await page.waitForTimeout(600);
+    return;
+  }
   if (setup === 'journalTimeline') {
     await page.getByText('Timeline', { exact: true }).click({ timeout: 15000 }).catch(() => {});
     await page.waitForTimeout(1200);

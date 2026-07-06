@@ -38,6 +38,23 @@ For mobile:
 cd mobile && flutter pub get && flutter gen-l10n && flutter run -d chrome
 ```
 
+## 2026-07-06 — Wave 3 (mobile)
+
+- Near me GPS, plan tonight map, dish detail + rankings
+- Compare visits, explore filter memory, price bands, unvisited filter
+- Home seasonal/friend/mood/quick-log; share visit image; visit templates
+- Journal year dividers + mood themes; sync queue banner; API visit time
+
+## 2026-07-06 — Wave 10/10 (mobile)
+
+- Map viewport clustering + heat toggle summary
+- Home **Your chains** row from taste profile
+- Visit time on add/edit + journal spread
+- Roman Urdu onboarding chip labels (`onboarding_labels.dart`)
+- `scripts/fetch-backgrounds.sh` for Wikimedia JPGs
+- Gallery: onboarding welcome + chains captures
+
+
 Offline demo: `assets/demo/archive.json` (**10,000 eateries**, OSM + enriched details, trails, visits). Rebuild:
 
 ```bash

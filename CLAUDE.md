@@ -234,7 +234,7 @@ Navigation: bottom tab bar — Home, Explore, Map, Journal, Profile. Everything 
 - Keep this file updated: when a real architectural decision is made that deviates from this doc, edit this file in the same commit.
 - No dead code, no speculative abstractions, no unused scaffolding "for later."
 
-## 9. Scaffold Status (as of 2026-07-05)
+## 9. Scaffold Status (as of 2026-07-06)
 
 Already built — do not re-scaffold, extend instead:
 - `/api`: NestJS app, PrismaService, stub auth middleware, `GET /health`, Dockerfile, **storage service** (`STORAGE_DRIVER=local|s3`).
@@ -245,7 +245,13 @@ Already built — do not re-scaffold, extend instead:
 - `.github/workflows/ios-build.yml`: Flutter test + iOS build on `mobile/**` pushes.
 - **`/mobile` Flutter app (Phase 1 + Waves 2–4 on demo archive):**
   - 5-tab shell (Home · Explore · Map · Journal · Profile)
-  - Journal **book view** (page curl, flip controls, stickers/memory photos on spreads)
+  - Journal **book view** (page curl, live page counter, visit time on spread, friends/family memory photos, 21 stickers)
+  - **Map clustering** at low zoom + heat toggle; **plan tonight** + trail highlights + visit-sized pins
+  - **Home** — chains, near-me GPS, seasonal strip, friend card, mood strip, quick log; score → map heat
+  - **Explore** — persisted filters, haven't-been, price bands, deal badges
+  - **Dish detail** `/dish/:name` with visit-based rankings; compare visits on eatery profile
+  - **Journal** — year dividers, mood spread themes, voice chip, share-as-image
+  - **Visit templates** per eatery; sync queue banner; API visit `time` sync
   - App-wide ruled paper + paper cards
   - Add/Edit Visit journal forms, Food Passport, Trails, wrapped, seasonal, collections, order, miss-it, dictionary
   - Dev screen gallery: `mobile/screen-gallery.html` (VaultCap-style, not shipped in app)

@@ -25,9 +25,12 @@ cd build/web && python3 ../scripts/serve-web.py 8765
 
 Open **http://localhost:8765** — use `serve-web.py` (not plain `http.server`) so deep links work. Hard refresh after each build (`Cmd+Shift+R`).
 
-**Screen gallery (dev-only, not in app):** VaultCap-style standalone `mobile/screen-gallery.html` — every screen PNG, section filters, lightbox, offline via embedded manifest.
+**Screen gallery (dev-only, not in app):** VaultCap-style standalone `mobile/screen-gallery.html` — onboarding welcome + chains, map, journal book. Regen:
+
+**Wave 3 features:** near-me GPS · plan tonight · dish detail · compare visits · filter memory · quick log · share image · visit templates · sync banner. `flutter test` — 12 tests.
 
 ```bash
+bash scripts/fetch-backgrounds.sh   # once — Wikimedia JPGs
 cd mobile
 flutter build web
 cd build/web && python3 ../../scripts/serve-web.py 8765   # separate terminal

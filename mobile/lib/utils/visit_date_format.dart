@@ -24,8 +24,22 @@ VisitDateParts parseVisitDateParts(String iso) {
   }
 }
 
-Widget visitDateHeader(String iso, {double scale = 1}) {
+String formatVisitTime(String? time) {
+  if (time == null || time.isEmpty) return '';
+  try {
+    final parts = time.split(':');
+    if (parts.length >= 2) {
+      final h = int.parse(parts[0]);
+      final m = int.parse(parts[1]);
+      return DateFormat('h:mm a').format(DateTime(2000, 1, 1, h, m));
+    }
+  } catch (_) {}
+  return time;
+}
+
+Widget visitDateHeader(String iso, {double scale = 1, String? time}) {
   final parts = parseVisitDateParts(iso);
+  final timeLabel = formatVisitTime(time);
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -67,6 +81,18 @@ Widget visitDateHeader(String iso, {double scale = 1}) {
           ),
         ],
       ),
+      if (timeLabel.isNotEmpty)
+        Padding(
+          padding: EdgeInsets.only(top: 4 * scale),
+          child: Text(
+            timeLabel,
+            style: GoogleFonts.inter(
+              fontSize: 12 * scale,
+              fontWeight: FontWeight.w500,
+              color: AppColors.inkBrown.withValues(alpha: 0.72),
+            ),
+          ),
+        ),
     ],
   );
 }

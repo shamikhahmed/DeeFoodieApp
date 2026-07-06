@@ -15,12 +15,14 @@ class EateryCard extends StatelessWidget {
     this.index = 0,
     this.compact = false,
     this.onTap,
+    this.showDealBadge = false,
   });
 
   final Eatery eatery;
   final int index;
   final bool compact;
   final VoidCallback? onTap;
+  final bool showDealBadge;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +66,7 @@ class EateryCard extends StatelessWidget {
           children: [
             _EateryThumbnail(eatery: eatery, size: 56),
             const SizedBox(width: AppSpacing.sm + 4),
-            Expanded(child: _EateryMeta(eatery: eatery, compact: false)),
+            Expanded(child: _EateryMeta(eatery: eatery, compact: false, showDealBadge: showDealBadge)),
           ],
         ),
       ),
@@ -89,7 +91,7 @@ class EateryCard extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.sm),
             Expanded(
-              child: _EateryMeta(eatery: eatery, compact: true),
+              child: _EateryMeta(eatery: eatery, compact: true, showDealBadge: showDealBadge),
             ),
           ],
         ),
@@ -158,10 +160,11 @@ class _PlaceholderThumb extends StatelessWidget {
 }
 
 class _EateryMeta extends StatelessWidget {
-  const _EateryMeta({required this.eatery, required this.compact});
+  const _EateryMeta({required this.eatery, required this.compact, this.showDealBadge = false});
 
   final Eatery eatery;
   final bool compact;
+  final bool showDealBadge;
 
   @override
   Widget build(BuildContext context) {
@@ -174,6 +177,20 @@ class _EateryMeta extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: compact ? MainAxisSize.max : MainAxisSize.min,
       children: [
+        if (showDealBadge) ...[
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            decoration: BoxDecoration(
+              color: AppColors.darkGreen.withValues(alpha: 0.14),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              'My deal',
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.darkGreen, fontWeight: FontWeight.w700),
+            ),
+          ),
+          const SizedBox(height: 4),
+        ],
         if (eatery.areaName != null && !compact) ...[
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),

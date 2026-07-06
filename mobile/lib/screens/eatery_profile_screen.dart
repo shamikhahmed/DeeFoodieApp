@@ -15,6 +15,7 @@ import '../widgets/content_sheet.dart';
 import '../widgets/eatery_visit_card.dart';
 import '../widgets/glass_surface.dart';
 import '../widgets/primary_button.dart';
+import '../widgets/compare_visits_section.dart';
 import '../widgets/nearby_eateries_section.dart';
 import '../widgets/pioneer_badge.dart';
 import '../widgets/eatery_details_section.dart';
@@ -260,6 +261,10 @@ class EateryProfileScreen extends ConsumerWidget {
                       if (visits.isNotEmpty) ...[
                         const SizedBox(height: AppSpacing.lg),
                         SectionHeader(title: l10n.eateryVisitsHere, subtitle: l10n.compareVisitsHint(visits.length)),
+                        if (visits.length >= 2) ...[
+                          CompareVisitsSection(visits: visits),
+                          const SizedBox(height: AppSpacing.md),
+                        ],
                         ...visits.map((v) => EateryVisitCard(visit: v, onTap: () => openVisit(context, v.id))),
                       ] else ...[
                         const SizedBox(height: AppSpacing.lg),

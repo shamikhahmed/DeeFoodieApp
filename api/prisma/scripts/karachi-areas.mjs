@@ -20,7 +20,7 @@ export const AREAS = [
   'Bahria Town Karachi',
 ];
 
-const CENTROIDS = {
+export const CENTROIDS = {
   DHA: [24.8, 67.04],
   'DHA Phase 6': [24.79, 67.06],
   'DHA Phase 8': [24.77, 67.08],

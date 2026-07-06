@@ -100,6 +100,7 @@ class ApiClient {
     String? favoriteItem,
     String? companions,
     List<String>? photoUrls,
+    String? time,
   }) async {
     final res = await http.post(
       Uri.parse('$baseUrl/visits'),
@@ -116,6 +117,7 @@ class ApiClient {
         if (favoriteItem != null) 'favoriteItem': favoriteItem,
         if (companions != null) 'companions': companions,
         if (photoUrls != null && photoUrls.isNotEmpty) 'photoUrls': photoUrls,
+        if (time != null) 'time': time,
       }),
     );
     if (res.statusCode != 201 && res.statusCode != 200) {

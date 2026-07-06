@@ -22,4 +22,25 @@ export class TaxonomyController {
       select: { id: true, name: true, description: true, popularDishes: true },
     });
   }
+
+  @Get('areas/boundaries')
+  async areaBoundaries() {
+    const rows = await this.prisma.$queryRaw<
+      { name: string; ring: string | null; source: string }[]
+    >`
+      SELECT a.name,
+        CASE WHEN a.boundary IS NOT NULL
+          THEN ST_AsGeoJSON(a.boundary::geometry)::text
+          ELSE NULL
+        END AS ring,
+        CASE WHEN a.boundary IS NOT NULL THEN 'postgis' ELSE 'missing' END AS source
+      FROM "Area" a
+      ORDER BY a.name ASC
+    `;
+    return rows.map((r) => ({
+      name: r.name,
+      source: r.source,
+      geojson: r.ring ? JSON.parse(r.ring) : null,
+    }));
+  }
 }

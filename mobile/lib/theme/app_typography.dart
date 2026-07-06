@@ -64,10 +64,10 @@ TextTheme buildAppTextTheme(Brightness brightness) {
     bodyLarge: body.copyWith(fontSize: 16, height: 1.5, color: primary),
     bodyMedium: body.copyWith(fontSize: 14, height: 1.5, color: primary),
     bodySmall: body.copyWith(fontSize: 12, height: 1.45, color: secondary, fontWeight: FontWeight.w500),
-    labelLarge: hand.copyWith(
-      fontSize: 16,
+    labelLarge: body.copyWith(
+      fontSize: 15,
       fontWeight: FontWeight.w600,
-      color: secondary,
+      color: isDark ? primary : AppColors.inkBrown,
     ),
     labelMedium: body.copyWith(
       fontSize: 12,

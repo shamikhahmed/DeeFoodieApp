@@ -18,7 +18,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node prisma/seed.ts",
+    "areas:fetch": "node prisma/scripts/fetch-osm-area-boundaries.mjs",
+    "areas:build": "node prisma/scripts/build-karachi-area-polygons.mjs",
+    "areas:import-db": "node prisma/scripts/import-area-boundaries-to-db.mjs",
+    "areas:sync": "npm run areas:fetch && npm run areas:build && npm run areas:import-db"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

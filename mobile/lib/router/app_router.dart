@@ -14,6 +14,7 @@ import '../screens/areas_screen.dart';
 import '../screens/area_detail_screen.dart';
 import '../screens/favorites_screen.dart';
 import '../screens/wishlist_screen.dart';
+import '../screens/dish_detail_screen.dart';
 import '../screens/dishes_screen.dart';
 import '../screens/food_passport_screen.dart';
 import '../screens/trails_screen.dart';
@@ -115,7 +116,8 @@ GoRouter createRouter() {
         parentNavigatorKey: _rootNavigatorKey,
         builder: (_, state) {
           final eateryId = state.uri.queryParameters['eateryId'];
-          return AddVisitScreen(preselectedEateryId: eateryId);
+          final rating = double.tryParse(state.uri.queryParameters['rating'] ?? '');
+          return AddVisitScreen(preselectedEateryId: eateryId, initialRating: rating);
         },
       ),
       GoRoute(
@@ -142,6 +144,13 @@ GoRouter createRouter() {
         path: '/dishes',
         parentNavigatorKey: _rootNavigatorKey,
         builder: (_, __) => const DishesScreen(),
+      ),
+      GoRoute(
+        path: '/dish/:name',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, state) => DishDetailScreen(
+          dishName: Uri.decodeComponent(state.pathParameters['name']!),
+        ),
       ),
       GoRoute(
         path: '/passport',

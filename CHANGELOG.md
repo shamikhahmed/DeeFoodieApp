@@ -197,6 +197,41 @@ All notable changes to this project. Dates in YYYY-MM-DD.
 - Demo archive **7500 eateries** (117 base + 7383 generated)
 - `TARGET_TOTAL = 7500`
 
+## 2026-07-06 — Wave 3: free feature pack (mobile + API)
+
+### Added
+- **Near me** — GPS banner on Home (`geolocator`, `near_me_provider`)
+- **Plan tonight** — map long-press picks (max 3) + Apple Maps route (`plan_tonight_provider`)
+- **Dish detail** — `/dish/:name` with city-wide visit ratings (`dish_rankings.dart`)
+- **Compare visits** — side-by-side earliest vs latest on eatery profile
+- **Explore** — haven't-been filter, price-band chips, persisted filters (`explore_filter_prefs`)
+- **Deal badges** on Explore `EateryCard` when user cards match
+- **Home** — seasonal strip, friend activity card, mood strip → journal, quick log sheet
+- **Karachi Score** tap → map heat mode
+- **Journal** — year dividers, mood-tinted spreads, voice memory chip on spread
+- **Share visit** — styled card image via `share_plus`
+- **Visit templates** — save/apply usual order per eatery
+- **Area stories** — neighborhood copy on area detail
+- **Map** — visit-count pin sizing, trail stop highlight, plan tonight FAB
+- **Sync queue banner** — pending count + retry; API `time` on createVisit
+- Tests: `dish_rankings_test`, `price_band_test`
+
+## 2026-07-06 — Wave 10/10 polish (mobile + web)
+
+### Added
+- **Map clustering** — grid clusters at low zoom, tap to zoom in (`map_cluster.dart`, `MapScreen` stateful + `MapController`)
+- **Home chain row** — surfaces `favoriteChains` from taste profile via name matching (`chain_match.dart`)
+- **Visit time** — optional time on add/edit visit, shown on journal book spread header
+- **Bundled Karachi backgrounds** — `scripts/fetch-backgrounds.sh` curls Wikimedia JPGs into `assets/backgrounds/`
+- **Bilingual onboarding chips** — Roman Urdu labels via `onboarding_labels.dart` when locale is `ur`
+- **Tests** — `map_cluster_test.dart`, `chain_match_test.dart`
+- **Gallery captures** — onboarding welcome + chains steps in `capture-gallery.mjs`
+
+### Changed
+- **Typography** — `labelLarge` uses Inter + `inkBrown` (fixes low-contrast Caveat on ratings)
+- **Screen gallery footer** + README feature table updated for 10/10 wave
+- **l10n** — `mapPinClusterSummary`, `homeChainsTitle`, `onboardingChainsTitle`, `addVisitTime`
+
 ## 2026-07-05 — Screen gallery → VaultCap standalone (not in app)
 
 ### Changed

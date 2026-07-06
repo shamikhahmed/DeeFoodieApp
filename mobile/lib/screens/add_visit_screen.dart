@@ -17,11 +17,13 @@ import '../widgets/menu_item_picker.dart';
 import '../data/sync_queue_store.dart';
 import '../providers/sync_queue_provider.dart';
 import '../providers/profile_prefs_provider.dart';
+import '../providers/visit_templates_provider.dart';
 
 class AddVisitScreen extends ConsumerStatefulWidget {
-  const AddVisitScreen({super.key, this.preselectedEateryId});
+  const AddVisitScreen({super.key, this.preselectedEateryId, this.initialRating});
 
   final String? preselectedEateryId;
+  final double? initialRating;
 
   @override
   ConsumerState<AddVisitScreen> createState() => _AddVisitScreenState();
@@ -36,6 +38,7 @@ class _AddVisitScreenState extends ConsumerState<AddVisitScreen> {
   final _selectedItems = <SelectedMenuItem>[];
   String? _photoDataUrl;
   String? _companion;
+  TimeOfDay _visitTime = TimeOfDay.now();
 
   static const _moods = ['Friends', 'Family', 'Date', 'Alone', 'Late Night', 'Celebration'];
   static const _companionOptions = ['Alone', 'Friends', 'Family', 'Work'];
@@ -44,6 +47,7 @@ class _AddVisitScreenState extends ConsumerState<AddVisitScreen> {
   void initState() {
     super.initState();
     _eateryId = widget.preselectedEateryId;
+    if (widget.initialRating != null) _rating = widget.initialRating!;
   }
 
   @override
@@ -64,6 +68,17 @@ class _AddVisitScreenState extends ConsumerState<AddVisitScreen> {
     final bytes = await file.readAsBytes();
     setState(() => _photoDataUrl = 'data:image/jpeg;base64,${base64Encode(bytes)}');
     AppHaptics.light();
+  }
+
+  String _visitTimeString() {
+    final h = _visitTime.hour.toString().padLeft(2, '0');
+    final m = _visitTime.minute.toString().padLeft(2, '0');
+    return '$h:$m';
+  }
+
+  Future<void> _pickTime() async {
+    final picked = await showTimePicker(context: context, initialTime: _visitTime);
+    if (picked != null) setState(() => _visitTime = picked);
   }
 
   Future<void> _save() async {
@@ -102,6 +117,7 @@ class _AddVisitScreenState extends ConsumerState<AddVisitScreen> {
         favoriteItem: _favoriteItem,
         companions: _companion,
         photoUrls: photoUrls.isNotEmpty ? photoUrls : null,
+        time: _visitTimeString(),
       );
       ref.invalidate(visitsProvider);
       if (mounted) context.pop();
@@ -109,6 +125,7 @@ class _AddVisitScreenState extends ConsumerState<AddVisitScreen> {
       await ref.read(syncQueueProvider.notifier).enqueue(SyncOpType.createVisit, {
         'eateryId': eateryId,
         'date': DateTime.now().toIso8601String().split('T').first,
+        'time': _visitTimeString(),
         'rating': _rating,
         'reviewText': _reviewController.text.isEmpty ? null : _reviewController.text,
         'moodTags': _moodTags.toList(),
@@ -144,6 +161,7 @@ class _AddVisitScreenState extends ConsumerState<AddVisitScreen> {
               photoUrls: _photoDataUrl != null ? [_photoDataUrl!] : const [],
               areaName: eatery?.areaName,
               companions: _companion,
+              time: _visitTimeString(),
             ),
           );
       ref.invalidate(visitsProvider);
@@ -193,6 +211,8 @@ class _AddVisitScreenState extends ConsumerState<AddVisitScreen> {
                   onChanged: (v) => setState(() {
                     _eateryId = v;
                     _selectedItems.clear();
+                    final template = ref.read(visitTemplatesProvider)[v];
+                    if (template != null) _selectedItems.addAll(template);
                   }),
                 ),
                 const SizedBox(height: AppSpacing.lg),
@@ -218,6 +238,23 @@ class _AddVisitScreenState extends ConsumerState<AddVisitScreen> {
               ..clear()
               ..addAll(v)),
           ),
+          if (effectiveEateryId != null && _selectedItems.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: AppSpacing.sm),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton.icon(
+                  onPressed: () async {
+                    await ref.read(visitTemplatesProvider.notifier).save(effectiveEateryId!, List.from(_selectedItems));
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.visitTemplateSaved)));
+                    }
+                  },
+                  icon: const Icon(Icons.bookmark_outline, size: 18),
+                  label: Text(l10n.visitTemplateApply),
+                ),
+              ),
+            ),
           const SizedBox(height: AppSpacing.sm),
           JournalFormSection(
             child: Row(
@@ -232,6 +269,19 @@ class _AddVisitScreenState extends ConsumerState<AddVisitScreen> {
                 ),
                 IconButton(onPressed: _addCustomItem, icon: const Icon(CupertinoIcons.plus_circle_fill, color: AppColors.coffeeBrown)),
               ],
+            ),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          JournalFormSection(
+            title: l10n.addVisitTime,
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(l10n.addVisitTimeOptional, style: journalInkStyle(context, size: 15)),
+              trailing: Text(
+                _visitTime.format(context),
+                style: journalInkStyle(context, size: 17),
+              ),
+              onTap: _pickTime,
             ),
           ),
           const SizedBox(height: AppSpacing.md),

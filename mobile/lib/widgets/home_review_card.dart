@@ -42,7 +42,7 @@ class HomeReviewCard extends StatelessWidget {
                   children: [
                     const Icon(Icons.star_rounded, color: AppColors.rust, size: 16),
                     const SizedBox(width: 4),
-                    Text(rating.toStringAsFixed(1), style: Theme.of(context).textTheme.labelLarge),
+                    Text(rating.toStringAsFixed(1), style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.inkBrown)),
                     const Spacer(),
                     if (userName != null)
                       Text(userName!, style: Theme.of(context).textTheme.labelSmall),

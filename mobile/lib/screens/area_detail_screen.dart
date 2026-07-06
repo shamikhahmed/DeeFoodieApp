@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../api/providers.dart';
+import '../constants/area_stories.dart';
 import '../constants/food_visuals.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
@@ -85,7 +86,14 @@ class AreaDetailScreen extends ConsumerWidget {
                 if (i == 1) {
                   return Padding(
                     padding: const EdgeInsets.only(top: AppSpacing.md, bottom: AppSpacing.md),
-                    child: Text(l10n.areaEateryCount(list.length), style: Theme.of(context).textTheme.titleMedium),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(areaStory(areaName), style: Theme.of(context).textTheme.bodyMedium),
+                        const SizedBox(height: AppSpacing.sm),
+                        Text(l10n.areaEateryCount(list.length), style: Theme.of(context).textTheme.titleMedium),
+                      ],
+                    ),
                   );
                 }
                 final e = list[i - 2];

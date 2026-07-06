@@ -11,6 +11,8 @@ import '../data/local_visit_store.dart';
 import '../providers/local_eateries_provider.dart';
 import '../providers/discount_cards_provider.dart';
 import '../utils/discount_match.dart';
+import '../utils/price_band.dart';
+import '../data/explore_filter_prefs.dart';
 import 'api_client.dart';
 
 final apiClientProvider = Provider<ApiClient>((ref) => ApiClient());
@@ -21,42 +23,88 @@ final apiOnlineProvider = FutureProvider<bool>((ref) async {
 });
 
 class EateryFilterState {
-  const EateryFilterState({this.q = '', this.venueType, this.cuisine, this.area});
+  const EateryFilterState({
+    this.q = '',
+    this.venueType,
+    this.cuisine,
+    this.area,
+    this.unvisitedOnly = false,
+    this.priceBand,
+  });
 
   final String q;
   final String? venueType;
   final String? cuisine;
   final String? area;
+  final bool unvisitedOnly;
+  final PriceBand? priceBand;
 
   EateryFilterState copyWith({
     String? q,
     String? Function()? venueType,
     String? Function()? cuisine,
     String? Function()? area,
+    bool? unvisitedOnly,
+    PriceBand? Function()? priceBand,
   }) {
     return EateryFilterState(
       q: q ?? this.q,
       venueType: venueType != null ? venueType() : this.venueType,
       cuisine: cuisine != null ? cuisine() : this.cuisine,
       area: area != null ? area() : this.area,
+      unvisitedOnly: unvisitedOnly ?? this.unvisitedOnly,
+      priceBand: priceBand != null ? priceBand() : this.priceBand,
     );
   }
 }
 
 class EateryFilterNotifier extends Notifier<EateryFilterState> {
   @override
-  EateryFilterState build() => const EateryFilterState();
+  EateryFilterState build() {
+    _load();
+    return const EateryFilterState();
+  }
 
-  void setQuery(String q) => state = state.copyWith(q: q);
-  void toggleVenueType(String? v) =>
-      state = state.copyWith(venueType: () => state.venueType == v ? null : v);
-  void toggleCuisine(String? c) =>
-      state = state.copyWith(cuisine: () => state.cuisine == c ? null : c);
-  void toggleArea(String? a) =>
-      state = state.copyWith(area: () => state.area == a ? null : a);
+  Future<void> _load() async {
+    final saved = await ExploreFilterPrefs.load();
+    if (saved != null) state = saved;
+  }
+
+  void _persist() => ExploreFilterPrefs.save(state);
+
+  void setQuery(String q) {
+    state = state.copyWith(q: q);
+    _persist();
+  }
+
+  void toggleVenueType(String? v) {
+    state = state.copyWith(venueType: () => state.venueType == v ? null : v);
+    _persist();
+  }
+
+  void toggleCuisine(String? c) {
+    state = state.copyWith(cuisine: () => state.cuisine == c ? null : c);
+    _persist();
+  }
+
+  void toggleArea(String? a) {
+    state = state.copyWith(area: () => state.area == a ? null : a);
+    _persist();
+  }
+
+  void toggleUnvisited() {
+    state = state.copyWith(unvisitedOnly: !state.unvisitedOnly);
+    _persist();
+  }
+
+  void togglePriceBand(PriceBand band) {
+    state = state.copyWith(priceBand: () => state.priceBand == band ? null : band);
+    _persist();
+  }
 
   void applyCraving(String craving) {
     state = EateryFilterState(q: cravingExploreQuery(craving));
+    _persist();
   }
 }
 
@@ -319,10 +367,21 @@ final sortedEateriesProvider = Provider<AsyncValue<List<Eatery>>>((ref) {
   final sort = ref.watch(exploreSortProvider);
   final myDealsOnly = ref.watch(myDealsFilterProvider);
   final cards = ref.watch(discountCardsProvider);
+  final filters = ref.watch(eateryFilterProvider);
+  final visitedIds = ref.watch(visitsProvider).maybeWhen(
+        data: (v) => v.map((x) => x.eateryId).toSet(),
+        orElse: () => <String>{},
+      );
   return eateries.whenData((list) {
     var filtered = list;
     if (myDealsOnly && cards.isNotEmpty) {
       filtered = filtered.where((e) => dealsForUserAtEatery(cards, e.name).isNotEmpty).toList();
+    }
+    if (filters.unvisitedOnly) {
+      filtered = filtered.where((e) => !visitedIds.contains(e.id)).toList();
+    }
+    if (filters.priceBand != null) {
+      filtered = filtered.where((e) => priceBandForEatery(e) == filters.priceBand).toList();
     }
     return sortEateries(filtered, sort);
   });

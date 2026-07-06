@@ -1,10 +1,16 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
+import '../l10n/app_localizations.dart';
 import '../models/visit.dart';
 import '../theme/app_theme.dart';
 import '../utils/eatery_display.dart';
+import 'share_visit_card.dart';
 
-class ShareVisitSheet extends StatelessWidget {
+class ShareVisitSheet extends StatefulWidget {
   const ShareVisitSheet({super.key, required this.visit});
 
   final Visit visit;
@@ -18,7 +24,15 @@ class ShareVisitSheet extends StatelessWidget {
     );
   }
 
+  @override
+  State<ShareVisitSheet> createState() => _ShareVisitSheetState();
+}
+
+class _ShareVisitSheetState extends State<ShareVisitSheet> {
+  final _cardKey = GlobalKey();
+
   String _shareText() {
+    final visit = widget.visit;
     final lines = <String>[
       '${visit.eateryName} · ${visit.rating.toStringAsFixed(1)}★',
       if (visit.reviewText != null && visit.reviewText!.trim().isNotEmpty) visit.reviewText!.trim(),
@@ -30,8 +44,24 @@ class ShareVisitSheet extends StatelessWidget {
     return lines.where((l) => l.isNotEmpty).join('\n');
   }
 
+  Future<void> _shareImage() async {
+    final boundary = _cardKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+    if (boundary == null) return;
+    final image = await boundary.toImage(pixelRatio: 3);
+    final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+    if (bytes == null) return;
+    await Share.shareXFiles(
+      [XFile.fromData(bytes.buffer.asUint8List(), mimeType: 'image/png', name: 'visit.png')],
+      text: widget.visit.eateryName,
+    );
+    if (mounted) Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final visit = widget.visit;
+
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.md),
       child: DecoratedBox(
@@ -48,29 +78,23 @@ class ShareVisitSheet extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(
-                children: [
-                  const Icon(Icons.star_rounded, color: AppColors.rust, size: 28),
-                  const SizedBox(width: 8),
-                  Text(visit.rating.toStringAsFixed(1), style: Theme.of(context).textTheme.headlineMedium),
-                  const Spacer(),
-                  Text(visit.date, style: Theme.of(context).textTheme.labelSmall),
-                ],
+              RepaintBoundary(
+                key: _cardKey,
+                child: ShareVisitCard(visit: visit),
               ),
-              const SizedBox(height: AppSpacing.sm),
-              Text(visit.eateryName, style: Theme.of(context).textTheme.titleLarge),
-              if (visit.reviewText != null) ...[
-                const SizedBox(height: AppSpacing.md),
-                Text(visit.reviewText!, style: Theme.of(context).textTheme.bodyLarge?.copyWith(height: 1.45)),
-              ],
-              if (visit.items.isNotEmpty) ...[
-                const SizedBox(height: AppSpacing.md),
-                Text('Ordered', style: Theme.of(context).textTheme.labelLarge),
-                const SizedBox(height: 4),
-                Text(visit.items.map((i) => i.name).join(' · '), style: Theme.of(context).textTheme.bodyMedium),
-              ],
               const SizedBox(height: AppSpacing.lg),
               FilledButton.icon(
+                onPressed: _shareImage,
+                icon: const Icon(Icons.image_outlined),
+                label: Text(l10n.shareVisitImage),
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.coffeeBrown,
+                  foregroundColor: AppColors.paper,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              OutlinedButton.icon(
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: _shareText()));
                   Navigator.pop(context);
@@ -79,12 +103,7 @@ class ShareVisitSheet extends StatelessWidget {
                   );
                 },
                 icon: const Icon(Icons.ios_share_rounded),
-                label: const Text('Copy to share'),
-                style: FilledButton.styleFrom(
-                  backgroundColor: AppColors.coffeeBrown,
-                  foregroundColor: AppColors.paper,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                ),
+                label: const Text('Copy text'),
               ),
             ],
           ),

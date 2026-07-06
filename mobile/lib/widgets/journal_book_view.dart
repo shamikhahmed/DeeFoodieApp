@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../providers/visit_book_memory_provider.dart';
+import '../widgets/voice_note_player.dart';
+import '../utils/journal_spread_theme.dart';
 import '../utils/visit_date_format.dart';
 import '../widgets/journal_sticker_tile.dart';
 import '../widgets/book_memory_picker_sheet.dart';
@@ -124,20 +126,35 @@ class _JournalBookViewState extends ConsumerState<JournalBookView> {
     }
     final visit = widget.visits[index - 1];
     final memory = ref.watch(visitBookMemoryProvider)[visit.id] ?? const VisitBookMemory();
-    return _BookSpread(
-      visit: visit,
-      memory: memory,
-      page: index + 1,
-      total: _itemCount,
-      onShare: () => widget.onShare(visit),
-      onAddMemory: () => BookMemoryPickerSheet.show(
-        context,
-        visitId: visit.id,
-        onSticker: (id) => ref.read(visitBookMemoryProvider.notifier).addSticker(visit.id, id),
-        onPhoto: (url, label) => ref.read(visitBookMemoryProvider.notifier).addPhoto(visit.id, url, label: label),
-      ),
-      onRemoveSticker: (id) => ref.read(visitBookMemoryProvider.notifier).removeSticker(visit.id, id),
-      onRemovePhoto: (i) => ref.read(visitBookMemoryProvider.notifier).removePhoto(visit.id, i),
+    final year = DateTime.tryParse(visit.date)?.year;
+    final prevYear = index > 1 ? DateTime.tryParse(widget.visits[index - 2].date)?.year : null;
+    final theme = spreadThemeForVisit(visit.moodTags);
+    return Column(
+      children: [
+        if (year != null && year != prevYear)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Text('— $year —', style: GoogleFonts.fraunces(fontSize: 16, color: AppColors.coffeeBrown)),
+          ),
+        Expanded(
+          child: _BookSpread(
+            visit: visit,
+            memory: memory,
+            paperTint: theme.paperTint,
+            page: index + 1,
+            total: _itemCount,
+            onShare: () => widget.onShare(visit),
+            onAddMemory: () => BookMemoryPickerSheet.show(
+              context,
+              visitId: visit.id,
+              onSticker: (id) => ref.read(visitBookMemoryProvider.notifier).addSticker(visit.id, id),
+              onPhoto: (url, label) => ref.read(visitBookMemoryProvider.notifier).addPhoto(visit.id, url, label: label),
+            ),
+            onRemoveSticker: (id) => ref.read(visitBookMemoryProvider.notifier).removeSticker(visit.id, id),
+            onRemovePhoto: (i) => ref.read(visitBookMemoryProvider.notifier).removePhoto(visit.id, i),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -254,6 +271,7 @@ class _BookSpread extends StatelessWidget {
     required this.onAddMemory,
     required this.onRemoveSticker,
     required this.onRemovePhoto,
+    this.paperTint = AppColors.paper,
   });
 
   final Visit visit;
@@ -264,6 +282,7 @@ class _BookSpread extends StatelessWidget {
   final VoidCallback onAddMemory;
   final void Function(String stickerId) onRemoveSticker;
   final void Function(int index) onRemovePhoto;
+  final Color paperTint;
 
   @override
   Widget build(BuildContext context) {
@@ -273,9 +292,9 @@ class _BookSpread extends StatelessWidget {
 
     return Row(
       children: [
-        Expanded(child: _BookPage(side: _BookSide.left, page: page, total: total, child: _leftPage(context, date, visit, onShare, memory, onAddMemory, onRemoveSticker))),
+        Expanded(child: _BookPage(side: _BookSide.left, page: page, total: total, paperTint: paperTint, child: _leftPage(context, date, visit, onShare, memory, onAddMemory, onRemoveSticker))),
         Container(width: 1, color: AppColors.inkBrown.withValues(alpha: 0.12)),
-        Expanded(child: _BookPage(side: _BookSide.right, page: page, total: total, child: _rightPage(context, visit, photo, memory, onRemovePhoto))),
+        Expanded(child: _BookPage(side: _BookSide.right, page: page, total: total, paperTint: paperTint, child: _rightPage(context, visit, photo, memory, onRemovePhoto))),
       ],
     );
   }
@@ -286,7 +305,7 @@ class _BookSpread extends StatelessWidget {
       children: [
         Row(
           children: [
-            Expanded(child: visitDateHeader(date)),
+            Expanded(child: visitDateHeader(date, time: visit.time)),
             IconButton(
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
@@ -334,6 +353,21 @@ class _BookSpread extends StatelessWidget {
                 .take(4)
                 .map((t) => Text('· $t', style: GoogleFonts.caveat(fontSize: 15, color: AppColors.darkGreen)))
                 .toList(),
+          ),
+        ],
+        if (visit.voiceNoteDataUrl != null) ...[
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              VoiceNotePlayer(dataUrl: visit.voiceNoteDataUrl!, compact: true),
+              const Spacer(),
+              IconButton(
+                tooltip: 'Edit visit',
+                visualDensity: VisualDensity.compact,
+                icon: Icon(Icons.edit_outlined, size: 18, color: AppColors.textMuted),
+                onPressed: () => context.push('/edit-visit/${visit.id}'),
+              ),
+            ],
           ),
         ],
         if (visit.totalBill != null) ...[
@@ -452,16 +486,22 @@ class _BookPage extends StatelessWidget {
     required this.child,
     required this.page,
     required this.total,
+    this.paperTint = AppColors.paper,
   });
 
   final _BookSide side;
   final Widget child;
   final int page;
   final int total;
+  final Color paperTint;
 
   @override
   Widget build(BuildContext context) {
-    final base = side == _BookSide.left ? const Color(0xFFFFF9F0) : const Color(0xFFFFFBF4);
+    final base = Color.lerp(
+      side == _BookSide.left ? const Color(0xFFFFF9F0) : const Color(0xFFFFFBF4),
+      paperTint,
+      0.35,
+    )!;
 
     return Stack(
       children: [

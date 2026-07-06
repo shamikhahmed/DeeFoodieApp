@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../api/providers.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/profile_prefs_provider.dart';
-import '../widgets/friend_activity_card.dart';
 import '../widgets/glass_surface.dart';
 import '../widgets/profile_avatar.dart';
 
