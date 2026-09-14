@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'l10n/app_localizations.dart';
 import 'providers/app_prefs_provider.dart';
 import 'router/app_router.dart';
@@ -12,6 +11,8 @@ import 'services/map_cache_service.dart';
 import 'services/map_prefetch_service.dart';
 import 'theme/app_scroll_behavior.dart';
 import 'theme/app_theme.dart';
+import 'utils/url_strategy_stub.dart'
+    if (dart.library.html) 'utils/url_strategy_web.dart';
 
 import 'providers/sync_queue_provider.dart';
 
@@ -91,9 +92,8 @@ class _DeeFoodieAppState extends ConsumerState<DeeFoodieApp> {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
-    setUrlStrategy(HashUrlStrategy());
+    configureUrlStrategy();
   } else {
-    setUrlStrategy(PathUrlStrategy());
     await MapCacheService.instance.init();
     unawaited(MapPrefetchService.instance.startIfNeeded());
   }
