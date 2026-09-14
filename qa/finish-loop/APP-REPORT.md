@@ -2,6 +2,8 @@
 
 **Status:** Tier 1 (implementable gates) · **Version:** 1.0.0+3 · **Tag:** `v1.0.0+3`  
 **Branch:** `finish/deefoodie` → merged `main`  
+**Merge SHA:** `5326273` (Tier 1) · follow-ups `13a0cb8` (iOS CI green)  
+**CI:** iOS Build success — https://github.com/shamikhahmed/DeeFoodieApp/actions/runs/34905169209 · Web Deploy success  
 **Live URL:** n/a (private TestFlight; no public install)  
 **Live smoke:** n/a (no App Store / TestFlight upload — out of scope)
 
