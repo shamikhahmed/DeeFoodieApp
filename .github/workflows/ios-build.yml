@@ -33,7 +33,7 @@ jobs:
       # Simulator build avoids Apple Development Team requirement on CI (no codesign).
       # Device IPA / TestFlight remains owner EXTERNAL (docs/store/TESTFLIGHT.md).
       - name: Build iOS simulator (no codesign)
-        run: flutter build ios --simulator --release --no-codesign
+        run: flutter build ios --simulator --debug --no-codesign
 
       - name: Device run notes
         run: |
