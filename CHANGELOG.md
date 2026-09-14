@@ -1,3 +1,6 @@
+## 1.0.0+2 — 2026-09-14
+- Release (C-01): patch bump after Phase 0 DB bind + stub-auth production refuse.
+
 # Changelog
 
 All notable changes to this project. Dates in YYYY-MM-DD.
