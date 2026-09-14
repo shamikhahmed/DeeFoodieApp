@@ -14,8 +14,12 @@ import '../utils/discount_match.dart';
 import '../utils/price_band.dart';
 import '../data/explore_filter_prefs.dart';
 import 'api_client.dart';
+import '../services/auth_token_store.dart';
 
-final apiClientProvider = Provider<ApiClient>((ref) => ApiClient());
+final apiClientProvider = Provider<ApiClient>((ref) {
+  final token = ref.watch(authTokenProvider).asData?.value;
+  return ApiClient(bearerToken: token);
+});
 
 final apiOnlineProvider = FutureProvider<bool>((ref) async {
   if (kIsWeb) return false;
@@ -143,6 +147,11 @@ class LocalVisitsNotifier extends Notifier<List<Visit>> {
 
   Future<void> remove(String id) async {
     state = state.where((v) => v.id != id).toList();
+    await _persist();
+  }
+
+  Future<void> clearAll() async {
+    state = [];
     await _persist();
   }
 }

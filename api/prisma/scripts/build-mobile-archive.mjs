@@ -3,7 +3,13 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
-import { pickCoverPhoto, pickAreaPhotoAsset, pickVisitPhoto, photoStats } from './venue-photo-sources.mjs';
+import {
+  pickCoverPhotoMeta,
+  pickAreaPhotoAsset,
+  pickVisitPhoto,
+  photoStats,
+  cuisineIllustration,
+} from './venue-photo-sources.mjs';
 import { enrichEatery } from './iconic-venues-enriched.mjs';
 import { formatAddress, phoneFor, hoursFor, areaPhotoAsset } from './karachi-areas.mjs';
 
@@ -63,10 +69,14 @@ function attachRichFields(raw, idx) {
     famousFor: raw.famousFor ?? (raw.cuisines?.[0] ? `Known for ${raw.cuisines[0].toLowerCase()} in ${area}` : null),
     dataSource: raw.dataSource ?? 'generated',
   });
-  const cover = pickCoverPhoto(enriched);
+  const coverMeta = pickCoverPhotoMeta(enriched);
   return {
     ...enriched,
-    coverPhotoUrl: cover,
+    coverPhotoUrl: coverMeta?.url ?? null,
+    coverPhotoKind: coverMeta?.kind ?? 'placeholder',
+    coverPhotoLicense: coverMeta?.license ?? null,
+    coverPhotoAttribution: coverMeta?.attribution ?? null,
+    cuisineIllustrationUrl: cuisineIllustration(cuisines),
     areaPhotoAsset: pickAreaPhotoAsset({ ...enriched, areaName: area }),
     mustTryName: mustTry.name,
     mustTryPrice: mustTry.price,
@@ -128,6 +138,10 @@ const eateries = sources.slice(0, TARGET_TOTAL).map((e) => {
     externalReviews: base.externalReviews ?? [],
     promotions: base.promotions ?? [],
     coverPhotoUrl: base.coverPhotoUrl,
+    coverPhotoKind: base.coverPhotoKind,
+    coverPhotoLicense: base.coverPhotoLicense,
+    coverPhotoAttribution: base.coverPhotoAttribution,
+    cuisineIllustrationUrl: base.cuisineIllustrationUrl,
     areaPhotoAsset: base.areaPhotoAsset ?? areaPhotoAsset(base.areaName),
     dataSource: base.dataSource,
     avgRating: 0,

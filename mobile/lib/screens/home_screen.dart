@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import '../api/providers.dart';
 import '../models/eatery.dart';
 import '../providers/user_archive_prefs_provider.dart';
@@ -106,7 +107,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 index: 0,
                 child: HomeHero(
                   greeting: greeting,
-                  appName: l10n.appName,
+                  title: l10n.homeTitle,
                   scoreLabel: l10n.homeKarachiScore,
                   onScoreTap: () {
                     ref.read(mapHeatModeProvider.notifier).enable();
@@ -114,7 +115,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   },
                   accentPhotoUrl: craving.isNotEmpty ? cravingPhoto(craving) : accentPhoto('hero'),
                   subtitle: eateriesAsync.maybeWhen(
-                    data: (e) => '${e.length} Karachi eateries in the city archive',
+                    data: (e) {
+                      final fmt = NumberFormat.decimalPattern();
+                      return l10n.homeArchiveSubtitle(fmt.format(e.length));
+                    },
                     orElse: () => null,
                   ),
                   karachiScorePct: visitsAsync.maybeWhen(
@@ -266,6 +270,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 index: 5,
                 child: HomePersonalDashboard(
                   stats: stats,
+                  archiveEateryCount: eateriesAsync.asData?.value.length,
                   onJournalTap: () => context.go('/journal'),
                   onPassportTap: () => context.push('/passport'),
                 ),

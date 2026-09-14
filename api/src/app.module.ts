@@ -7,9 +7,17 @@ import { EateriesModule } from './eateries/eateries.module';
 import { TaxonomyModule } from './taxonomy/taxonomy.module';
 import { VisitsModule } from './visits/visits.module';
 import { PhotosModule } from './photos/photos.module';
+import { MeModule } from './me/me.module';
 
 @Module({
-  imports: [PrismaModule, EateriesModule, TaxonomyModule, VisitsModule, PhotosModule],
+  imports: [
+    PrismaModule,
+    EateriesModule,
+    TaxonomyModule,
+    VisitsModule,
+    PhotosModule,
+    MeModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'DeeFoodieApp';
+  String get appName => 'DeeFoodie';
 
   @override
   String get navHome => 'Home';
@@ -27,7 +27,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navProfile => 'Profile';
 
   @override
-  String get homeGreeting => 'Your Karachi archive';
+  String get homeTitle => 'Your Karachi';
+
+  @override
+  String get homeGreeting => 'Welcome back';
+
+  @override
+  String homeArchiveSubtitle(String count) {
+    return '$count places in the city archive';
+  }
+
+  @override
+  String homeArchiveCount(String count) {
+    return '$count places in the archive';
+  }
 
   @override
   String get homeKarachiScore => 'Karachi Score';
@@ -1035,4 +1048,101 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get visitTemplateSaved => 'Usual order saved for next time';
+
+  @override
+  String get privacySectionTitle => 'Privacy';
+
+  @override
+  String get privacyDeleteMyData => 'Delete my data';
+
+  @override
+  String get privacyDeleteConfirmTitle => 'Delete my data?';
+
+  @override
+  String get privacyDeleteConfirmBody =>
+      'This removes your visits, photos and collections from DeeFoodie\'s server and this device. It can\'t be undone.';
+
+  @override
+  String get privacyDeleteConfirmAction => 'Delete my data';
+
+  @override
+  String get privacyOpenPolicy => 'Privacy policy';
+
+  @override
+  String get privacySupport => 'Support';
+
+  @override
+  String get privacyTokenHint => 'Access token';
+
+  @override
+  String get privacyTokenSave => 'Save token';
+
+  @override
+  String get privacyTokenSaved => 'Token saved on this device';
+
+  @override
+  String get privacyTokenClear => 'Clear token';
+
+  @override
+  String get locationDeniedTitle => 'Location is off for DeeFoodie';
+
+  @override
+  String get locationDeniedBody =>
+      'Turn on location access in Settings to see places near you. Your location isn\'t shared.';
+
+  @override
+  String get locationDeniedOpenSettings => 'Open Settings';
+
+  @override
+  String get locationServicesOffTitle => 'Location services are off';
+
+  @override
+  String get locationServicesOffBody =>
+      'Turn on Location Services to see places near you.';
+
+  @override
+  String get offlineArchiveTitle => 'Using the offline archive';
+
+  @override
+  String get offlineArchiveBody =>
+      'Couldn\'t reach the server. You\'re browsing the bundled Karachi archive.';
+
+  @override
+  String get syncFailedTitle => 'Couldn\'t sync';
+
+  @override
+  String get syncFailedBody => 'Check your connection and try again.';
+
+  @override
+  String get uploadFailedTitle => 'Couldn\'t upload photo';
+
+  @override
+  String get uploadFailedBody =>
+      'The photo stayed on this device. Try again when you\'re online.';
+
+  @override
+  String get uploadRetry => 'Retry upload';
+
+  @override
+  String get duplicateEateryTitle => 'This place may already be in the archive';
+
+  @override
+  String get duplicateEateryBody =>
+      'Check the list before adding another entry with the same name.';
+
+  @override
+  String get closedVenueLabel => 'Closed';
+
+  @override
+  String get closedVenueBody =>
+      'This place is marked closed. You can still read past visits.';
+
+  @override
+  String get journalPrevPage => 'Previous page';
+
+  @override
+  String get journalNextPage => 'Next page';
+
+  @override
+  String get mapSummaryLabel => 'Map of Karachi eateries';
 }

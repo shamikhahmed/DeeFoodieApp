@@ -67,6 +67,10 @@ class Eatery {
     this.address,
     this.description,
     this.coverPhotoUrl,
+    this.coverPhotoKind,
+    this.coverPhotoLicense,
+    this.coverPhotoAttribution,
+    this.cuisineIllustrationUrl,
     this.areaPhotoAsset,
     this.avgRating,
     this.status = 'active',
@@ -99,6 +103,11 @@ class Eatery {
   final String? address;
   final String? description;
   final String? coverPhotoUrl;
+  /// venue | chain | placeholder — only venue/chain may show as venue photos.
+  final String? coverPhotoKind;
+  final String? coverPhotoLicense;
+  final String? coverPhotoAttribution;
+  final String? cuisineIllustrationUrl;
   final String? areaPhotoAsset;
   final double? avgRating;
   final String status;
@@ -132,6 +141,10 @@ class Eatery {
       address: json['address'] as String?,
       description: json['description'] as String?,
       coverPhotoUrl: json['coverPhotoUrl'] as String?,
+      coverPhotoKind: json['coverPhotoKind'] as String?,
+      coverPhotoLicense: json['coverPhotoLicense'] as String?,
+      coverPhotoAttribution: json['coverPhotoAttribution'] as String?,
+      cuisineIllustrationUrl: json['cuisineIllustrationUrl'] as String?,
       areaPhotoAsset: json['areaPhotoAsset'] as String?,
       avgRating: json['avgRating'] == null ? null : (json['avgRating'] as num).toDouble(),
       status: json['status'] as String? ?? 'active',

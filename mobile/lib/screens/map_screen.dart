@@ -136,7 +136,9 @@ class _MapScreenState extends ConsumerState<MapScreen> with AutomaticKeepAliveCl
             ? boundaries.areas.where((b) => _polygonIntersectsBounds(b, bounds)).toList()
             : const <AreaBoundary>[];
 
-        return Stack(
+        return Semantics(
+          label: l10n.mapSummaryLabel,
+          child: Stack(
           fit: StackFit.expand,
           children: [
             Padding(
@@ -299,6 +301,7 @@ class _MapScreenState extends ConsumerState<MapScreen> with AutomaticKeepAliveCl
               ),
             ),
           ],
+        ),
         );
       },
       loading: () => const Center(child: CircularProgressIndicator(color: AppColors.coffeeBrown)),

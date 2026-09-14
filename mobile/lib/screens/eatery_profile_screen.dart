@@ -99,9 +99,9 @@ class EateryProfileScreen extends ConsumerWidget {
                   background: Stack(
                     fit: StackFit.expand,
                     children: [
-                      if (eateryHasNetworkCover(eatery))
+                      if (eateryDisplayCoverUrl(eatery) != null)
                         CachedNetworkImage(
-                          imageUrl: eatery.coverPhotoUrl!,
+                          imageUrl: eateryDisplayCoverUrl(eatery)!,
                           fit: BoxFit.cover,
                           errorWidget: (_, _, _) => Image.asset(eateryCoverAsset(eatery), fit: BoxFit.cover),
                         )
@@ -141,6 +141,19 @@ class EateryProfileScreen extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      if (eatery.status == 'closed') ...[
+                        GlassSurface(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(l10n.closedVenueLabel, style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.rust)),
+                              const SizedBox(height: 4),
+                              Text(l10n.closedVenueBody, style: Theme.of(context).textTheme.bodySmall),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                      ],
                       PioneerBadge(eateryId: eateryId),
                       const SizedBox(height: AppSpacing.md),
                       DiscountDealsSection(eateryName: eatery.name),

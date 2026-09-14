@@ -20,12 +20,16 @@ class ApiClient {
       defaultValue: 'http://localhost:3000',
     ),
     this.userId,
+    this.bearerToken,
   });
 
   final String baseUrl;
   final String? userId;
+  final String? bearerToken;
 
   Map<String, String> get _headers => {
+        if (bearerToken != null && bearerToken!.isNotEmpty)
+          'Authorization': 'Bearer $bearerToken',
         if (userId != null) 'X-User-Id': userId!,
         'Content-Type': 'application/json',
       };
@@ -141,6 +145,17 @@ class ApiClient {
     if (res.statusCode != 200 && res.statusCode != 204) throw ApiException(res.statusCode, res.body);
   }
 
+  Future<Map<String, dynamic>> deleteMyData() async {
+    final res = await http
+        .delete(Uri.parse('$baseUrl/me/data'), headers: _headers)
+        .timeout(const Duration(seconds: 30));
+    if (res.statusCode != 200 && res.statusCode != 204) {
+      throw ApiException(res.statusCode, res.body);
+    }
+    if (res.body.isEmpty) return {'ok': true};
+    return jsonDecode(res.body) as Map<String, dynamic>;
+  }
+
   Future<Map<String, dynamic>> createEatery({
     required String name,
     required String areaId,
@@ -178,7 +193,11 @@ class ApiClient {
     String filename = 'photo.jpg',
   }) async {
     final req = http.MultipartRequest('POST', Uri.parse('$baseUrl/photos'));
-    if (userId != null) req.headers['X-User-Id'] = userId!;
+    req.headers.addAll({
+      if (bearerToken != null && bearerToken!.isNotEmpty)
+        'Authorization': 'Bearer $bearerToken',
+      if (userId != null) 'X-User-Id': userId!,
+    });
     req.files.add(http.MultipartFile.fromBytes('file', bytes, filename: filename));
     if (visitId != null) req.fields['visitId'] = visitId;
     if (eateryId != null) req.fields['eateryId'] = eateryId;

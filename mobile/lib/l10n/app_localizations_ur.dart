@@ -9,7 +9,7 @@ class AppLocalizationsUr extends AppLocalizations {
   AppLocalizationsUr([String locale = 'ur']) : super(locale);
 
   @override
-  String get appName => 'DeeFoodieApp';
+  String get appName => 'DeeFoodie';
 
   @override
   String get navHome => 'Ghar';
@@ -27,7 +27,20 @@ class AppLocalizationsUr extends AppLocalizations {
   String get navProfile => 'Profile';
 
   @override
-  String get homeGreeting => 'Aap ka Karachi archive';
+  String get homeTitle => 'Aap ka Karachi';
+
+  @override
+  String get homeGreeting => 'Khush aamdeed';
+
+  @override
+  String homeArchiveSubtitle(String count) {
+    return 'Archive mein $count jagahein';
+  }
+
+  @override
+  String homeArchiveCount(String count) {
+    return 'Archive mein $count jagahein';
+  }
 
   @override
   String get homeKarachiScore => 'Karachi Score';
@@ -1007,4 +1020,101 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get visitTemplateSaved => 'Agli dafa ke liye save';
+
+  @override
+  String get privacySectionTitle => 'Privacy';
+
+  @override
+  String get privacyDeleteMyData => 'Mera data delete karen';
+
+  @override
+  String get privacyDeleteConfirmTitle => 'Mera data delete?';
+
+  @override
+  String get privacyDeleteConfirmBody =>
+      'Yeh aap ke visits, photos aur collections server aur is device se hata dega. Wapas nahi aa sakta.';
+
+  @override
+  String get privacyDeleteConfirmAction => 'Delete karen';
+
+  @override
+  String get privacyOpenPolicy => 'Privacy policy';
+
+  @override
+  String get privacySupport => 'Support';
+
+  @override
+  String get privacyTokenHint => 'Access token';
+
+  @override
+  String get privacyTokenSave => 'Token save';
+
+  @override
+  String get privacyTokenSaved => 'Token is device par save ho gaya';
+
+  @override
+  String get privacyTokenClear => 'Token clear';
+
+  @override
+  String get locationDeniedTitle => 'Location band hai';
+
+  @override
+  String get locationDeniedBody =>
+      'Settings mein location on karen. Location share nahi hoti.';
+
+  @override
+  String get locationDeniedOpenSettings => 'Settings kholo';
+
+  @override
+  String get locationServicesOffTitle => 'Location services band hain';
+
+  @override
+  String get locationServicesOffBody =>
+      'Paas ki jagahein dekhne ke liye Location Services on karen.';
+
+  @override
+  String get offlineArchiveTitle => 'Offline archive';
+
+  @override
+  String get offlineArchiveBody =>
+      'Server nahi mila. Bundled archive chal raha hai.';
+
+  @override
+  String get syncFailedTitle => 'Sync nahi hua';
+
+  @override
+  String get syncFailedBody => 'Connection check karen aur dubara try karen.';
+
+  @override
+  String get uploadFailedTitle => 'Photo upload nahi hui';
+
+  @override
+  String get uploadFailedBody =>
+      'Photo is device par hai. Online hokar try karen.';
+
+  @override
+  String get uploadRetry => 'Dubara try';
+
+  @override
+  String get duplicateEateryTitle => 'Yeh jaga pehle se ho sakti hai';
+
+  @override
+  String get duplicateEateryBody =>
+      'Naya entry add karne se pehle list check karen.';
+
+  @override
+  String get closedVenueLabel => 'Band';
+
+  @override
+  String get closedVenueBody =>
+      'Yeh jaga closed mark hai. Purane visits padh sakte hain.';
+
+  @override
+  String get journalPrevPage => 'Pichla page';
+
+  @override
+  String get journalNextPage => 'Agla page';
+
+  @override
+  String get mapSummaryLabel => 'Karachi eateries ka map';
 }

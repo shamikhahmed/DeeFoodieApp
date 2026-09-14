@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appName.
   ///
   /// In en, this message translates to:
-  /// **'DeeFoodieApp'**
+  /// **'DeeFoodie'**
   String get appName;
 
   /// No description provided for @navHome.
@@ -134,11 +134,29 @@ abstract class AppLocalizations {
   /// **'Profile'**
   String get navProfile;
 
+  /// No description provided for @homeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Karachi'**
+  String get homeTitle;
+
   /// No description provided for @homeGreeting.
   ///
   /// In en, this message translates to:
-  /// **'Your Karachi archive'**
+  /// **'Welcome back'**
   String get homeGreeting;
+
+  /// No description provided for @homeArchiveSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} places in the city archive'**
+  String homeArchiveSubtitle(String count);
+
+  /// No description provided for @homeArchiveCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} places in the archive'**
+  String homeArchiveCount(String count);
 
   /// No description provided for @homeKarachiScore.
   ///
@@ -1909,6 +1927,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Usual order saved for next time'**
   String get visitTemplateSaved;
+
+  /// No description provided for @privacySectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get privacySectionTitle;
+
+  /// No description provided for @privacyDeleteMyData.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete my data'**
+  String get privacyDeleteMyData;
+
+  /// No description provided for @privacyDeleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete my data?'**
+  String get privacyDeleteConfirmTitle;
+
+  /// No description provided for @privacyDeleteConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This removes your visits, photos and collections from DeeFoodie\'s server and this device. It can\'t be undone.'**
+  String get privacyDeleteConfirmBody;
+
+  /// No description provided for @privacyDeleteConfirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete my data'**
+  String get privacyDeleteConfirmAction;
+
+  /// No description provided for @privacyOpenPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get privacyOpenPolicy;
+
+  /// No description provided for @privacySupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get privacySupport;
+
+  /// No description provided for @privacyTokenHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Access token'**
+  String get privacyTokenHint;
+
+  /// No description provided for @privacyTokenSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save token'**
+  String get privacyTokenSave;
+
+  /// No description provided for @privacyTokenSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Token saved on this device'**
+  String get privacyTokenSaved;
+
+  /// No description provided for @privacyTokenClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear token'**
+  String get privacyTokenClear;
+
+  /// No description provided for @locationDeniedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location is off for DeeFoodie'**
+  String get locationDeniedTitle;
+
+  /// No description provided for @locationDeniedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on location access in Settings to see places near you. Your location isn\'t shared.'**
+  String get locationDeniedBody;
+
+  /// No description provided for @locationDeniedOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get locationDeniedOpenSettings;
+
+  /// No description provided for @locationServicesOffTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location services are off'**
+  String get locationServicesOffTitle;
+
+  /// No description provided for @locationServicesOffBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on Location Services to see places near you.'**
+  String get locationServicesOffBody;
+
+  /// No description provided for @offlineArchiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Using the offline archive'**
+  String get offlineArchiveTitle;
+
+  /// No description provided for @offlineArchiveBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t reach the server. You\'re browsing the bundled Karachi archive.'**
+  String get offlineArchiveBody;
+
+  /// No description provided for @syncFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t sync'**
+  String get syncFailedTitle;
+
+  /// No description provided for @syncFailedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection and try again.'**
+  String get syncFailedBody;
+
+  /// No description provided for @uploadFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t upload photo'**
+  String get uploadFailedTitle;
+
+  /// No description provided for @uploadFailedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The photo stayed on this device. Try again when you\'re online.'**
+  String get uploadFailedBody;
+
+  /// No description provided for @uploadRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry upload'**
+  String get uploadRetry;
+
+  /// No description provided for @duplicateEateryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This place may already be in the archive'**
+  String get duplicateEateryTitle;
+
+  /// No description provided for @duplicateEateryBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the list before adding another entry with the same name.'**
+  String get duplicateEateryBody;
+
+  /// No description provided for @closedVenueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get closedVenueLabel;
+
+  /// No description provided for @closedVenueBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This place is marked closed. You can still read past visits.'**
+  String get closedVenueBody;
+
+  /// No description provided for @journalPrevPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous page'**
+  String get journalPrevPage;
+
+  /// No description provided for @journalNextPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Next page'**
+  String get journalNextPage;
+
+  /// No description provided for @mapSummaryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Map of Karachi eateries'**
+  String get mapSummaryLabel;
 }
 
 class _AppLocalizationsDelegate

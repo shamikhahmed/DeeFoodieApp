@@ -1,12 +1,25 @@
 {
   "@@locale": "ur",
-  "appName": "DeeFoodieApp",
+  "appName": "DeeFoodie",
   "navHome": "Ghar",
   "navExplore": "Talash",
   "navMap": "Naksha",
   "navJournal": "Journal",
   "navProfile": "Profile",
-  "homeGreeting": "Aap ka Karachi archive",
+  "homeTitle": "Aap ka Karachi",
+  "homeGreeting": "Khush aamdeed",
+  "homeArchiveSubtitle": "Archive mein {count} jagahein",
+  "@homeArchiveSubtitle": {
+    "placeholders": {
+      "count": {"type": "String"}
+    }
+  },
+  "homeArchiveCount": "Archive mein {count} jagahein",
+  "@homeArchiveCount": {
+    "placeholders": {
+      "count": {"type": "String"}
+    }
+  },
   "homeKarachiScore": "Karachi Score",
   "homeRecentVisits": "Haal ke Visits",
   "homeContinueJournal": "Journal Jari Rakhein",
@@ -314,5 +327,35 @@
   "shareVisitImage": "Image share",
   "voiceOnSpread": "Voice memory",
   "visitTemplateApply": "Usual order",
-  "visitTemplateSaved": "Agli dafa ke liye save"
+  "visitTemplateSaved": "Agli dafa ke liye save",
+  "privacySectionTitle": "Privacy",
+  "privacyDeleteMyData": "Mera data delete karen",
+  "privacyDeleteConfirmTitle": "Mera data delete?",
+  "privacyDeleteConfirmBody": "Yeh aap ke visits, photos aur collections server aur is device se hata dega. Wapas nahi aa sakta.",
+  "privacyDeleteConfirmAction": "Delete karen",
+  "privacyOpenPolicy": "Privacy policy",
+  "privacySupport": "Support",
+  "privacyTokenHint": "Access token",
+  "privacyTokenSave": "Token save",
+  "privacyTokenSaved": "Token is device par save ho gaya",
+  "privacyTokenClear": "Token clear",
+  "locationDeniedTitle": "Location band hai",
+  "locationDeniedBody": "Settings mein location on karen. Location share nahi hoti.",
+  "locationDeniedOpenSettings": "Settings kholo",
+  "locationServicesOffTitle": "Location services band hain",
+  "locationServicesOffBody": "Paas ki jagahein dekhne ke liye Location Services on karen.",
+  "offlineArchiveTitle": "Offline archive",
+  "offlineArchiveBody": "Server nahi mila. Bundled archive chal raha hai.",
+  "syncFailedTitle": "Sync nahi hua",
+  "syncFailedBody": "Connection check karen aur dubara try karen.",
+  "uploadFailedTitle": "Photo upload nahi hui",
+  "uploadFailedBody": "Photo is device par hai. Online hokar try karen.",
+  "uploadRetry": "Dubara try",
+  "duplicateEateryTitle": "Yeh jaga pehle se ho sakti hai",
+  "duplicateEateryBody": "Naya entry add karne se pehle list check karen.",
+  "closedVenueLabel": "Band",
+  "closedVenueBody": "Yeh jaga closed mark hai. Purane visits padh sakte hain.",
+  "journalPrevPage": "Pichla page",
+  "journalNextPage": "Agla page",
+  "mapSummaryLabel": "Karachi eateries ka map"
 }
