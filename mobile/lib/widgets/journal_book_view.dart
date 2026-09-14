@@ -52,6 +52,7 @@ class _JournalBookViewState extends ConsumerState<JournalBookView> {
   @override
   Widget build(BuildContext context) {
     if (widget.visits.isEmpty) return const SizedBox.shrink();
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
 
     return Column(
       children: [
@@ -59,31 +60,42 @@ class _JournalBookViewState extends ConsumerState<JournalBookView> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
             child: _BookTheatre(
-              child: PageFlipWidget(
-                key: const PageStorageKey<String>('journal-food-book'),
-                controller: _controller,
-                itemCount: _itemCount,
-                initialIndex: _pageIndex,
-                spreadMode: PageFlipSpreadMode.doubleSpread,
-                config: PageFlipConfig(
-                  skipTapAnimation: false,
-                  enableHaptics: !kIsWeb,
-                  enableSound: !kIsWeb,
-                  backgroundColor: const Color(0xFFFFF9F0),
-                  sensitivity: 0.48,
-                  cutoffForward: 0.34,
-                  cutoffPrevious: 0.38,
-                  edgeTapWidthRatio: 0.12,
-                  thinPaperStrength: 0.14,
-                  duration: const Duration(milliseconds: 440),
-                  hapticTexturePreset: PaperTexturePreset.standard,
-                ),
-                onPageChanged: (index) {
-                  setState(() => _pageIndex = index);
-                  _hintNotifier.value = index;
-                },
-                itemBuilder: _buildSpread,
-              ),
+              child: reduceMotion
+                  ? PageView.builder(
+                      key: const PageStorageKey<String>('journal-food-book-rm'),
+                      itemCount: _itemCount,
+                      controller: PageController(initialPage: _pageIndex),
+                      onPageChanged: (index) {
+                        setState(() => _pageIndex = index);
+                        _hintNotifier.value = index;
+                      },
+                      itemBuilder: _buildSpread,
+                    )
+                  : PageFlipWidget(
+                      key: const PageStorageKey<String>('journal-food-book'),
+                      controller: _controller,
+                      itemCount: _itemCount,
+                      initialIndex: _pageIndex,
+                      spreadMode: PageFlipSpreadMode.doubleSpread,
+                      config: PageFlipConfig(
+                        skipTapAnimation: false,
+                        enableHaptics: !kIsWeb,
+                        enableSound: !kIsWeb,
+                        backgroundColor: const Color(0xFFFFF9F0),
+                        sensitivity: 0.48,
+                        cutoffForward: 0.34,
+                        cutoffPrevious: 0.38,
+                        edgeTapWidthRatio: 0.12,
+                        thinPaperStrength: 0.14,
+                        duration: const Duration(milliseconds: 440),
+                        hapticTexturePreset: PaperTexturePreset.standard,
+                      ),
+                      onPageChanged: (index) {
+                        setState(() => _pageIndex = index);
+                        _hintNotifier.value = index;
+                      },
+                      itemBuilder: _buildSpread,
+                    ),
             ),
           ),
         ),
@@ -91,10 +103,20 @@ class _JournalBookViewState extends ConsumerState<JournalBookView> {
           canPrevious: _pageIndex > 0,
           canNext: _pageIndex < _itemCount - 1,
           pageLabel: 'Page ${_pageIndex + 1} / $_itemCount',
+          previousSemanticLabel: 'Previous page',
+          nextSemanticLabel: 'Next page',
           onPrevious: () {
+            if (reduceMotion) {
+              if (_pageIndex > 0) setState(() => _pageIndex -= 1);
+              return;
+            }
             if (_controller.isAttached) _controller.previousPage();
           },
           onNext: () {
+            if (reduceMotion) {
+              if (_pageIndex < _itemCount - 1) setState(() => _pageIndex += 1);
+              return;
+            }
             if (_controller.isAttached) _controller.nextPage();
           },
         ),
@@ -106,7 +128,7 @@ class _JournalBookViewState extends ConsumerState<JournalBookView> {
             child: Text(
               _pageHint(index),
               textAlign: TextAlign.center,
-              style: GoogleFonts.caveat(fontSize: 17, color: AppColors.inkBrown.withValues(alpha: 0.82)),
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
         ),

@@ -1,12 +1,25 @@
 {
   "@@locale": "en",
-  "appName": "DeeFoodieApp",
+  "appName": "DeeFoodie",
   "navHome": "Home",
   "navExplore": "Explore",
   "navMap": "Map",
   "navJournal": "Journal",
   "navProfile": "Profile",
-  "homeGreeting": "Your Karachi archive",
+  "homeTitle": "Your Karachi",
+  "homeGreeting": "Welcome back",
+  "homeArchiveSubtitle": "{count} places in the city archive",
+  "@homeArchiveSubtitle": {
+    "placeholders": {
+      "count": {"type": "String"}
+    }
+  },
+  "homeArchiveCount": "{count} places in the archive",
+  "@homeArchiveCount": {
+    "placeholders": {
+      "count": {"type": "String"}
+    }
+  },
   "homeKarachiScore": "Karachi Score",
   "homeRecentVisits": "Recent Visits",
   "homeContinueJournal": "Continue Journal",
@@ -401,5 +414,35 @@
   "shareVisitImage": "Share as image",
   "voiceOnSpread": "Voice memory",
   "visitTemplateApply": "Use usual order",
-  "visitTemplateSaved": "Usual order saved for next time"
+  "visitTemplateSaved": "Usual order saved for next time",
+  "privacySectionTitle": "Privacy",
+  "privacyDeleteMyData": "Delete my data",
+  "privacyDeleteConfirmTitle": "Delete my data?",
+  "privacyDeleteConfirmBody": "This removes your visits, photos and collections from DeeFoodie's server and this device. It can't be undone.",
+  "privacyDeleteConfirmAction": "Delete my data",
+  "privacyOpenPolicy": "Privacy policy",
+  "privacySupport": "Support",
+  "privacyTokenHint": "Access token",
+  "privacyTokenSave": "Save token",
+  "privacyTokenSaved": "Token saved on this device",
+  "privacyTokenClear": "Clear token",
+  "locationDeniedTitle": "Location is off for DeeFoodie",
+  "locationDeniedBody": "Turn on location access in Settings to see places near you. Your location isn't shared.",
+  "locationDeniedOpenSettings": "Open Settings",
+  "locationServicesOffTitle": "Location services are off",
+  "locationServicesOffBody": "Turn on Location Services to see places near you.",
+  "offlineArchiveTitle": "Using the offline archive",
+  "offlineArchiveBody": "Couldn't reach the server. You're browsing the bundled Karachi archive.",
+  "syncFailedTitle": "Couldn't sync",
+  "syncFailedBody": "Check your connection and try again.",
+  "uploadFailedTitle": "Couldn't upload photo",
+  "uploadFailedBody": "The photo stayed on this device. Try again when you're online.",
+  "uploadRetry": "Retry upload",
+  "duplicateEateryTitle": "This place may already be in the archive",
+  "duplicateEateryBody": "Check the list before adding another entry with the same name.",
+  "closedVenueLabel": "Closed",
+  "closedVenueBody": "This place is marked closed. You can still read past visits.",
+  "journalPrevPage": "Previous page",
+  "journalNextPage": "Next page",
+  "mapSummaryLabel": "Map of Karachi eateries"
 }

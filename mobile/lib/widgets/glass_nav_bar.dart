@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 
 class GlassNavBar extends StatelessWidget {
@@ -17,13 +16,14 @@ class GlassNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tokens = context.capTokens;
     return SafeArea(
       top: false,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: const Color(0xFFFFFDF8),
+          color: tokens.materialBar,
           border: Border(
-            top: BorderSide(color: AppColors.inkBrown.withValues(alpha: 0.14)),
+            top: BorderSide(color: tokens.separator),
           ),
           boxShadow: [
             BoxShadow(
@@ -36,14 +36,14 @@ class GlassNavBar extends StatelessWidget {
         child: NavigationBar(
           backgroundColor: Colors.transparent,
           height: 68,
-          indicatorColor: AppColors.coffeeBrown.withValues(alpha: 0.16),
+          indicatorColor: tokens.accent.withValues(alpha: 0.16),
           labelTextStyle: WidgetStateProperty.resolveWith((states) {
             final selected = states.contains(WidgetState.selected);
-            return GoogleFonts.caveat(
-              fontSize: 13,
-              fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-              color: selected ? AppColors.coffeeBrown : AppColors.inkBrown.withValues(alpha: 0.72),
-            );
+            return Theme.of(context).textTheme.labelSmall?.copyWith(
+                  fontSize: 11,
+                  fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+                  color: selected ? tokens.accent : tokens.textSecondary,
+                );
           }),
           selectedIndex: selectedIndex,
           onDestinationSelected: (i) {

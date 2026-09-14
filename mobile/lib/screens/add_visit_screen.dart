@@ -18,6 +18,7 @@ import '../data/sync_queue_store.dart';
 import '../providers/sync_queue_provider.dart';
 import '../providers/profile_prefs_provider.dart';
 import '../providers/visit_templates_provider.dart';
+import '../utils/strip_exif.dart';
 
 class AddVisitScreen extends ConsumerStatefulWidget {
   const AddVisitScreen({super.key, this.preselectedEateryId, this.initialRating});
@@ -63,9 +64,15 @@ class _AddVisitScreenState extends ConsumerState<AddVisitScreen> {
 
   Future<void> _pickPhoto() async {
     final picker = ImagePicker();
-    final file = await picker.pickImage(source: ImageSource.gallery, maxWidth: 1400, imageQuality: 78);
+    final file = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1400,
+      imageQuality: 78,
+      requestFullMetadata: false,
+    );
     if (file == null) return;
-    final bytes = await file.readAsBytes();
+    final raw = await file.readAsBytes();
+    final bytes = stripExifGps(raw);
     setState(() => _photoDataUrl = 'data:image/jpeg;base64,${base64Encode(bytes)}');
     AppHaptics.light();
   }

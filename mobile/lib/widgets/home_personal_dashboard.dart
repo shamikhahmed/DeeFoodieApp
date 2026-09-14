@@ -1,27 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui' show FontFeature;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
 import '../utils/archive_merge.dart';
 import '../utils/eatery_display.dart';
 
-/// Premium journal dashboard tiles on Home.
+/// Premium journal dashboard tiles on Home (P-DFD-1 / DFD-P1-02).
 class HomePersonalDashboard extends StatelessWidget {
   const HomePersonalDashboard({
     super.key,
     required this.stats,
     required this.onJournalTap,
     this.onPassportTap,
+    this.archiveEateryCount,
   });
 
   final PersonalStats stats;
   final VoidCallback onJournalTap;
   final VoidCallback? onPassportTap;
+  final int? archiveEateryCount;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final countFmt = NumberFormat.decimalPattern();
+    final archiveLine = archiveEateryCount != null
+        ? l10n.homeArchiveCount(countFmt.format(archiveEateryCount))
+        : '${stats.visitCount} visits · ${stats.uniqueEateries} places';
 
     return Container(
       decoration: BoxDecoration(
@@ -47,56 +55,97 @@ class HomePersonalDashboard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // One Caveat decorative heading per screen (DFD-P1-01).
                     Text(
                       l10n.homeDashboardTitle,
-                      style: GoogleFonts.fraunces(
-                        fontSize: 22,
+                      style: GoogleFonts.caveat(
+                        fontSize: 26,
                         fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.italic,
                         color: AppColors.inkBrown,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      '${stats.visitCount} visits · ${stats.uniqueEateries} places',
-                      style: GoogleFonts.caveat(fontSize: 16, color: AppColors.textMuted),
+                      archiveLine,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
                 ),
               ),
-              TextButton(onPressed: onJournalTap, child: Text(l10n.homeSeeAll, style: GoogleFonts.caveat(fontSize: 16))),
+              TextButton(
+                onPressed: onJournalTap,
+                child: Text(l10n.homeSeeAll, style: Theme.of(context).textTheme.labelLarge),
+              ),
             ],
           ),
           const SizedBox(height: AppSpacing.md),
-          Row(
-            children: [
-              Expanded(child: _DashTile(icon: CupertinoIcons.location_solid, value: '${stats.uniqueEateries}', label: l10n.homeDashboardPlaces, accent: AppColors.rust)),
-              const SizedBox(width: AppSpacing.sm),
-              Expanded(child: _DashTile(icon: CupertinoIcons.book_solid, value: '${stats.visitCount}', label: l10n.homeDashboardVisits, accent: AppColors.coffeeBrown)),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Row(
-            children: [
-              Expanded(
-                child: _DashTile(
-                  icon: CupertinoIcons.money_dollar_circle,
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final narrow = constraints.maxWidth < 340;
+              final tiles = [
+                _DashTile(
+                  icon: CupertinoIcons.location_solid,
+                  value: countFmt.format(stats.uniqueEateries),
+                  label: l10n.homeDashboardPlaces,
+                  accent: AppColors.rust,
+                ),
+                _DashTile(
+                  icon: CupertinoIcons.book_solid,
+                  value: countFmt.format(stats.visitCount),
+                  label: l10n.homeDashboardVisits,
+                  accent: AppColors.coffeeBrown,
+                ),
+                _DashTile(
+                  icon: CupertinoIcons.money_dollar_circle_fill,
                   value: stats.totalSpent > 0 ? formatRs(stats.totalSpent) : '—',
                   label: l10n.homeDashboardSpent,
                   accent: AppColors.darkGreen,
                 ),
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              Expanded(
-                child: _DashTile(
+                _DashTile(
                   icon: CupertinoIcons.map_pin_ellipse,
-                  value: '${stats.areasVisited}',
+                  value: countFmt.format(stats.areasVisited),
                   label: l10n.homeDashboardAreas,
                   accent: AppColors.coffeeBrown,
                   onTap: onPassportTap,
                 ),
-              ),
-            ],
+              ];
+
+              if (narrow) {
+                return Column(
+                  children: [
+                    for (var i = 0; i < tiles.length; i += 2) ...[
+                      if (i > 0) const SizedBox(height: AppSpacing.sm),
+                      Row(
+                        children: [
+                          Expanded(child: tiles[i]),
+                          const SizedBox(width: AppSpacing.sm),
+                          Expanded(child: tiles[i + 1]),
+                        ],
+                      ),
+                    ],
+                  ],
+                );
+              }
+              return Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(child: tiles[0]),
+                      const SizedBox(width: AppSpacing.sm),
+                      Expanded(child: tiles[1]),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  Row(
+                    children: [
+                      Expanded(child: tiles[2]),
+                      const SizedBox(width: AppSpacing.sm),
+                      Expanded(child: tiles[3]),
+                    ],
+                  ),
+                ],
+              );
+            },
           ),
           if (stats.visitCount > 0) ...[
             const SizedBox(height: AppSpacing.md),
@@ -107,7 +156,7 @@ class HomePersonalDashboard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     l10n.homeDashboardAvgBill(stats.avgPerVisit > 0 ? formatRs(stats.avgPerVisit) : '—'),
-                    style: GoogleFonts.caveat(fontSize: 15, color: AppColors.textSecondary),
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
                 Row(
@@ -117,10 +166,12 @@ class HomePersonalDashboard extends StatelessWidget {
                     const SizedBox(width: 4),
                     Text(
                       stats.avgRating.toStringAsFixed(1),
-                      style: GoogleFonts.fraunces(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.inkBrown),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontFeatures: const [FontFeature.tabularFigures()],
+                          ),
                     ),
                     const SizedBox(width: 6),
-                    Text(l10n.homeDashboardAvgRating, style: GoogleFonts.caveat(fontSize: 14, color: AppColors.textMuted)),
+                    Text(l10n.homeDashboardAvgRating, style: Theme.of(context).textTheme.labelSmall),
                   ],
                 ),
               ],
@@ -149,27 +200,42 @@ class _DashTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: accent.withValues(alpha: 0.08),
-      borderRadius: BorderRadius.circular(14),
-      child: InkWell(
-        onTap: onTap,
+    return Semantics(
+      label: '$label: $value',
+      button: onTap != null,
+      child: Material(
+        color: accent.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(14),
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.sm + 4),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(icon, size: 20, color: accent),
-              const SizedBox(height: 8),
-              Text(
-                value,
-                style: GoogleFonts.fraunces(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.inkBrown),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(14),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 72),
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.sm + 4),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(icon, size: 20, color: accent, semanticLabel: label),
+                  const SizedBox(height: 8),
+                  Text(
+                    value,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontFeatures: const [FontFeature.tabularFigures()],
+                        ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    label,
+                    style: Theme.of(context).textTheme.labelSmall,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
-              Text(label, style: GoogleFonts.caveat(fontSize: 14, color: AppColors.textSecondary)),
-            ],
+            ),
           ),
         ),
       ),

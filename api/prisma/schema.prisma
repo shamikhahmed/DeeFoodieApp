@@ -16,6 +16,8 @@ model User {
   name      String
   email     String   @unique
   avatarUrl String?
+  /// SHA-256 hex of the bearer token issued by `pnpm run issue-token` (D-10).
+  tokenHash String?  @unique
   joinedAt  DateTime @default(now())
 
   visits        Visit[]

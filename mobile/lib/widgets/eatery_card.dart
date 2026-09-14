@@ -86,7 +86,7 @@ class EateryCard extends StatelessWidget {
               aspectRatio: 4 / 3,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: _EateryThumbnail(eatery: eatery, fill: true),
+                child: _EateryThumbnail(eatery: eatery, fill: true, showCuisineChip: true),
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
@@ -105,28 +105,82 @@ class _EateryThumbnail extends StatelessWidget {
     required this.eatery,
     this.size = 56,
     this.fill = false,
+    this.showCuisineChip = false,
   });
 
   final Eatery eatery;
   final double size;
   final bool fill;
+  final bool showCuisineChip;
 
   @override
   Widget build(BuildContext context) {
-    final image = eateryHasNetworkCover(eatery)
+    final coverUrl = eateryDisplayCoverUrl(eatery);
+    final verified = eateryHasVerifiedNetworkCover(eatery);
+    final image = coverUrl != null
         ? CachedNetworkImage(
-            imageUrl: eatery.coverPhotoUrl!,
+            imageUrl: coverUrl,
             fit: BoxFit.cover,
             placeholder: (_, __) => _PlaceholderThumb(asset: eateryCoverAsset(eatery)),
             errorWidget: (_, __, ___) => _PlaceholderThumb(asset: eateryCoverAsset(eatery)),
           )
         : _PlaceholderThumb(asset: eateryCoverAsset(eatery));
 
-    if (fill) return SizedBox.expand(child: image);
+    final stacked = Stack(
+      fit: StackFit.expand,
+      children: [
+        image,
+        if (showCuisineChip && eatery.cuisines.isNotEmpty)
+          Positioned(
+            left: 6,
+            right: 6,
+            bottom: 6,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.55),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                child: Text(
+                  eatery.cuisines.first,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+              ),
+            ),
+          ),
+        if (!verified && coverUrl != null)
+          Positioned(
+            top: 6,
+            right: 6,
+            child: Semantics(
+              label: 'Cuisine illustration',
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.45),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  child: Icon(Icons.image_outlined, size: 12, color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+
+    if (fill) return stacked;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(14),
-      child: SizedBox(width: size, height: size, child: image),
+      child: SizedBox(width: size, height: size, child: stacked),
     );
   }
 }

@@ -35,8 +35,15 @@ void main() {
     final kolachiAddr = kolachi['address'] as String?;
     expect(kolachiAddr, contains('DHA'));
 
-    final wikimedia = eateries.where((e) => ((e as Map)['coverPhotoUrl'] as String? ?? '').contains('wikimedia.org')).length;
-    expect(wikimedia, greaterThan(9000));
+    final wikimedia = eateries.where((e) {
+      final m = e as Map;
+      final url = (m['coverPhotoUrl'] as String? ?? m['cuisineIllustrationUrl'] as String? ?? '');
+      return url.contains('wikimedia.org');
+    }).length;
+    expect(wikimedia, greaterThan(100));
+
+    final kinds = eateries.map((e) => (e as Map)['coverPhotoKind']).toSet();
+    expect(kinds.contains('placeholder'), isTrue);
 
     final areaNames = eateries.map((e) => (e as Map)['areaName'] as String?).whereType<String>().toSet();
     expect(areaNames.length, greaterThan(60));

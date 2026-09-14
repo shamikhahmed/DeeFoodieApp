@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
+/// Fraunces for display titles; Inter for UI body/labels (DFD-P1-01).
+/// Caveat is reserved for at most one decorative heading per screen (applied locally).
 TextTheme buildAppTextTheme(Brightness brightness) {
   final isDark = brightness == Brightness.dark;
   final primary = isDark ? AppColors.paper : AppColors.textPrimary;
   final secondary = isDark
       ? AppColors.paper.withValues(alpha: 0.82)
       : AppColors.textSecondary;
-  final muted = isDark
-      ? AppColors.paper.withValues(alpha: 0.78)
-      : AppColors.textMuted;
 
   final display = GoogleFonts.fraunces(color: primary);
   final body = GoogleFonts.inter(color: primary);
-  final hand = GoogleFonts.caveat(color: secondary);
 
   return TextTheme(
     displayLarge: display.copyWith(

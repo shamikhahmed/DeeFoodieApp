@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 
 class JournalViewToggle extends StatelessWidget {
@@ -79,11 +78,10 @@ class _Segment extends StatelessWidget {
               const SizedBox(width: 6),
               Text(
                 label,
-                style: GoogleFonts.caveat(
-                  fontSize: 17,
-                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-                  color: selected ? AppColors.coffeeBrown : AppColors.textMuted,
-                ),
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                      color: selected ? AppColors.coffeeBrown : AppColors.textMuted,
+                    ),
               ),
             ],
           ),
@@ -101,6 +99,8 @@ class BookPageControls extends StatelessWidget {
     required this.canPrevious,
     required this.canNext,
     this.pageLabel,
+    this.previousSemanticLabel = 'Previous page',
+    this.nextSemanticLabel = 'Next page',
   });
 
   final VoidCallback onPrevious;
@@ -108,47 +108,65 @@ class BookPageControls extends StatelessWidget {
   final bool canPrevious;
   final bool canNext;
   final String? pageLabel;
+  final String previousSemanticLabel;
+  final String nextSemanticLabel;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _RoundNav(icon: Icons.chevron_left, enabled: canPrevious, onTap: onPrevious),
+        _RoundNav(
+          icon: Icons.chevron_left,
+          enabled: canPrevious,
+          onTap: onPrevious,
+          semanticLabel: previousSemanticLabel,
+        ),
         const SizedBox(width: 12),
         if (pageLabel != null)
-          Text(pageLabel!, style: GoogleFonts.caveat(fontSize: 16, color: AppColors.textMuted)),
+          Text(pageLabel!, style: Theme.of(context).textTheme.bodySmall),
         const SizedBox(width: 12),
-        _RoundNav(icon: Icons.chevron_right, enabled: canNext, onTap: onNext),
+        _RoundNav(
+          icon: Icons.chevron_right,
+          enabled: canNext,
+          onTap: onNext,
+          semanticLabel: nextSemanticLabel,
+        ),
       ],
     );
   }
 }
 
 class _RoundNav extends StatelessWidget {
-  const _RoundNav({required this.icon, required this.enabled, required this.onTap});
+  const _RoundNav({
+    required this.icon,
+    required this.enabled,
+    required this.onTap,
+    required this.semanticLabel,
+  });
 
   final IconData icon;
   final bool enabled;
   final VoidCallback onTap;
+  final String semanticLabel;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: enabled ? const Color(0xFFFFFDF8) : AppColors.paper.withValues(alpha: 0.5),
-      shape: const CircleBorder(),
-      child: InkWell(
-        onTap: enabled
-            ? () {
-                HapticFeedback.selectionClick();
-                onTap();
-              }
-            : null,
-        customBorder: const CircleBorder(),
-        child: SizedBox(
-          width: 44,
-          height: 44,
-          child: Icon(icon, color: enabled ? AppColors.coffeeBrown : AppColors.textSubtle),
+    return Semantics(
+      button: true,
+      enabled: enabled,
+      label: semanticLabel,
+      child: Material(
+        color: enabled ? const Color(0xFFFFFDF8) : AppColors.paper.withValues(alpha: 0.5),
+        shape: const CircleBorder(),
+        child: InkWell(
+          customBorder: const CircleBorder(),
+          onTap: enabled ? onTap : null,
+          child: SizedBox(
+            width: 44,
+            height: 44,
+            child: Icon(icon, color: enabled ? AppColors.coffeeBrown : AppColors.textMuted),
+          ),
         ),
       ),
     );

@@ -10,7 +10,9 @@ import '../theme/app_theme.dart';
 import '../widgets/tab_screen_scaffold.dart';
 import '../providers/active_user_provider.dart';
 import '../providers/profile_prefs_provider.dart';
+import '../services/auth_token_store.dart';
 import '../utils/haptics.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../widgets/glass_surface.dart';
 import '../widgets/profile_avatar.dart';
 
@@ -33,6 +35,95 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Future<void> _refreshApiStatus() async {
     ref.invalidate(apiOnlineProvider);
     await ref.read(apiOnlineProvider.future);
+  }
+
+  Future<void> _deleteMyData() async {
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.privacyDeleteConfirmTitle),
+        content: Text(l10n.privacyDeleteConfirmBody),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l10n.cancel)),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l10n.privacyDeleteConfirmAction),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    try {
+      final online = await ref.read(apiOnlineProvider.future);
+      if (online) {
+        await ref.read(apiClientProvider).deleteMyData();
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${l10n.syncFailedTitle}. ${l10n.syncFailedBody}')),
+      );
+      return;
+    }
+
+    await ref.read(localVisitsProvider.notifier).clearAll();
+    ref.invalidate(visitsProvider);
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(l10n.privacyDeleteConfirmAction)),
+    );
+  }
+
+  Future<void> _editToken() async {
+    final l10n = AppLocalizations.of(context)!;
+    final store = ref.read(authTokenStoreProvider);
+    final existing = await store.read() ?? '';
+    final controller = TextEditingController(text: existing);
+    if (!mounted) return;
+    final saved = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.privacyTokenHint),
+        content: TextField(
+          controller: controller,
+          obscureText: true,
+          decoration: InputDecoration(hintText: l10n.privacyTokenHint),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              await store.clear();
+              if (ctx.mounted) Navigator.pop(ctx, true);
+            },
+            child: Text(l10n.privacyTokenClear),
+          ),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l10n.cancel)),
+          FilledButton(
+            onPressed: () async {
+              final t = controller.text.trim();
+              if (t.isEmpty) {
+                await store.clear();
+              } else {
+                await store.write(t);
+              }
+              if (ctx.mounted) Navigator.pop(ctx, true);
+            },
+            child: Text(l10n.privacyTokenSave),
+          ),
+        ],
+      ),
+    );
+    controller.dispose();
+    if (saved == true) {
+      ref.invalidate(authTokenProvider);
+      ref.invalidate(apiClientProvider);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.privacyTokenSaved)));
+      }
+    }
   }
 
   void _showAvatarSheet() {
@@ -284,6 +375,49 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     title: l10n.tasteProfileTitle,
                     value: '',
                     onTap: () => context.push('/taste-profile'),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSpacing.sectionGap),
+            Text(l10n.privacySectionTitle, style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: AppSpacing.sm),
+            GlassSurface(
+              padding: EdgeInsets.zero,
+              child: Column(
+                children: [
+                  _SettingsRow(
+                    icon: CupertinoIcons.lock_shield,
+                    title: l10n.privacyTokenHint,
+                    value: '',
+                    onTap: _editToken,
+                  ),
+                  Divider(height: 1, indent: 52, color: AppColors.inkBrown.withValues(alpha: 0.08)),
+                  _SettingsRow(
+                    icon: CupertinoIcons.doc_text,
+                    title: l10n.privacyOpenPolicy,
+                    value: '',
+                    onTap: () => launchUrl(
+                      Uri.parse('https://shamikhahmed.github.io/DeeFoodieApp/privacy.html'),
+                      mode: LaunchMode.externalApplication,
+                    ),
+                  ),
+                  Divider(height: 1, indent: 52, color: AppColors.inkBrown.withValues(alpha: 0.08)),
+                  _SettingsRow(
+                    icon: CupertinoIcons.question_circle,
+                    title: l10n.privacySupport,
+                    value: '',
+                    onTap: () => launchUrl(
+                      Uri.parse('https://shamikhahmed.github.io/support.html'),
+                      mode: LaunchMode.externalApplication,
+                    ),
+                  ),
+                  Divider(height: 1, indent: 52, color: AppColors.inkBrown.withValues(alpha: 0.08)),
+                  _SettingsRow(
+                    icon: CupertinoIcons.trash,
+                    title: l10n.privacyDeleteMyData,
+                    value: '',
+                    onTap: _deleteMyData,
                   ),
                 ],
               ),

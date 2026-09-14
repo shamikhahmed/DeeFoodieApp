@@ -3,18 +3,22 @@ import 'package:flutter/cupertino.dart';
 import 'app_colors.dart';
 import 'app_spacing.dart';
 import 'app_typography.dart';
+import 'cap_tokens.dart';
 
 export 'app_colors.dart';
 export 'app_spacing.dart';
 export 'app_typography.dart';
+export 'cap_tokens.dart';
 
 ThemeData buildAppTheme({Brightness brightness = Brightness.light}) {
   final isDark = brightness == Brightness.dark;
   final textTheme = buildAppTextTheme(brightness);
+  final tokens = isDark ? CapTokens.dark : CapTokens.light;
 
   return ThemeData(
     useMaterial3: true,
     brightness: brightness,
+    extensions: <ThemeExtension<dynamic>>[tokens],
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
         TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
@@ -22,7 +26,7 @@ ThemeData buildAppTheme({Brightness brightness = Brightness.light}) {
         TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
       },
     ),
-    scaffoldBackgroundColor: isDark ? const Color(0xFF1A1410) : AppColors.cream,
+    scaffoldBackgroundColor: tokens.bg,
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.coffeeBrown,
       brightness: brightness,

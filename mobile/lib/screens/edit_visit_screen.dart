@@ -12,10 +12,10 @@ import '../providers/custom_moods_provider.dart';
 import '../providers/profile_prefs_provider.dart';
 import '../theme/app_theme.dart';
 import '../utils/haptics.dart';
+import '../utils/strip_exif.dart';
 import '../widgets/journal_form.dart';
 import '../widgets/journal_paper.dart';
 import '../widgets/menu_item_picker.dart';
-import '../widgets/journal_paper.dart';
 import '../widgets/visit_photo_image.dart';
 import '../widgets/voice_note_player.dart';
 
@@ -90,9 +90,15 @@ class _EditVisitScreenState extends ConsumerState<EditVisitScreen> {
   }
 
   Future<void> _pickPhoto() async {
-    final file = await ImagePicker().pickImage(source: ImageSource.gallery, maxWidth: 1400, imageQuality: 78);
+    final file = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1400,
+      imageQuality: 78,
+      requestFullMetadata: false,
+    );
     if (file == null) return;
-    final bytes = await file.readAsBytes();
+    final raw = await file.readAsBytes();
+    final bytes = stripExifGps(raw);
     setState(() => _photos.add('data:image/jpeg;base64,${base64Encode(bytes)}'));
     AppHaptics.light();
   }

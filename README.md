@@ -1,4 +1,4 @@
-# DeeFoodieApp — Karachi Food Archive
+# DeeFoodie — A private journal of where you eat in Karachi.
 
 Personal + city food journal for Karachi. Not a delivery app or Yelp clone — a digital memory of where you ate and what the city’s eateries were.
 
