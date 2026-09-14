@@ -27,19 +27,25 @@ jobs:
       - name: Patch real_page_flip (CoreHaptics API)
         run: bash scripts/patch-real-page-flip.sh
 
-      - name: Build iOS (no codesign)
-        run: flutter build ios --release --no-codesign
-
       - name: Run widget tests
         run: flutter test
+
+      # Simulator build avoids Apple Development Team requirement on CI (no codesign).
+      # Device IPA / TestFlight remains owner EXTERNAL (docs/store/TESTFLIGHT.md).
+      - name: Build iOS simulator (no codesign)
+        run: flutter build ios --simulator --release --no-codesign
 
       - name: Device run notes
         run: |
           echo "Real iPhone: mobile/scripts/run-on-iphone.sh <device-id>"
           echo "Journal haptics + page sound active on iOS (real_page_flip)"
+          echo "TestFlight upload: docs/store/TESTFLIGHT.md (owner Apple account)"
 
       - name: Upload .app artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ios-app
-          path: mobile/build/ios/iphoneos/*.app
+          name: ios-app-simulator
+          path: |
+            mobile/build/ios/iphonesimulator/*.app
+            mobile/build/ios/iphoneos/*.app
+          if-no-files-found: warn
