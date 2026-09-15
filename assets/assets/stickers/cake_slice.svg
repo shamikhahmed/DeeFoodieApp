@@ -1,0 +1,23 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cakeTop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FADCE4"/>
+      <stop offset="100%" stop-color="#F3C6D0"/>
+    </linearGradient>
+    <linearGradient id="cakeBase" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C94F35"/>
+      <stop offset="100%" stop-color="#9E3823"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="94" fill="#FFFFFF" stroke="#E8DCC0" stroke-width="2"/>
+  <circle cx="100" cy="100" r="88" fill="#FBF6EA"/>
+
+  <g transform="translate(100,110)">
+    <path d="M -60 45 L 0 -60 L 60 45 Z" fill="url(#cakeTop)" stroke="#2A1B10" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M -60 45 L 60 45 L 60 68 L -60 68 Z" fill="url(#cakeBase)" stroke="#2A1B10" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M -36 12 L 36 12" stroke="#2A1B10" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+    <ellipse cx="-20" cy="-20" rx="10" ry="20" fill="#FFFFFF" opacity="0.3"/>
+    <circle cx="0" cy="-64" r="11" fill="#C94F35" stroke="#2A1B10" stroke-width="5"/>
+    <circle cx="-3" cy="-67" r="3" fill="#FFFFFF" opacity="0.5"/>
+  </g>
+</svg>

@@ -1,0 +1,18 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="samosaGrad" cx="35%" cy="25%" r="80%">
+      <stop offset="0%" stop-color="#E8B366"/>
+      <stop offset="60%" stop-color="#D9A24A"/>
+      <stop offset="100%" stop-color="#A9762A"/>
+    </radialGradient>
+  </defs>
+  <circle cx="100" cy="100" r="94" fill="#FFFFFF" stroke="#E8DCC0" stroke-width="2"/>
+  <circle cx="100" cy="100" r="88" fill="#FBF6EA"/>
+
+  <g transform="translate(100,110)">
+    <path d="M -55 45 L 0 -55 L 55 45 Q 0 65, -55 45 Z"
+          fill="url(#samosaGrad)" stroke="#2A1B10" stroke-width="6" stroke-linejoin="round"/>
+    <ellipse cx="-15" cy="0" rx="12" ry="24" fill="#FFFFFF" opacity="0.2"/>
+    <path d="M -30 30 Q 0 15, 30 30" stroke="#8A5A22" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+  </g>
+</svg>
