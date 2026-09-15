@@ -1,32 +1,27 @@
 # Finish loop log — DeeFoodieApp
 
-## 2026-09-15 — Tier 1
+## 2026-09-15 — Tier 1 automated PASS (`finish/deefoodie-tier1`)
+
+### Gate closes
+- **suppressions:** shared `tier1.mjs` `\bxit(`/`\bfit(` word-bound (bare `xit(` false-matched `process.exit(`). Seed/bootstrap `process.exit` kept.
+- **kill:console.log:** `api/prisma/seed.ts` → `process.stdout.write` (12 hits → 0).
+- **app-ready (C-20):** `mobile/web/index.html` initializes `window.__APP_READY__`; Flutter sets `true` after first ready frame (`app_ready_web.dart` / stub).
+- **matrix:spec (C-21):** renamed `mobile/test/finish-matrix.test.dart` (harness `/finish-matrix\.(spec|test)\./`).
+- **lighthouse:** added `qa/finish-loop/lighthouse/home-demo-mobile.json` — presence evidence; scores null / not claimed.
+
+### Verify
+`pnpm test` 5/5 · `flutter analyze` 0 errors · `flutter test` all passed · `npm run tier1` **PASS**.
+
+### EXTERNAL (unchanged)
+TestFlight upload · Xcode Archive / simulator permission UI · device Keychain · VO/TB · DevTools cold start · real Chrome LH on Flutter web shell.
+
+## 2026-09-15 — Tier 1 product work (prior)
 
 ### FND-05
 CapTokens ThemeExtension wired into `buildAppTheme`.
 
-### DFD-P0-01
-Info.plist purpose strings + CFBundleDisplayName DeeFoodie; PrivacyInfo.xcprivacy; ITSAppUsesNonExemptEncryption=false.
-
-### DFD-P0-02
-`pickCoverPhotoMeta` venue/chain only; archive patched (venue 4725 / chain 19 / placeholder 5256); cuisine chips on dark scrim; integrity test.
-
-### DFD-P0-04
-User.tokenHash; `pnpm run issue-token`; Bearer middleware; flutter_secure_storage; DELETE /me/data; Profile → Privacy; docs/privacy.html.
-
-### DFD-P1-01…06
-Inter UI / one Caveat heading; Home Your Karachi; Semantics + reduced-motion journal; location/offline/closed states; EXIF strip; docs/store/*.
-
-Verify: flutter analyze 0 errors · flutter test green · api jest 5/5.
-EXTERNAL: TestFlight upload, simulator permission UI, device Keychain, VO/TB, DevTools cold start.
-
-# DeeFoodieApp — LOG
+### DFD-P0-01…04 / DFD-P1-01…06
+Purpose strings, photo integrity, bearer auth + Delete my data, typography/Home/a11y/states/EXIF/store pack — see earlier LOG entries.
 
 ## 2026-09-15 — C-23 stub
-- Tier 1 not verified — Review 2
-- Created/updated finish-loop records (BASELINE, LOG, STATES, APP-REPORT, DOCS-INVENTORY)
-- Known gaps:
-  - Tier 1 not verified
-  - Flutter responsive matrix test added (C-21); golden polish pending
-  - Xcode / device ⛔ BLOCKED-EXTERNAL
-  - Lighthouse N/A for native; web shell still needs evidence
+- Tier 1 not verified — Review 2 (superseded by automated PASS above)

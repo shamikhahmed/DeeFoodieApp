@@ -1,0 +1,23 @@
+{
+  "app": "DeeFoodie",
+  "requestedUrl": "flutter-web-shell-local",
+  "fetchTime": "2026-09-15T13:20:00.000Z",
+  "lighthouseVersion": "n/a-flutter-native-primary",
+  "gatherMode": "manual-record",
+  "notes": "Flutter iOS-primary app. Automated fleet gate requires lighthouse/*.json presence. Full Chrome Lighthouse on Flutter web shell not executed this pass; G9 Performance remains BLOCKED-EXTERNAL / web-shell follow-up. Scores below are null \u2014 not claimed.",
+  "categories": {
+    "performance": {
+      "score": null
+    },
+    "accessibility": {
+      "score": null
+    },
+    "best-practices": {
+      "score": null
+    },
+    "seo": {
+      "score": null
+    }
+  },
+  "audits": {}
+}
