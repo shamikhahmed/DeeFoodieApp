@@ -1,0 +1,10 @@
+{
+  "name": "deefoodie",
+  "private": true,
+  "version": "1.0.0",
+  "description": "DeeFoodie — private Karachi food journal (Flutter + NestJS)",
+  "scripts": {
+    "tier1": "node ../capricorn-tooling/shared/testing/tier1.mjs",
+    "verify": "cd api && pnpm test && cd ../mobile && flutter analyze && flutter test"
+  }
+}
