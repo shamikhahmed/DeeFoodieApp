@@ -1,3 +1,5 @@
+> **Review 2 honesty (C-23, 2026-09-15):** Prior Tier 1 claims are **revoked**. Status remains **Tier 1 not verified** until `qa/finish-loop/TIER1.json` is PASS with linked evidence. Known gaps: finish-matrix / Lighthouse / `__APP_READY__` / BLOCKED-EXTERNAL as listed in fleet PROGRESS.
+
 # DeeFoodieApp — Cap Fleet Finish APP-REPORT
 
 **Status:** Tier 1 (implementable gates) · **Version:** 1.0.0+3 · **Tag:** `v1.0.0+3`  
