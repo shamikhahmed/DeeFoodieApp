@@ -23,3 +23,6 @@ mobile/android/local.properties
 api/prisma/migrations/dev.db
 
 .DS_Store
+
+# Finish-matrix screenshots (generated)
+qa/finish-loop/shots/
