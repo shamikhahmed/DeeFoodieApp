@@ -13,6 +13,8 @@ import 'theme/app_scroll_behavior.dart';
 import 'theme/app_theme.dart';
 import 'utils/url_strategy_stub.dart'
     if (dart.library.html) 'utils/url_strategy_web.dart';
+import 'utils/app_ready_stub.dart'
+    if (dart.library.html) 'utils/app_ready_web.dart';
 
 import 'providers/sync_queue_provider.dart';
 
@@ -58,6 +60,8 @@ class _DeeFoodieAppState extends ConsumerState<DeeFoodieApp> {
       _router = createRouter();
       _ready = true;
     });
+    // C-20: after first ready frame, expose window.__APP_READY__ on web.
+    WidgetsBinding.instance.addPostFrameCallback((_) => markAppReady());
   }
 
   @override

@@ -25,6 +25,10 @@
   <title>DeeFoodieApp</title>
 </head>
 <body>
+  <!-- C-20: Flutter sets window.__APP_READY__ = true after the first ready frame. -->
+  <script>
+    window.__APP_READY__ = false;
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

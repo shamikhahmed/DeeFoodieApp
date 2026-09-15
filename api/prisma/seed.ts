@@ -48,22 +48,22 @@ async function upsertEateryTaxonomy(eateryId: string, venueTypes: string[], cuis
 }
 
 async function main() {
-  console.log('Seeding VenueTypes...');
+  process.stdout.write('Seeding VenueTypes...\n');
   for (const name of VENUE_TYPES) {
     await prisma.venueType.upsert({ where: { name }, update: {}, create: { name } });
   }
 
-  console.log('Seeding Cuisines...');
+  process.stdout.write('Seeding Cuisines...\n');
   for (const name of CUISINES) {
     await prisma.cuisine.upsert({ where: { name }, update: {}, create: { name } });
   }
 
-  console.log('Seeding Areas...');
+  process.stdout.write('Seeding Areas...\n');
   for (const name of AREAS) {
     await prisma.area.upsert({ where: { name }, update: {}, create: { name } });
   }
 
-  console.log('Seeding two shared users...');
+  process.stdout.write('Seeding two shared users...\n');
   const you = await prisma.user.upsert({
     where: { email: 'you@deefoodie.app' },
     update: {},
@@ -74,10 +74,10 @@ async function main() {
     update: {},
     create: { name: 'Friend', email: 'friend@deefoodie.app' },
   });
-  console.log(`Users: ${you.id}, ${friend.id}`);
+  process.stdout.write(`Users: ${you.id}, ${friend.id}\n`);
 
   const ALL_EATERIES = [...KARACHI_EATERIES, ...KARACHI_EATERIES_EXTRA];
-  console.log(`Seeding ${ALL_EATERIES.length} Karachi eateries...`);
+  process.stdout.write(`Seeding ${ALL_EATERIES.length} Karachi eateries...\n`);
   for (const e of ALL_EATERIES) {
     const area = await prisma.area.findUniqueOrThrow({ where: { name: e.area } });
     let eatery = await prisma.eatery.findFirst({ where: { name: e.name } });
@@ -113,7 +113,7 @@ async function main() {
     await upsertEateryTaxonomy(eatery.id, e.venueTypes, e.cuisines);
   }
 
-  console.log('Seeding menus for all eateries...');
+  process.stdout.write('Seeding menus for all eateries...\n');
   const allEateries = await prisma.eatery.findMany({
     include: { cuisines: { include: { cuisine: true } } },
   });
@@ -131,7 +131,7 @@ async function main() {
       });
     }
   }
-  console.log('Seeding demo visits...');
+  process.stdout.write('Seeding demo visits...\n');
   const eateryByName = async (name: string) =>
     prisma.eatery.findFirstOrThrow({ where: { name } });
 
@@ -164,7 +164,7 @@ async function main() {
     });
   }
 
-  console.log('Seeding iconic badges...');
+  process.stdout.write('Seeding iconic badges...\n');
   const BADGE_LABELS = [
     'Karachi Classic', 'Since 1975', 'Local Legend', 'Family Favorite',
     'Hidden Institution', 'Hidden Gem',
@@ -186,10 +186,10 @@ async function main() {
     }
   }
 
-  console.log('Exporting mobile demo archive...');
+  process.stdout.write('Exporting mobile demo archive...\n');
   await exportMobileArchive();
 
-  console.log('Seed complete.');
+  process.stdout.write('Seed complete.\n');
 }
 
 async function exportMobileArchive() {
@@ -278,7 +278,7 @@ async function exportMobileArchive() {
   const outPath = path.join(__dirname, '../../mobile/assets/demo/archive.json');
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, JSON.stringify(archive));
-  console.log(`Wrote ${archive.eateries.length} eateries, ${archive.visits.length} visits → mobile/assets/demo/archive.json`);
+  process.stdout.write(`Wrote ${archive.eateries.length} eateries, ${archive.visits.length} visits → mobile/assets/demo/archive.json\n`);
 }
 
 main()

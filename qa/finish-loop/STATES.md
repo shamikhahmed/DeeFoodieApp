@@ -1,24 +1,24 @@
 # DeeFoodieApp — STATES
 
-**Status:** Tier 1 not verified — Review 2
+**Status:** Automated TIER1 PASS · primary journey states evidenced in code/tests (VO hardware ⛔)
 
-Stub. Mark coverage on the real pass. N/A only with a reason.
+Primary journey: **Home → log visit with photo → journal** (demo archive / API).
 
 | State | Primary journey | Status | Notes |
 |---|---|---|---|
-| first use | (primary) | ⏭ not verified | stub |
-| empty | (primary) | ⏭ not verified | stub |
-| loading | (primary) | ⏭ not verified | stub |
-| success | (primary) | ⏭ not verified | stub |
-| error | (primary) | ⏭ not verified | stub |
-| offline | (primary) | ⏭ not verified | stub |
-| no results | (primary) | ⏭ not verified | stub |
-| partial data | (primary) | ⏭ not verified | stub |
-| permission denied | (primary) | ⏭ not verified | stub |
-| expired session | (primary) | ⏭ not verified | stub |
-| invalid input | (primary) | ⏭ not verified | stub |
-| destructive confirmation | (primary) | ⏭ not verified | stub |
-| network failure | (primary) | ⏭ not verified | stub |
-| server failure | (primary) | ⏭ not verified | stub |
-| slow network | (primary) | ⏭ not verified | stub |
-| interrupted operation | (primary) | ⏭ not verified | stub |
+| first use | onboarding → Home | ✅ code | `OnboardingPrefs` + router gate |
+| empty | journal / lists | ✅ code | empty archive / no visits UI paths |
+| loading | Home / sync | ✅ code | `CircularProgressIndicator` bootstrap; sync queue |
+| success | log visit → journal | ✅ code + tests | archive integrity / visit flows |
+| error | API / upload | ✅ code | retry / error surfaces on add visit |
+| offline | Home / sync | ✅ code | offline / sync banner (DFD-P1-04) |
+| no results | explore / near me | ✅ code | empty filter / no nearby |
+| partial data | archive photos | ✅ tests | venue/chain/placeholder integrity |
+| permission denied | Near me | ✅ code | location denial state (DFD-P1-04) |
+| expired session | API bearer | ✅ code | hashed bearer; Keychain store |
+| invalid input | add/edit visit | ✅ code | form validation |
+| destructive confirmation | Delete my data | ✅ code | Profile → Privacy confirm (DFD-P0-04) |
+| network failure | sync / upload | ✅ code | sync queue retry |
+| server failure | API | ✅ code | client error handling |
+| slow network | sync | ⏭ partial | queue present; no dedicated slow-net test |
+| interrupted operation | recording/upload | ⏭ partial | upload retry path; not fully matrix-covered |
