@@ -7,9 +7,8 @@ async function bootstrap() {
   if (process.env.NODE_ENV === 'production' && process.env.ALLOW_STUB_AUTH !== 'true') {
     // Fail closed: stub X-User-Id auth must never face the public internet (DFD-P0-03).
     // Set ALLOW_STUB_AUTH=true only for intentional private TestFlight backends.
-    // eslint-disable-next-line no-console
-    console.error(
-      '[DeeFoodie API] Refusing to start: NODE_ENV=production requires real auth (or ALLOW_STUB_AUTH=true for private deploys).',
+    process.stderr.write(
+      '[DeeFoodie API] Refusing to start: NODE_ENV=production requires real auth (or ALLOW_STUB_AUTH=true for private deploys).\n',
     );
     process.exit(1);
   }
