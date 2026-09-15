@@ -2,7 +2,7 @@
   "app": "DeeFoodie",
   "version": "1.0.0+3",
   "swCache": null,
-  "generatedAt": "2026-09-15T13:19:17.925Z",
+  "generatedAt": "2026-09-15T13:21:55.481Z",
   "status": "PASS",
   "pass": [
     {
@@ -31,7 +31,7 @@
     },
     {
       "id": "records:APP-REPORT-size",
-      "detail": "5220 bytes (need ≥1024)"
+      "detail": "2558 bytes (need ≥1024)"
     },
     {
       "id": "suppressions",
