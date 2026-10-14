@@ -1,3 +1,6 @@
+## 1.1.0+4 — 2026-10-14
+- Perfection v3 Wave D (DFD-V3-1 / D-10): disable public Flutter Pages deploy; live `/DeeFoodieApp/` serves private-beta stub only; HTML + Dart web beta token gates for any local Flutter web build; `scripts/publish-private-beta-pages.sh`; TestFlight pack documented (DFD-V3-2 upload remains owner-external).
+
 ## 1.0.0+3 — 2026-09-15
 - Tier 1 finish (Cap Fleet): FND-05 CapTokens ThemeExtension; DFD-P0-01 purpose strings + display name DeeFoodie; DFD-P0-02 venue photo integrity; DFD-P0-04 bearer token auth + Delete my data; DFD-P1-01…06 typography, Home “Your Karachi”, a11y/reduced motion, states, EXIF strip, TestFlight pack docs.
 - Privacy page `docs/privacy.html`; store pack under `docs/store/`.

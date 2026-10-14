@@ -6,29 +6,107 @@
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Karachi Food Archive — your personal food journal and city eatery archive.">
+  <meta name="description" content="DeeFoodie private beta — invite only. No public install.">
+  <meta name="robots" content="noindex, nofollow">
 
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="DeeFoodieApp">
-  <meta name="theme-color" content="#6F4E37">
+  <meta name="apple-mobile-web-app-title" content="DeeFoodie">
+  <meta name="theme-color" content="#0f1a14">
 
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
   <link rel="icon" type="image/png" href="favicon.png"/>
   <link rel="manifest" href="manifest.json">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <title>DeeFoodieApp</title>
+  <title>DeeFoodie — Private beta</title>
+  <style>
+    /* DFD-V3-1: HTML gate before Flutter bootstrap — no journal chrome until token. */
+    html, body { margin: 0; min-height: 100%; background: #0f1a14; color: #d6e0d8; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    #dfd-beta-gate { display: none; min-height: 100vh; place-items: center; padding: 24px; }
+    #dfd-beta-gate[data-show="1"] { display: grid; }
+    #dfd-beta-gate .card { width: min(420px, 100%); text-align: center; }
+    #dfd-beta-gate h1 { color: #e8c27a; margin: 0 0 8px; font-size: 1.75rem; }
+    #dfd-beta-gate p { line-height: 1.45; color: #8fa396; }
+    #dfd-beta-gate input {
+      width: 100%; box-sizing: border-box; margin: 16px 0 12px; padding: 12px 14px;
+      border-radius: 12px; border: 1px solid #2f4a38; background: #1a2e1f; color: #f7f1e8;
+    }
+    #dfd-beta-gate button {
+      width: 100%; min-height: 48px; border: 0; border-radius: 12px;
+      background: #e8c27a; color: #0f1a14; font-weight: 600; cursor: pointer;
+    }
+    #dfd-beta-gate .err { color: #ffb4a8; font-size: 0.9rem; min-height: 1.2em; }
+  </style>
 </head>
 <body>
   <!-- C-20: Flutter sets window.__APP_READY__ = true after the first ready frame. -->
   <script>
     window.__APP_READY__ = false;
   </script>
-  <script src="flutter_bootstrap.js" async></script>
+
+  <div id="dfd-beta-gate" aria-live="polite">
+    <div class="card">
+      <h1>DeeFoodie</h1>
+      <p>Private beta — enter your invite access token (32+ characters) before the journal loads. No public install.</p>
+      <label for="dfd-beta-token" class="visually-hidden" style="position:absolute;left:-9999px">Access token</label>
+      <input id="dfd-beta-token" type="password" autocomplete="off" placeholder="Access token" />
+      <div class="err" id="dfd-beta-err"></div>
+      <button type="button" id="dfd-beta-go">Continue</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // DFD-V3-1 / D-10: do not load Flutter until a beta bearer is in sessionStorage
+      // (Flutter secure-storage web backend also persists after unlock).
+      var KEY = 'deefoodie_web_beta_token';
+      var MIN = 32;
+      var gate = document.getElementById('dfd-beta-gate');
+      var input = document.getElementById('dfd-beta-token');
+      var err = document.getElementById('dfd-beta-err');
+      var btn = document.getElementById('dfd-beta-go');
+
+      function valid(t) {
+        return typeof t === 'string' && t.trim().length >= MIN;
+      }
+
+      function bootFlutter() {
+        var s = document.createElement('script');
+        s.src = 'flutter_bootstrap.js';
+        s.async = true;
+        document.body.appendChild(s);
+      }
+
+      function unlock(token) {
+        try { sessionStorage.setItem(KEY, token.trim()); } catch (e) {}
+        gate.removeAttribute('data-show');
+        gate.style.display = 'none';
+        bootFlutter();
+      }
+
+      var existing = null;
+      try { existing = sessionStorage.getItem(KEY); } catch (e) {}
+      if (valid(existing)) {
+        bootFlutter();
+        return;
+      }
+
+      gate.setAttribute('data-show', '1');
+      window.__APP_READY__ = true; // gate visible for harnesses; journal still blocked
+      function submit() {
+        var t = (input.value || '').trim();
+        if (!valid(t)) {
+          err.textContent = 'Enter your invite access token (' + MIN + '+ characters).';
+          return;
+        }
+        unlock(t);
+      }
+      btn.addEventListener('click', submit);
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') submit();
+      });
+    })();
+  </script>
 </body>
 </html>
