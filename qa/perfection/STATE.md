@@ -6,13 +6,15 @@ Branch: `perfection/deefoodie-v3`
 App version: 1.0.0+3 (no release bump — Phase I)
 
 ## Last commits
-- Tip: `47907749a9381ffdbf1eb7eabfb4f432cb107078` on `perfection/deefoodie-v3`
+- Tip: `a799ec7d6cdc69f6b14e9e5735d0ce01041f43d1` on `perfection/deefoodie-v3`
+- Fix: `47907749a9381ffdbf1eb7eabfb4f432cb107078`
 - Base main: `c78cc9acd7bfd42268449e427e60872844f5e1e2`
+- Live gh-pages stub: `dde482a485d261510227d8b8be599f06a05abd38`
 - DFD-V3-1: disable `web-deploy.yml` · private-beta Pages stub · Flutter/HTML web beta token gate
 - DFD-V3-2: TestFlight pack prepared · upload **BLOCKED-EXTERNAL**
 
 ## What's running
-- Public Pages: Private beta stub only (no Flutter journal) at `/DeeFoodieApp/`
+- Public Pages: Private beta stub only (no Flutter journal) at `/DeeFoodieApp/` — live verified (no `flutter_bootstrap.js`)
 - Local Flutter web (if built): HTML gate + Dart `WebBetaGate` before routes
 
 ## Public access gate (how)
