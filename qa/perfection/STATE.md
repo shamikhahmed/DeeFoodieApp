@@ -6,8 +6,9 @@ Branch: `perfection/deefoodie-v3`
 App version: 1.0.0+3 (no release bump — Phase I)
 
 ## Last commits
-- Tip: see branch tip after push
-- DFD-V3-1: disable `web-deploy.yml` · private-beta gh-pages stub · Flutter/HTML web beta token gate
+- Tip: `47907749a9381ffdbf1eb7eabfb4f432cb107078` on `perfection/deefoodie-v3`
+- Base main: `c78cc9acd7bfd42268449e427e60872844f5e1e2`
+- DFD-V3-1: disable `web-deploy.yml` · private-beta Pages stub · Flutter/HTML web beta token gate
 - DFD-V3-2: TestFlight pack prepared · upload **BLOCKED-EXTERNAL**
 
 ## What's running
