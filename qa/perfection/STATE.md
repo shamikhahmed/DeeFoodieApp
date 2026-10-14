@@ -6,8 +6,8 @@ Branch: `perfection/deefoodie-v3` merged → `main`
 App version: **1.1.0+4** (G-8 Flutter bump)
 
 ## Last commits
-- Phase I tip: (after merge) on `main`
-- Perfection branch tip: `9ee5656` + Builder docs/version commit
+- Phase I merge tip: `7459d2d` on `main` · tag `v1.1.0`
+- Release commit: `aa4abe9` on `perfection/deefoodie-v3`
 - Fix: `4790774` (DFD-V3-1)
 - Live gh-pages stub: `dde482a485d261510227d8b8be599f06a05abd38`
 
