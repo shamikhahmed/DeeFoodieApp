@@ -99,13 +99,10 @@ Stub middleware: send `X-User-Id` header; defaults to first seeded user. Clerk/A
 
 | Workflow | What |
 |----------|------|
-| `web-deploy.yml` | Flutter web → **GitHub Pages** |
+| `web-deploy.yml` | **Disabled** (D-10 / DFD-V3-1) — no public Flutter web publish |
 | `ios-build.yml` | iOS Simulator `.app` artifact |
 
-**Web (phone browser):** Pages enabled on `gh-pages` branch — auto-deploys every push.  
-Open: **https://shamikhahmed.github.io/DeeFoodieApp/** (wait 1–2 min after first deploy)
-
-No manual Settings step needed — workflow pushes `gh-pages` and Pages serves it.
+**Web:** https://shamikhahmed.github.io/DeeFoodieApp/ is a **Private beta** stub only (no journal app). Hub lists Private beta with no install link. Flutter web builds (local) require a beta access token (≥32 chars) before content loads.
 
 **iOS:** Actions → latest run → **ios-app** artifact (Simulator only until signing).
 

@@ -1,12 +1,15 @@
+# DFD-V3-1 / D-10 — Public Flutter web publish is DISABLED.
+# Live /DeeFoodieApp/ must stay Private beta (stub only), not the journal app.
+# Re-enable only with Conductor + Auditor approval after a verified beta-token gate deploy.
 name: Web Deploy
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'mobile/**'
-      - '.github/workflows/web-deploy.yml'
   workflow_dispatch:
+    inputs:
+      confirm_public_publish:
+        description: 'Type PUBLISH to override D-10 disable (requires Auditor sign-off)'
+        required: true
+        default: ''
 
 permissions:
   contents: write
@@ -17,6 +20,8 @@ concurrency:
 
 jobs:
   build-and-deploy:
+    # Hard off: even workflow_dispatch stays blocked unless explicitly flipped.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     defaults:
       run:

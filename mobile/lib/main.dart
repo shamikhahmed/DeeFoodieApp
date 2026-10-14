@@ -7,8 +7,11 @@ import 'package:go_router/go_router.dart';
 import 'l10n/app_localizations.dart';
 import 'providers/app_prefs_provider.dart';
 import 'router/app_router.dart';
+import 'screens/web_beta_gate_screen.dart';
+import 'services/auth_token_store.dart';
 import 'services/map_cache_service.dart';
 import 'services/map_prefetch_service.dart';
+import 'services/web_beta_gate.dart';
 import 'theme/app_scroll_behavior.dart';
 import 'theme/app_theme.dart';
 import 'utils/url_strategy_stub.dart'
@@ -47,6 +50,8 @@ class DeeFoodieApp extends ConsumerStatefulWidget {
 class _DeeFoodieAppState extends ConsumerState<DeeFoodieApp> {
   GoRouter? _router;
   bool _ready = false;
+  /// DFD-V3-1: Flutter web stays locked until a beta bearer is present.
+  bool _webBetaUnlocked = !kIsWeb;
 
   @override
   void initState() {
@@ -55,6 +60,10 @@ class _DeeFoodieAppState extends ConsumerState<DeeFoodieApp> {
   }
 
   Future<void> _init() async {
+    if (kIsWeb) {
+      final token = await AuthTokenStore().read();
+      _webBetaUnlocked = WebBetaGate.isValidToken(token);
+    }
     onboardingDoneListenable.value = await OnboardingPrefs.isCompleted();
     setState(() {
       _router = createRouter();
@@ -70,6 +79,21 @@ class _DeeFoodieAppState extends ConsumerState<DeeFoodieApp> {
       return const MaterialApp(
         home: Scaffold(
           body: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+
+    if (kIsWeb && !_webBetaUnlocked) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: buildAppTheme(),
+        darkTheme: buildDarkAppTheme(),
+        themeMode: ThemeMode.dark,
+        home: WebBetaGateScreen(
+          onUnlocked: () {
+            setState(() => _webBetaUnlocked = true);
+            ref.invalidate(authTokenProvider);
+          },
         ),
       );
     }
