@@ -8,4 +8,5 @@
 
 Not collected: contact info for advertising, identifiers for tracking, usage data for analytics, diagnostics sold to third parties.
 
-Contact: https://shamikhahmed.github.io/support.html
+Contact: https://shamikhahmed.github.io/support.html  
+Privacy: https://shamikhahmed.github.io/DeeFoodieApp/privacy.html

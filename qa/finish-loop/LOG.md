@@ -25,3 +25,12 @@ Purpose strings, photo integrity, bearer auth + Delete my data, typography/Home/
 
 ## 2026-09-15 — C-23 stub
 - Tier 1 not verified — Review 2 (superseded by automated PASS above)
+
+## 2026-10-15 — TestFlight / store readiness (perfection v4 / G-1 D-01)
+
+- Complete `docs/store/` pack (APP-STORE, PRIVACY-LABELS, SCREENSHOTS, TESTFLIGHT).
+- App-level `PrivacyInfo.xcprivacy` + Info.plist purpose strings verified/fixed.
+- Xcode 26 / iOS 26 SDK build steps documented in `docs/IOS-BUILD.md` + `docs/store/TESTFLIGHT.md`.
+- Clean native build: **BLOCKED** — machine has Command Line Tools only; no `/Applications/Xcode.app`; `iphoneos` SDK missing. Exact next step: install Xcode 26 → `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer` → archive / `flutter build ipa` / `xcodebuild` as documented.
+- No App Store Connect upload/submit (owner action).
+
