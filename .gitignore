@@ -26,3 +26,4 @@ api/prisma/migrations/dev.db
 
 # Finish-matrix screenshots (generated)
 qa/finish-loop/shots/
+build/
