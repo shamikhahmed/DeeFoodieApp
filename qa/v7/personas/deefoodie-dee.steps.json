@@ -23,6 +23,12 @@
       "action": "screenshot",
       "route": "home",
       "alt": "deefoodie-dee home screen with sample data"
+    },
+    {
+      "id": "02-task",
+      "title": "Primary task",
+      "action": "screenshot",
+      "alt": "deefoodie-dee primary task view"
     }
   ]
 }
