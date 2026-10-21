@@ -125,7 +125,7 @@ Stub middleware: send `X-User-Id` header; defaults to first seeded user. Clerk/A
 
 See [`ROADMAP.md`](ROADMAP.md) and [`CHANGELOG.md`](CHANGELOG.md) for detail.
 
-## Real stories
+## Example stories
 
 Illustrative day-in-the-life stories (fictional personas) with screenshots and captions:
 
