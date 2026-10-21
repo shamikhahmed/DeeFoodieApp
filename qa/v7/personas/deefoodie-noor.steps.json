@@ -1,0 +1,28 @@
+{
+  "personaId": "deefoodie-noor",
+  "baseUrl": "/",
+  "viewport": {
+    "width": 402,
+    "height": 874,
+    "deviceScaleFactor": 3
+  },
+  "prep": [
+    {
+      "action": "goto",
+      "path": "/"
+    },
+    {
+      "action": "wait",
+      "ms": 800
+    }
+  ],
+  "steps": [
+    {
+      "id": "01-home",
+      "title": "Home",
+      "action": "screenshot",
+      "route": "home",
+      "alt": "deefoodie-noor home screen with sample data"
+    }
+  ]
+}

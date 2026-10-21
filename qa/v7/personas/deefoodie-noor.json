@@ -1,0 +1,34 @@
+{
+  "id": "deefoodie-noor",
+  "name": "Noor Ali",
+  "age": 24,
+  "city": "Karachi, Pakistan",
+  "role": "Student",
+  "tech": "medium",
+  "accessibility": "standard",
+  "device": "iPhone 15",
+  "goal": "Budget eats list on her phone",
+  "pain_before": [
+    "Scattered notes",
+    "Forgot to log"
+  ],
+  "how_she_uses_it": [
+    "visit-journal",
+    "delete-my-data"
+  ],
+  "numbers": {
+    "before": {
+      "minutes_lost": 15
+    },
+    "after": {
+      "minutes_lost": 2
+    }
+  },
+  "quote": "I can delete everything in Settings.",
+  "seed": "qa/v7/personas/deefoodie-noor.seed.json",
+  "features_used": [
+    "visit-journal",
+    "delete-my-data"
+  ],
+  "fictional": true
+}

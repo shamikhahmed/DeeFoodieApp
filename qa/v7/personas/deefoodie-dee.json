@@ -1,0 +1,34 @@
+{
+  "id": "deefoodie-dee",
+  "name": "Dee Khan",
+  "age": 27,
+  "city": "Karachi, Pakistan",
+  "role": "Food blogger",
+  "tech": "medium",
+  "accessibility": "standard",
+  "device": "iPhone 15",
+  "goal": "Private journal of Karachi eats",
+  "pain_before": [
+    "Scattered notes",
+    "Forgot to log"
+  ],
+  "how_she_uses_it": [
+    "visit-journal",
+    "private-beta"
+  ],
+  "numbers": {
+    "before": {
+      "minutes_lost": 15
+    },
+    "after": {
+      "minutes_lost": 2
+    }
+  },
+  "quote": "My ratings stay in the beta app.",
+  "seed": "qa/v7/personas/deefoodie-dee.seed.json",
+  "features_used": [
+    "visit-journal",
+    "private-beta"
+  ],
+  "fictional": true
+}
