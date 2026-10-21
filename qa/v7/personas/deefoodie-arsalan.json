@@ -1,0 +1,34 @@
+{
+  "id": "deefoodie-arsalan",
+  "name": "Arsalan Qureshi",
+  "age": 35,
+  "city": "Karachi, Pakistan",
+  "role": "Parent",
+  "tech": "medium",
+  "accessibility": "standard",
+  "device": "iPhone 15",
+  "goal": "Family dinner spots with kid-friendly notes",
+  "pain_before": [
+    "Scattered notes",
+    "Forgot to log"
+  ],
+  "how_she_uses_it": [
+    "visit-journal",
+    "sync-devices"
+  ],
+  "numbers": {
+    "before": {
+      "minutes_lost": 15
+    },
+    "after": {
+      "minutes_lost": 2
+    }
+  },
+  "quote": "We remember which place has high chairs.",
+  "seed": "qa/v7/personas/deefoodie-arsalan.seed.json",
+  "features_used": [
+    "visit-journal",
+    "sync-devices"
+  ],
+  "fictional": true
+}
