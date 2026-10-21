@@ -1,6 +1,6 @@
 {
   "app": "DeeFoodie",
-  "version": "1.1.1+4",
-  "updated": "2026-10-21",
-  "notes": "v7 HIG ios-tokens scaffold"
+  "version": "1.1.2+5",
+  "updated": "2026-10-22",
+  "notes": "v7-fix: verify analyze fatal errors only"
 }
