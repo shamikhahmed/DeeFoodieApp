@@ -1,3 +1,9 @@
+## [1.1.1] — 2026-10-21
+
+- HIG v7: iOS tokens / native feel; Dynamic Type & hit targets where applicable
+- Real-people stories live on hub (`/apps/<slug>/` + `/stories/`)
+- Pitch/presentation/README synced to 1.1.1
+
 ## 1.1.0+4 — 2026-10-14
 - Perfection v3 Wave D (DFD-V3-1 / D-10): disable public Flutter Pages deploy; live `/DeeFoodieApp/` serves private-beta stub only; HTML + Dart web beta token gates for any local Flutter web build; `scripts/publish-private-beta-pages.sh`; TestFlight pack documented (DFD-V3-2 upload remains owner-external).
 

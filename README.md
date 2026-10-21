@@ -124,3 +124,11 @@ Stub middleware: send `X-User-Id` header; defaults to first seeded user. Clerk/A
 - Admin portal (Phase 6)
 
 See [`ROADMAP.md`](ROADMAP.md) and [`CHANGELOG.md`](CHANGELOG.md) for detail.
+
+## Real stories
+
+Illustrative day-in-the-life stories (fictional personas) with screenshots and captions:
+
+- App stories: https://shamikhahmed.github.io/apps/deefoodie/
+- All Cap stories: https://shamikhahmed.github.io/stories/
+
