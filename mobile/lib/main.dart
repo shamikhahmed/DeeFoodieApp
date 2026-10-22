@@ -18,6 +18,8 @@ import 'utils/url_strategy_stub.dart'
     if (dart.library.html) 'utils/url_strategy_web.dart';
 import 'utils/app_ready_stub.dart'
     if (dart.library.html) 'utils/app_ready_web.dart';
+import 'utils/web_beta_session_stub.dart'
+    if (dart.library.html) 'utils/web_beta_session_web.dart';
 
 import 'providers/sync_queue_provider.dart';
 
@@ -61,7 +63,17 @@ class _DeeFoodieAppState extends ConsumerState<DeeFoodieApp> {
 
   Future<void> _init() async {
     if (kIsWeb) {
-      final token = await AuthTokenStore().read();
+      final store = AuthTokenStore();
+      var token = await store.read();
+      /* HTML gate already validated sessionStorage — seed secure store so
+         Flutter does not show a second WebBetaGateScreen (story capture + UX). */
+      if (!WebBetaGate.isValidToken(token)) {
+        final htmlToken = readHtmlWebBetaToken();
+        if (WebBetaGate.isValidToken(htmlToken)) {
+          await store.write(htmlToken!.trim());
+          token = htmlToken.trim();
+        }
+      }
       _webBetaUnlocked = WebBetaGate.isValidToken(token);
     }
     onboardingDoneListenable.value = await OnboardingPrefs.isCompleted();
