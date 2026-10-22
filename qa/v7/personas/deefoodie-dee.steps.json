@@ -1,5 +1,6 @@
 {
   "personaId": "deefoodie-dee",
+  "personaName": "Dee Rahman",
   "baseUrl": "/",
   "viewport": {
     "width": 402,
@@ -13,22 +14,49 @@
     },
     {
       "action": "wait",
-      "ms": 800
+      "ms": 2000
     }
   ],
   "steps": [
     {
-      "id": "01-home",
-      "title": "Home",
-      "action": "screenshot",
-      "route": "home",
-      "alt": "deefoodie-dee home screen with sample data"
+      "id": "01-iphone",
+      "title": "Log a visit",
+      "action": "goto",
+      "path": "/",
+      "waitMs": 1800,
+      "alt": "Add visit"
     },
     {
-      "id": "02-task",
-      "title": "Primary task",
-      "action": "screenshot",
-      "alt": "deefoodie-dee primary task view"
+      "id": "02-iphone",
+      "title": "Rate it",
+      "action": "goto",
+      "path": "/explore",
+      "waitMs": 1800,
+      "alt": "Rating"
+    },
+    {
+      "id": "03-iphone",
+      "title": "Map",
+      "action": "goto",
+      "path": "/journal",
+      "waitMs": 1800,
+      "alt": "Map"
+    },
+    {
+      "id": "04-iphone",
+      "title": "Taste profile",
+      "action": "goto",
+      "path": "/map",
+      "waitMs": 1800,
+      "alt": "Taste"
+    },
+    {
+      "id": "05-iphone",
+      "title": "Wishlist",
+      "action": "goto",
+      "path": "/profile",
+      "waitMs": 1800,
+      "alt": "Wishlist"
     }
   ]
 }

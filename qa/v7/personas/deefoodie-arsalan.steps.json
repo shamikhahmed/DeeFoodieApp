@@ -1,5 +1,6 @@
 {
   "personaId": "deefoodie-arsalan",
+  "personaName": "Arsalan Khan",
   "baseUrl": "/",
   "viewport": {
     "width": 402,
@@ -13,22 +14,49 @@
     },
     {
       "action": "wait",
-      "ms": 800
+      "ms": 2000
     }
   ],
   "steps": [
     {
-      "id": "01-home",
-      "title": "Home",
-      "action": "screenshot",
-      "route": "home",
-      "alt": "deefoodie-arsalan home screen with sample data"
+      "id": "01-iphone",
+      "title": "After lunch log",
+      "action": "goto",
+      "path": "/",
+      "waitMs": 1800,
+      "alt": "Visit"
     },
     {
-      "id": "02-task",
-      "title": "Primary task",
-      "action": "screenshot",
-      "alt": "deefoodie-arsalan primary task view"
+      "id": "02-iphone",
+      "title": "Kid note",
+      "action": "goto",
+      "path": "/explore",
+      "waitMs": 1800,
+      "alt": "Note"
+    },
+    {
+      "id": "03-iphone",
+      "title": "Wishlist",
+      "action": "goto",
+      "path": "/journal",
+      "waitMs": 1800,
+      "alt": "Wishlist"
+    },
+    {
+      "id": "04-iphone",
+      "title": "Areas",
+      "action": "goto",
+      "path": "/favorites",
+      "waitMs": 1800,
+      "alt": "Areas"
+    },
+    {
+      "id": "05-iphone",
+      "title": "Home",
+      "action": "goto",
+      "path": "/profile",
+      "waitMs": 1800,
+      "alt": "Home"
     }
   ]
 }
