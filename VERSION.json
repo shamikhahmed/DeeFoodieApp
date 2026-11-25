@@ -1,6 +1,7 @@
 {
   "app": "DeeFoodie",
   "version": "1.1.2+5",
-  "updated": "2026-10-22",
-  "notes": "v7-fix: verify analyze fatal errors only"
+  "updated": "2026-11-26",
+  "notes": "v7-fix: verify analyze fatal errors only",
+  "motionContract": "capricorn-tooling/shared/design-system/MOTION.md (shared; not vendored)"
 }
