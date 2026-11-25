@@ -3,6 +3,7 @@
  * VaultCap-style DeeFoodieApp screen capture.
  * Prereq: flutter build web && app served at GALLERY_BASE_URL (default :8765)
  *
+ * Flutter web uses HashUrlStrategy + HTML beta gate (sessionStorage).
  *   cd mobile && npm run gallery:capture
  */
 import { chromium } from '@playwright/test';
@@ -16,7 +17,9 @@ const ROOT = path.join(__dirname, '..');
 const SHOT_DIR = path.join(ROOT, 'assets', 'screenshots', 'mobile');
 const MANIFEST_PATH = path.join(ROOT, 'assets', 'screenshots', 'manifest.json');
 const ARCHIVE = JSON.parse(fs.readFileSync(path.join(ROOT, 'assets/demo/archive.json'), 'utf8'));
-const BASE = process.env.GALLERY_BASE_URL || 'http://localhost:8765';
+const BASE = (process.env.GALLERY_BASE_URL || 'http://localhost:8765').replace(/\/$/, '');
+/** Matches capture-story / web/index.html MIN (32+). Gallery-only; not a production secret. */
+const BETA_TOKEN = process.env.DEEFOODIE_BETA_TOKEN || 'v7storycapturetokenxxxxxxxxxxxxxxxx';
 
 const SAMPLE_VISIT = ARCHIVE.visits?.[0]?.id ?? '';
 const SAMPLE_EATERY = ARCHIVE.eateries?.find((e) => e.name === 'Kolachi')?.id ?? ARCHIVE.eateries?.[0]?.id ?? '';
@@ -114,27 +117,48 @@ function buildManifest(captured) {
   };
 }
 
-async function prepPage(page, setup) {
-  await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 60000 });
-  if (setup === 'onboarding' || setup === 'onboardingChains') {
-    await page.evaluate(() => localStorage.removeItem('flutter.onboarding_completed'));
-    return;
-  }
-  await page.evaluate(() => localStorage.setItem('flutter.onboarding_completed', 'true'));
+function hashUrl(route) {
+  const pathPart = route === '/' ? '/' : route.startsWith('/') ? route : `/${route}`;
+  return `${BASE}/#${pathPart}`;
+}
+
+async function waitFlutter(page) {
+  await page.waitForFunction(
+    () => {
+      const gate = document.getElementById('dfd-beta-gate');
+      if (gate?.getAttribute('data-show') === '1') return false;
+      return !!document.querySelector('flt-glass-pane, flutter-view');
+    },
+    null,
+    { timeout: 90000 },
+  );
+  await page.waitForTimeout(2500);
+}
+
+async function setOnboardingFlag(page, completed) {
+  await page.evaluate((done) => {
+    if (done) localStorage.setItem('flutter.onboarding_completed', 'true');
+    else localStorage.removeItem('flutter.onboarding_completed');
+  }, completed);
 }
 
 async function afterNavigate(page, setup) {
   if (setup === 'onboardingChains') {
     for (let i = 0; i < 5; i++) {
-      await page.getByRole('button', { name: /Next|Aagay|Continue/i }).click({ timeout: 8000 }).catch(() => {});
-      await page.waitForTimeout(400);
+      await page.getByRole('button', { name: /Continue|Next|Aagay/i }).last()
+        .click({ timeout: 5000, force: true }).catch(() => {});
+      await page.waitForTimeout(500);
     }
-    await page.waitForTimeout(600);
+    await page.waitForTimeout(800);
     return;
   }
+  if (setup === 'journalBook') {
+    await page.getByText('Book', { exact: true }).click({ timeout: 8000 }).catch(() => {});
+    await page.waitForTimeout(800);
+  }
   if (setup === 'journalTimeline') {
-    await page.getByText('Timeline', { exact: true }).click({ timeout: 15000 }).catch(() => {});
-    await page.waitForTimeout(1200);
+    await page.getByText('Timeline', { exact: true }).click({ timeout: 8000 }).catch(() => {});
+    await page.waitForTimeout(1000);
   }
 }
 
@@ -145,31 +169,46 @@ const context = await browser.newContext({
   viewport: { width: 390, height: 844 },
   deviceScaleFactor: 2,
 });
-const page = await context.newPage();
+await context.addInitScript((token) => {
+  try {
+    sessionStorage.setItem('deefoodie_web_beta_token', token);
+  } catch {
+    /* ignore */
+  }
+  try {
+    localStorage.setItem('flutter.onboarding_completed', 'true');
+  } catch {
+    /* ignore */
+  }
+}, BETA_TOKEN);
+
 const captured = new Set();
 
 for (const sec of SECTIONS) {
   for (const item of sec.items) {
-    await prepPage(page, item.setup === 'onboarding' ? 'onboarding' : 'app');
-    const url = `${BASE}${item.route}`;
+    const onboarding = item.setup === 'onboarding' || item.setup === 'onboardingChains';
     process.stdout.write(`capture ${item.id} … `);
+    /* Fresh page per shot — CanvasKit stalls close shared contexts mid-matrix. */
+    const page = await context.newPage();
     try {
-      await page.goto(url, { waitUntil: 'networkidle', timeout: 90000 });
-      await page.waitForTimeout(item.setup === 'onboarding' ? 3000 : 6000);
-      if (item.setup === 'journalBook') {
-        await page.getByText('Book', { exact: true }).click({ timeout: 8000 }).catch(() => {});
-        await page.waitForTimeout(800);
-      }
+      await page.goto(`${BASE}/`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+      await waitFlutter(page);
+      await setOnboardingFlag(page, !onboarding);
+      await page.goto(hashUrl(item.route), { waitUntil: 'domcontentloaded', timeout: 90000 });
+      await waitFlutter(page);
       await afterNavigate(page, item.setup);
+      const bodyText = await page.evaluate(() => document.body?.innerText || '');
+      if (/Error response|File not found|Private beta — enter your invite/i.test(bodyText)) {
+        throw new Error(`blocked surface: ${bodyText.slice(0, 60)}`);
+      }
       const out = path.join(SHOT_DIR, `${item.id}.png`);
       await page.screenshot({ path: out, fullPage: false });
       captured.add(item.id);
       console.log('ok');
-      if (item.setup === 'onboarding') {
-        await page.evaluate(() => localStorage.setItem('flutter.onboarding_completed', 'true'));
-      }
     } catch (e) {
-      console.log('skip', e.message?.slice(0, 80));
+      console.log('skip', e.message?.slice(0, 100));
+    } finally {
+      await page.close().catch(() => {});
     }
   }
 }

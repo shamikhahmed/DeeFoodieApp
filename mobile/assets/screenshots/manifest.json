@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-05T17:01:49.768Z",
+  "generatedAt": "2026-11-25T20:54:10.956Z",
   "themes": [
     "journal"
   ],
@@ -13,12 +13,23 @@
       "label": "Onboarding",
       "items": [
         {
-          "id": "onboarding",
-          "label": "Onboarding",
+          "id": "onboarding-welcome",
+          "label": "Onboarding — welcome",
           "route": "/onboarding",
           "files": {
             "journal": {
-              "mobile": "mobile/onboarding.png"
+              "mobile": "mobile/onboarding-welcome.png"
+            }
+          },
+          "scroll": {}
+        },
+        {
+          "id": "onboarding-chains",
+          "label": "Onboarding — chains",
+          "route": "/onboarding",
+          "files": {
+            "journal": {
+              "mobile": "mobile/onboarding-chains.png"
             }
           },
           "scroll": {}
@@ -106,7 +117,7 @@
         {
           "id": "visit-detail",
           "label": "Visit detail",
-          "route": "/visit/cmr7ug9mj0001lvaiv04413ux",
+          "route": "/visit/visit-000001",
           "files": {
             "journal": {
               "mobile": "mobile/visit-detail.png"
@@ -128,7 +139,7 @@
         {
           "id": "edit-visit",
           "label": "Edit visit",
-          "route": "/edit-visit/cmr7ug9mj0001lvaiv04413ux",
+          "route": "/edit-visit/visit-000001",
           "files": {
             "journal": {
               "mobile": "mobile/edit-visit.png"

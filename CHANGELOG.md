@@ -1,3 +1,10 @@
+## Gallery Wave 2 — 2026-11-26
+
+- `mobile/npm run gallery:capture` against local Flutter web (`build/web`, Oct 22 build) with beta-token unlock + hash routes → **28** mobile PNGs (`generatedAt` 2026-11-25T20:54:10.956Z).
+- Harness fix: `mobile/scripts/capture-gallery.mjs` (sessionStorage beta token, `#/` HashUrlStrategy, fresh page per shot). Flutter iOS/macOS Podfile/xcconfig WIP left unstaged.
+- Residuals (honest): onboarding-welcome/chains still land on Home (OnboardingPrefs reload race); Map tab chrome-only (no tiles offline); journal Book/Timeline frames identical. Primary tabs + archive screens show real journal UI past the beta gate.
+- Stories / hub minisite shots: skipped (private-beta hub; Wave 2b stories deferred). Light/dark×desktop matrix N/A for this Flutter web harness.
+
 ## Motion craft — 2026-11-26
 
 - Motion contract: this app does **not** vendor Cap design-system CSS; fleet source of truth is `Cap-Apps/capricorn-tooling/shared/design-system/MOTION.md` (`--cap-dur-*`, app-shell instant reveals via `data-cap-app="1"`).
